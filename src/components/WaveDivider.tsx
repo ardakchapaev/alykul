@@ -9,7 +9,7 @@ export default function WaveDivider({ color = 'white', flip = false, withBoat = 
   const colorMap: Record<string, string> = {
     white: '#ffffff',
     sand: '#F7FBFD',
-    navy: '#0A4373',
+    navy: '#1E88C7',
     foam: '#D6EEF5',
     stone: '#F4F8FB',
   };

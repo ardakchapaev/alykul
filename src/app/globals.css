@@ -21,21 +21,21 @@
   --heading-style: italic;
 }
 
-/* ═══ THEME M2: Иссык-Куль Глубина (тёмный premium) ═══ */
+/* ═══ THEME M2: Иссык-Куль Лазурь (белый + синий, без тёмного navy) ═══ */
 [data-theme="M2"] {
-  --color-navy: #062D4F;
+  --color-navy: #1E88C7;
   --color-ocean: #1478B6;
-  --color-ocean-dark: #0A5A8C;
-  --color-teal: #3DA89A;
-  --color-foam: #C8E6F0;
-  --color-sand: #F0F7FA;
-  --color-muted: #5A8BA5;
-  --color-accent: #1478B6;
-  --color-hero-overlay: linear-gradient(180deg, rgba(6,45,79,0.85) 0%, rgba(6,45,79,0.3) 50%, rgba(6,45,79,0.9) 100%);
-  --nav-bg: rgba(6,45,79,0.9);
-  --nav-bg-scrolled: rgba(6,45,79,0.98);
+  --color-ocean-dark: #0B5FA5;
+  --color-teal: #4ABFAD;
+  --color-foam: #E8F4F8;
+  --color-sand: #F7FBFD;
+  --color-muted: #7EB0C8;
+  --color-accent: #1E88C7;
+  --color-hero-overlay: linear-gradient(180deg, rgba(30,136,199,0.75) 0%, rgba(11,95,165,0.3) 50%, rgba(74,191,173,0.2) 100%);
+  --nav-bg: rgba(30,136,199,0.92);
+  --nav-bg-scrolled: rgba(20,120,182,0.98);
   --card-radius: 20px;
-  --card-shadow: 0 8px 24px rgba(20,120,182,0.1);
+  --card-shadow: 0 8px 24px rgba(30,136,199,0.08);
   --section-padding: 80px;
   --heading-style: normal;
 }
@@ -403,14 +403,60 @@ nav.scrolled, nav[class*="fixed"] {
   background: var(--nav-bg-scrolled) !important;
 }
 
-/* Accent color overrides */
-[data-theme="M2"] .bg-ocean { background-color: var(--color-ocean) !important; }
-[data-theme="M2"] .text-ocean { color: var(--color-ocean) !important; }
-[data-theme="M2"] .hover\:bg-ocean-dark:hover { background-color: var(--color-ocean-dark) !important; }
-[data-theme="M2"] .bg-navy { background-color: var(--color-navy) !important; }
-[data-theme="M2"] .text-navy { color: var(--color-navy) !important; }
-[data-theme="M2"] .bg-foam { background-color: var(--color-foam) !important; }
-[data-theme="M2"] .bg-sand { background-color: var(--color-sand) !important; }
+/* M2: Replace ALL dark navy with blue/white */
+[data-theme="M2"] .bg-ocean { background-color: #1E88C7 !important; }
+[data-theme="M2"] .text-ocean { color: #1E88C7 !important; }
+[data-theme="M2"] .hover\:bg-ocean-dark:hover { background-color: #0B5FA5 !important; }
+[data-theme="M2"] .bg-navy { background-color: #1E88C7 !important; }
+[data-theme="M2"] .text-navy { color: #0B5FA5 !important; }
+[data-theme="M2"] .bg-foam { background-color: #E8F4F8 !important; }
+[data-theme="M2"] .bg-sand { background-color: #F7FBFD !important; }
+
+/* M2: USP section — light blue instead of dark */
+[data-theme="M2"] section.bg-navy {
+  background: linear-gradient(135deg, #E8F4F8 0%, #D6EEF5 100%) !important;
+  color: #0B5FA5 !important;
+}
+[data-theme="M2"] section.bg-navy h2,
+[data-theme="M2"] section.bg-navy h3 { color: #0B5FA5 !important; }
+[data-theme="M2"] section.bg-navy p { color: #6B99B8 !important; }
+[data-theme="M2"] section.bg-navy .text-white { color: #0B5FA5 !important; }
+[data-theme="M2"] section.bg-navy .text-foam { color: #0B5FA5 !important; }
+[data-theme="M2"] section.bg-navy .text-muted { color: #7EB0C8 !important; }
+
+/* M2: Footer — blue gradient instead of dark */
+[data-theme="M2"] footer.bg-navy,
+[data-theme="M2"] footer[class*="bg-navy"] {
+  background: linear-gradient(135deg, #1E88C7 0%, #0B5FA5 100%) !important;
+}
+
+/* M2: Gallery strip — light blue */
+[data-theme="M2"] .bg-navy.overflow-hidden,
+[data-theme="M2"] div.bg-navy {
+  background: #E8F4F8 !important;
+}
+
+/* M2: Table header — blue not dark */
+[data-theme="M2"] table thead tr { background: #1E88C7 !important; }
+[data-theme="M2"] .bg-navy.text-white { background-color: #1E88C7 !important; }
+
+/* M2: Nav — translucent blue */
+[data-theme="M2"] nav {
+  background: rgba(30,136,199,0.92) !important;
+}
+[data-theme="M2"] nav.scrolled,
+[data-theme="M2"] nav[class*="fixed"] {
+  background: rgba(20,120,182,0.98) !important;
+}
+
+/* M2: Hero overlay — blue gradient */
+[data-theme="M2"] #hero > div:nth-child(2) {
+  background: linear-gradient(180deg, rgba(30,136,199,0.7) 0%, rgba(11,95,165,0.3) 50%, rgba(74,191,173,0.2) 100%) !important;
+}
+
+/* M2: USP icon gradient — lighter blue */
+[data-theme="M2"] .from-ocean-dark { --tw-gradient-from: #1E88C7 !important; }
+[data-theme="M2"] .to-sky { --tw-gradient-to: #4ABFAD !important; }
 
 [data-theme="M3"] .bg-ocean { background-color: var(--color-ocean) !important; }
 [data-theme="M3"] .text-ocean { color: var(--color-ocean) !important; }
@@ -427,8 +473,7 @@ nav.scrolled, nav[class*="fixed"] {
 /* Section padding */
 [data-theme="M2"] section { padding-top: var(--section-padding) !important; padding-bottom: var(--section-padding) !important; }
 
-/* M2: USP section dark bg */
-[data-theme="M2"] .usp-section { background: var(--color-navy) !important; }
+/* M2: USP section — handled above */
 
 /* Stats bar */
 [data-theme="M2"] .stats-bar h3,
