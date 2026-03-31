@@ -2,6 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══ THEME M1: Ocean Classic (default) ═══ */
+:root, [data-theme="M1"] {
+  --color-navy: #182F48;
+  --color-ocean: #246DC9;
+  --color-ocean-dark: #1a5ab0;
+  --color-foam: #EAF4F6;
+  --color-sand: #F9FBFD;
+  --color-muted: #8EA0A2;
+  --color-accent: #246DC9;
+  --color-hero-overlay: linear-gradient(135deg, rgba(10,22,40,0.75) 0%, rgba(24,47,72,0.5) 40%, rgba(36,109,201,0.2) 100%);
+  --nav-bg: rgba(24,47,72,0.85);
+  --nav-bg-scrolled: rgba(24,47,72,0.98);
+  --card-radius: 16px;
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --section-padding: 80px;
+  --heading-style: italic;
+}
+
+/* ═══ THEME M2: Midnight Premium ═══ */
+[data-theme="M2"] {
+  --color-navy: #0B0F1A;
+  --color-ocean: #6366F1;
+  --color-ocean-dark: #4F46E5;
+  --color-foam: #E0E7FF;
+  --color-sand: #F8FAFC;
+  --color-muted: #94A3B8;
+  --color-accent: #6366F1;
+  --color-hero-overlay: linear-gradient(180deg, rgba(11,15,26,0.85) 0%, rgba(11,15,26,0.4) 50%, rgba(11,15,26,0.95) 100%);
+  --nav-bg: rgba(11,15,26,0.7);
+  --nav-bg-scrolled: rgba(11,15,26,0.95);
+  --card-radius: 24px;
+  --card-shadow: 0 8px 32px rgba(99,102,241,0.08);
+  --section-padding: 100px;
+  --heading-style: normal;
+}
+
+/* ═══ THEME M3: Sunset Warm ═══ */
+[data-theme="M3"] {
+  --color-navy: #1C1917;
+  --color-ocean: #EA580C;
+  --color-ocean-dark: #C2410C;
+  --color-foam: #FFF7ED;
+  --color-sand: #FFFBF5;
+  --color-muted: #A8A29E;
+  --color-accent: #EA580C;
+  --color-hero-overlay: linear-gradient(135deg, rgba(28,25,23,0.8) 0%, rgba(28,25,23,0.3) 50%, rgba(234,88,12,0.15) 100%);
+  --nav-bg: rgba(28,25,23,0.85);
+  --nav-bg-scrolled: rgba(28,25,23,0.98);
+  --card-radius: 20px;
+  --card-shadow: 0 4px 20px rgba(234,88,12,0.06);
+  --section-padding: 80px;
+  --heading-style: normal;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -13,4 +67,93 @@ select option {
 
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+/* ═══ THEME OVERRIDES ═══ */
+
+/* Hero overlay */
+#hero > div:first-child + div {
+  background: var(--color-hero-overlay) !important;
+}
+
+/* Hero heading italic toggle */
+[data-theme="M2"] #hero h1,
+[data-theme="M3"] #hero h1 {
+  font-style: var(--heading-style) !important;
+}
+
+/* Nav */
+nav {
+  background: var(--nav-bg) !important;
+}
+nav.scrolled, nav[class*="fixed"] {
+  background: var(--nav-bg-scrolled) !important;
+}
+
+/* Accent color overrides */
+[data-theme="M2"] .bg-ocean { background-color: var(--color-ocean) !important; }
+[data-theme="M2"] .text-ocean { color: var(--color-ocean) !important; }
+[data-theme="M2"] .hover\:bg-ocean-dark:hover { background-color: var(--color-ocean-dark) !important; }
+[data-theme="M2"] .bg-navy { background-color: var(--color-navy) !important; }
+[data-theme="M2"] .text-navy { color: var(--color-navy) !important; }
+[data-theme="M2"] .bg-foam { background-color: var(--color-foam) !important; }
+[data-theme="M2"] .bg-sand { background-color: var(--color-sand) !important; }
+
+[data-theme="M3"] .bg-ocean { background-color: var(--color-ocean) !important; }
+[data-theme="M3"] .text-ocean { color: var(--color-ocean) !important; }
+[data-theme="M3"] .hover\:bg-ocean-dark:hover { background-color: var(--color-ocean-dark) !important; }
+[data-theme="M3"] .bg-navy { background-color: var(--color-navy) !important; }
+[data-theme="M3"] .text-navy { color: var(--color-navy) !important; }
+[data-theme="M3"] .bg-foam { background-color: var(--color-foam) !important; }
+[data-theme="M3"] .bg-sand { background-color: var(--color-sand) !important; }
+
+/* Card radius */
+[data-theme="M2"] .rounded-2xl { border-radius: var(--card-radius) !important; }
+[data-theme="M3"] .rounded-2xl { border-radius: var(--card-radius) !important; }
+
+/* Section padding */
+[data-theme="M2"] section { padding-top: var(--section-padding) !important; padding-bottom: var(--section-padding) !important; }
+
+/* M2: USP section dark bg */
+[data-theme="M2"] .usp-section { background: var(--color-navy) !important; }
+
+/* Stats bar */
+[data-theme="M2"] .stats-bar h3,
+[data-theme="M2"] .stat-item h3 { color: var(--color-ocean) !important; }
+[data-theme="M3"] .stats-bar h3,
+[data-theme="M3"] .stat-item h3 { color: var(--color-ocean) !important; }
+
+/* Booking widget accent */
+[data-theme="M2"] .btn-search,
+[data-theme="M2"] .btn-book { background-color: var(--color-ocean) !important; }
+[data-theme="M2"] .btn-search:hover,
+[data-theme="M2"] .btn-book:hover { background-color: var(--color-ocean-dark) !important; }
+
+[data-theme="M3"] .btn-search,
+[data-theme="M3"] .btn-book { background-color: var(--color-ocean) !important; }
+[data-theme="M3"] .btn-search:hover,
+[data-theme="M3"] .btn-book:hover { background-color: var(--color-ocean-dark) !important; }
+
+/* Schedule badges */
+[data-theme="M2"] .schedule-badge.daily { background: #E0E7FF; color: #4F46E5; }
+[data-theme="M3"] .schedule-badge.daily { background: #FFF7ED; color: #EA580C; }
+
+/* M2: Indigo gradient on hero */
+[data-theme="M2"] #hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 80% 20%, rgba(99,102,241,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* M3: Warm glow on hero */
+[data-theme="M3"] #hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(234,88,12,0.12) 0%, transparent 60%);
+  pointer-events: none;
 }

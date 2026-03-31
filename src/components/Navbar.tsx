@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeSwitcher from './ThemeSwitcher';
 
 type NavDict = {
   routes: string;
@@ -72,6 +73,7 @@ export default function Navbar({ dict, lang }: { dict: NavDict; lang: string }) 
 
       {/* Language switcher + burger */}
       <div className="flex items-center gap-3">
+        <ThemeSwitcher />
         <LanguageSwitcher current={lang} />
         <button
           className="md:hidden flex flex-col gap-1.5 w-7"
