@@ -50,11 +50,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           <HeroBooking dict={t} />
         </div>
         <Navbar dict={t.nav} lang={params.lang} />
-        <WaveDivider nextColor="white" withYacht />
       </section>
+      <WaveDivider currentColor="hero" nextColor="white" withYacht />
 
       {/* STATS */}
-      <div className="relative bg-white px-6 md:px-14 py-12 pb-28">
+      <div className="bg-white px-6 md:px-14 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { value: '5+', label: t.stats.years },
@@ -68,11 +68,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider nextColor="navy" />
       </div>
+      <WaveDivider currentColor="white" nextColor="navy" />
 
       {/* USP */}
-      <section className="relative bg-navy text-foam px-6 md:px-14 py-16 pb-28">
+      <section className="bg-navy text-foam px-6 md:px-14 py-16">
         <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
@@ -95,21 +95,21 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider nextColor="navy" />
       </section>
+      <WaveDivider currentColor="navy" nextColor="navy" />
 
       {/* GALLERY */}
-      <div className="relative bg-navy overflow-hidden py-4 pb-28">
+      <div className="bg-navy overflow-hidden py-4">
         <div className="flex gap-1 w-max">
           {galleryImages.map(img => (
             <Image key={img} src={`/images/${img}`} alt="" width={300} height={200} className="h-[200px] w-auto object-cover brightness-90 hover:brightness-110 transition-all" />
           ))}
         </div>
-        <WaveDivider nextColor="white" withYacht />
       </div>
+      <WaveDivider currentColor="navy" nextColor="white" withYacht />
 
       {/* ROUTES CATALOG */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="routes">
+      <section className="px-6 md:px-14 py-16" id="routes">
         <div className="flex justify-between items-start mb-8">
           <div>
             <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.routes_section.title}</span>
@@ -129,11 +129,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider nextColor="stone" />
       </section>
+      <WaveDivider currentColor="white" nextColor="stone" />
 
       {/* SCHEDULE */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="schedule">
+      <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
@@ -169,11 +169,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </tbody>
           </table>
         </div>
-        <WaveDivider nextColor="white" withYacht />
       </section>
+      <WaveDivider currentColor="stone" nextColor="white" withYacht />
 
       {/* FLEET */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="fleet">
+      <section className="px-6 md:px-14 py-16" id="fleet">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.fleet_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.fleet_section.badge}</span>
@@ -199,11 +199,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider nextColor="white" />
       </section>
+      <WaveDivider currentColor="white" nextColor="white" />
 
       {/* ABOUT */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="about">
+      <section className="px-6 md:px-14 py-16" id="about">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase mb-6">{t.about_section.title}</h2>
@@ -212,11 +212,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           </div>
           <Image src="/images/scene4.jpg" alt="Alykul" width={600} height={400} className="rounded-2xl object-cover w-full h-[350px]" />
         </div>
-        <WaveDivider nextColor="stone" withYacht />
       </section>
+      <WaveDivider currentColor="white" nextColor="stone" withYacht />
 
       {/* REVIEWS */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="reviews">
+      <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="reviews">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.reviews_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.reviews_section.badge}</span>
@@ -234,11 +234,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider nextColor="white" />
       </section>
+      <WaveDivider currentColor="stone" nextColor="white" />
 
       {/* MAP */}
-      <div id="map" className="relative pb-28">
+      <div id="map">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
           className="w-full h-[400px] border-0"
@@ -246,8 +246,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />
-        <WaveDivider nextColor="navy" withYacht />
       </div>
+      <WaveDivider currentColor="white" nextColor="navy" withYacht />
 
       {/* FOOTER */}
       <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">
