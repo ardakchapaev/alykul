@@ -2,7 +2,7 @@
 
 import { useTheme } from '@/lib/theme-context';
 
-export default function WaveDivider({ color = 'white', flip = false }: { color?: string; flip?: boolean }) {
+export default function WaveDivider({ color = 'white', flip = false, withBoat = false }: { color?: string; flip?: boolean; withBoat?: boolean }) {
   const { theme } = useTheme();
   if (theme !== 'M2') return null;
 
@@ -22,36 +22,65 @@ export default function WaveDivider({ color = 'white', flip = false }: { color?:
         position: 'absolute',
         left: 0,
         width: '100%',
-        height: '100px',
+        height: '70px',
         zIndex: 5,
-        ...(flip ? { top: '-2px' } : { bottom: '-2px' }),
+        ...(flip ? { top: '-1px' } : { bottom: '-1px' }),
         ...(flip ? { transform: 'rotate(180deg)' } : {}),
       }}
     >
+      {/* Wave layer 1 — main */}
       <svg
-        className="absolute bottom-0 w-[200%] h-full"
-        viewBox="0 0 2880 100"
+        className="absolute bottom-0 h-full"
+        style={{ width: '200%', animation: 'waveSlide 6s linear infinite' }}
+        viewBox="0 0 2880 70"
         preserveAspectRatio="none"
-        style={{ animation: 'waveSlide 7s linear infinite' }}
       >
-        <path d="M0,60 C360,100 720,30 1080,70 C1440,100 1800,30 2160,60 C2520,90 2880,40 2880,60 L2880,100 L0,100Z" fill={fill} />
+        <path d="M0,35 C180,55 360,15 540,35 C720,55 900,15 1080,35 C1260,55 1440,15 1620,35 C1800,55 1980,15 2160,35 C2340,55 2520,15 2700,35 C2790,45 2880,25 2880,35 L2880,70 L0,70Z" fill={fill} />
       </svg>
+
+      {/* Wave layer 2 — offset */}
       <svg
-        className="absolute bottom-0 w-[200%] h-full opacity-60"
-        viewBox="0 0 2880 100"
+        className="absolute bottom-0 h-full opacity-50"
+        style={{ width: '200%', animation: 'waveSlide 9s linear infinite reverse' }}
+        viewBox="0 0 2880 70"
         preserveAspectRatio="none"
-        style={{ animation: 'waveSlide 11s linear infinite reverse', bottom: '3px' }}
       >
-        <path d="M0,50 C480,85 960,25 1440,55 C1920,80 2400,30 2880,50 L2880,100 L0,100Z" fill={fill} />
+        <path d="M0,40 C240,20 480,50 720,30 C960,10 1200,50 1440,30 C1680,10 1920,50 2160,30 C2400,10 2640,50 2880,30 L2880,70 L0,70Z" fill={fill} />
       </svg>
+
+      {/* Wave layer 3 — subtle */}
       <svg
-        className="absolute bottom-0 w-[200%] h-full opacity-30"
-        viewBox="0 0 2880 100"
+        className="absolute bottom-0 h-full opacity-25"
+        style={{ width: '200%', animation: 'waveSlide 13s linear infinite' }}
+        viewBox="0 0 2880 70"
         preserveAspectRatio="none"
-        style={{ animation: 'waveSlide 15s linear infinite', bottom: '6px' }}
       >
-        <path d="M0,70 C320,40 640,90 960,55 C1280,25 1600,80 1920,50 C2240,20 2560,75 2880,45 L2880,100 L0,100Z" fill={fill} />
+        <path d="M0,45 C300,25 600,55 900,35 C1200,15 1500,50 1800,30 C2100,10 2400,48 2700,28 L2880,38 L2880,70 L0,70Z" fill={fill} />
       </svg>
+
+      {/* Sailboat silhouette floating on waves */}
+      {withBoat && (
+        <svg
+          className="absolute"
+          style={{
+            bottom: '18px',
+            width: '36px',
+            height: '36px',
+            animation: 'sailboat 18s linear infinite, boatBob 3s ease-in-out infinite',
+          }}
+          viewBox="0 0 40 40"
+          fill="none"
+        >
+          {/* Hull */}
+          <path d="M6,30 Q8,35 20,35 Q32,35 34,30 Z" fill={fill === '#ffffff' || fill === '#F7FBFD' || fill === '#F4F8FB' ? '#0A4373' : 'rgba(255,255,255,0.7)'} />
+          {/* Mast */}
+          <line x1="20" y1="8" x2="20" y2="30" stroke={fill === '#ffffff' || fill === '#F7FBFD' || fill === '#F4F8FB' ? '#0A4373' : 'rgba(255,255,255,0.7)'} strokeWidth="1.5" />
+          {/* Main sail */}
+          <path d="M20,8 L20,28 L32,26 Z" fill={fill === '#ffffff' || fill === '#F7FBFD' || fill === '#F4F8FB' ? '#1E88C7' : 'rgba(255,255,255,0.5)'} />
+          {/* Jib sail */}
+          <path d="M20,10 L20,24 L10,22 Z" fill={fill === '#ffffff' || fill === '#F7FBFD' || fill === '#F4F8FB' ? '#4ABFAD' : 'rgba(255,255,255,0.35)'} />
+        </svg>
+      )}
     </div>
   );
 }

@@ -50,7 +50,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           <HeroBooking dict={t} />
         </div>
 
-        <WaveDivider color="white" />
+        <WaveDivider color="white" withBoat />
         <Navbar dict={t.nav} lang={params.lang} />
       </section>
 

@@ -72,42 +72,120 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
-/* ═══ ANIMATED WAVES (M2 only) ═══ */
+/* ═══ WAVE & SAILBOAT ANIMATIONS ═══ */
 @keyframes waveSlide {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-.waves-container {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 120px;
+@keyframes sailboat {
+  0% { left: -40px; }
+  100% { left: 100%; }
+}
+
+@keyframes boatBob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+/* ═══ M2: NO STRAIGHT LINES ═══ */
+[data-theme="M2"] section {
+  border-radius: 0;
+}
+
+[data-theme="M2"] .bg-white,
+[data-theme="M2"] [class*="rounded-2xl"],
+[data-theme="M2"] .card {
+  border-radius: 20px !important;
+}
+
+[data-theme="M2"] table {
+  border-radius: 16px;
   overflow: hidden;
-  z-index: 5;
-  pointer-events: none;
 }
 
-.wave {
-  position: absolute;
-  bottom: 0;
-  width: 200%;
-  height: 100%;
-  animation: waveSlide 8s linear infinite;
+[data-theme="M2"] table thead tr:first-child th:first-child {
+  border-top-left-radius: 16px;
+}
+[data-theme="M2"] table thead tr:first-child th:last-child {
+  border-top-right-radius: 16px;
+}
+[data-theme="M2"] table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 16px;
+}
+[data-theme="M2"] table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 16px;
 }
 
-.wave:nth-child(2) {
-  animation-duration: 12s;
-  animation-direction: reverse;
-  opacity: 0.6;
-  bottom: 5px;
+[data-theme="M2"] iframe {
+  border-radius: 20px !important;
 }
 
-.wave:nth-child(3) {
-  animation-duration: 16s;
-  opacity: 0.3;
-  bottom: 10px;
+[data-theme="M2"] img {
+  border-radius: 16px;
+}
+
+[data-theme="M2"] .booking-widget,
+[data-theme="M2"] #booking {
+  border-radius: 24px !important;
+}
+
+[data-theme="M2"] input,
+[data-theme="M2"] select {
+  border-radius: 14px !important;
+}
+
+[data-theme="M2"] button {
+  border-radius: 14px !important;
+}
+
+[data-theme="M2"] .btn-book,
+[data-theme="M2"] .btn-search {
+  border-radius: 14px !important;
+}
+
+[data-theme="M2"] nav {
+  border-radius: 0 0 24px 24px;
+}
+
+[data-theme="M2"] footer {
+  border-radius: 32px 32px 0 0;
+}
+
+[data-theme="M2"] .stats-bar,
+[data-theme="M2"] .stat-item {
+  border-radius: 16px;
+}
+
+/* M2: softer shadows */
+[data-theme="M2"] .shadow-sm {
+  box-shadow: 0 4px 20px rgba(10,67,115,0.08) !important;
+}
+
+/* M2: rounded gallery images */
+[data-theme="M2"] .gallery-row img,
+[data-theme="M2"] .flex.gap-1 img {
+  border-radius: 12px !important;
+  margin: 0 4px;
+}
+
+/* M2: rounded badges */
+[data-theme="M2"] span[class*="rounded"] {
+  border-radius: 20px !important;
+}
+
+/* M2: border-bottom in table → dotted curved */
+[data-theme="M2"] table tbody tr {
+  border-bottom: 1px dashed rgba(30,136,199,0.15) !important;
+}
+[data-theme="M2"] table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+/* M2: stats bar remove hard border */
+[data-theme="M2"] .border-t {
+  border-top-style: dashed !important;
+  border-color: rgba(255,255,255,0.1) !important;
 }
 
 /* ═══ PREMIUM INTERACTIONS ═══ */
