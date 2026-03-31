@@ -5,6 +5,7 @@ import HeroVideo from '@/components/HeroVideo';
 import WaveDivider from '@/components/WaveDivider';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
+import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
   const t = await getDictionary(params.lang);
@@ -75,16 +76,16 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { icon: '🧭', title: t.usp.online, desc: t.usp.online_desc },
-            { icon: '⛵', title: t.usp.fleet, desc: t.usp.fleet_desc },
-            { icon: '⚓', title: t.usp.experience, desc: t.usp.experience_desc },
-            { icon: '🛟', title: t.usp.safety, desc: t.usp.safety_desc },
-            { icon: '🌍', title: t.usp.multilang, desc: t.usp.multilang_desc },
-            { icon: '💰', title: t.usp.prices, desc: t.usp.prices_desc },
+            { Icon: IconBooking, title: t.usp.online, desc: t.usp.online_desc },
+            { Icon: IconFleet, title: t.usp.fleet, desc: t.usp.fleet_desc },
+            { Icon: IconExperience, title: t.usp.experience, desc: t.usp.experience_desc },
+            { Icon: IconSafety, title: t.usp.safety, desc: t.usp.safety_desc },
+            { Icon: IconMultilang, title: t.usp.multilang, desc: t.usp.multilang_desc },
+            { Icon: IconPrices, title: t.usp.prices, desc: t.usp.prices_desc },
           ].map(item => (
-            <div key={item.title} className="flex gap-4">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-ocean-dark to-sky flex items-center justify-center shrink-0 text-2xl shadow-lg shadow-ocean/30">
-                {item.icon}
+            <div key={item.title} className="usp-card flex gap-4">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-ocean-dark to-sky flex items-center justify-center shrink-0 text-white shadow-lg shadow-ocean/30">
+                <item.Icon />
               </div>
               <div>
                 <h3 className="font-semibold text-white mb-1">{item.title}</h3>
@@ -106,7 +107,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* ROUTES CATALOG */}
-      <section className="px-6 md:px-14 py-16" id="routes">
+      <section className="relative px-6 md:px-14 py-16" id="routes">
+        <WaveDivider color="white" flip />
         <div className="flex justify-between items-start mb-8">
           <div>
             <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.routes_section.title}</span>
@@ -129,7 +131,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* SCHEDULE */}
-      <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
+      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
+        <WaveDivider color="stone" flip />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
@@ -168,7 +171,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* FLEET */}
-      <section className="px-6 md:px-14 py-16" id="fleet">
+      <section className="relative px-6 md:px-14 py-16" id="fleet">
+        <WaveDivider color="white" flip />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.fleet_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.fleet_section.badge}</span>
@@ -197,7 +201,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* ABOUT */}
-      <section className="px-6 md:px-14 py-16" id="about">
+      <section className="relative px-6 md:px-14 py-16" id="about">
+        <WaveDivider color="white" flip />
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase mb-6">{t.about_section.title}</h2>
@@ -209,7 +214,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* REVIEWS */}
-      <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="reviews">
+      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16" id="reviews">
+        <WaveDivider color="stone" flip />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.reviews_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.reviews_section.badge}</span>
@@ -230,7 +236,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* MAP */}
-      <div id="map">
+      <div id="map" className="relative">
+        <WaveDivider color="white" flip />
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
           className="w-full h-[400px] border-0"

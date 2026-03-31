@@ -9,6 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // M1 defaults (original)
         navy: "#182F48",
         ocean: "#246DC9",
         "ocean-dark": "#1a5ab0",

@@ -6,18 +6,51 @@ export default function WaveDivider({ color = 'white', flip = false }: { color?:
   const { theme } = useTheme();
   if (theme !== 'M2') return null;
 
-  const fill = color === 'white' ? '#ffffff' : color === 'sand' ? '#F0FDFA' : color;
+  const colorMap: Record<string, string> = {
+    white: '#ffffff',
+    sand: '#F7FBFD',
+    navy: '#0A4373',
+    foam: '#D6EEF5',
+    stone: '#F4F8FB',
+  };
+  const fill = colorMap[color] || color;
 
   return (
-    <div className={`waves-container ${flip ? 'rotate-180 top-0 bottom-auto' : ''}`}>
-      <svg className="wave" viewBox="0 0 2880 120" preserveAspectRatio="none">
-        <path d="M0,80 C360,120 720,40 1080,80 C1440,120 1800,40 2160,80 C2520,120 2880,40 2880,80 L2880,120 L0,120Z" fill={fill} />
+    <div
+      className="pointer-events-none overflow-hidden"
+      style={{
+        position: 'absolute',
+        left: 0,
+        width: '100%',
+        height: '100px',
+        zIndex: 5,
+        ...(flip ? { top: '-2px' } : { bottom: '-2px' }),
+        ...(flip ? { transform: 'rotate(180deg)' } : {}),
+      }}
+    >
+      <svg
+        className="absolute bottom-0 w-[200%] h-full"
+        viewBox="0 0 2880 100"
+        preserveAspectRatio="none"
+        style={{ animation: 'waveSlide 7s linear infinite' }}
+      >
+        <path d="M0,60 C360,100 720,30 1080,70 C1440,100 1800,30 2160,60 C2520,90 2880,40 2880,60 L2880,100 L0,100Z" fill={fill} />
       </svg>
-      <svg className="wave" viewBox="0 0 2880 120" preserveAspectRatio="none">
-        <path d="M0,60 C480,100 960,20 1440,60 C1920,100 2400,20 2880,60 L2880,120 L0,120Z" fill={fill} />
+      <svg
+        className="absolute bottom-0 w-[200%] h-full opacity-60"
+        viewBox="0 0 2880 100"
+        preserveAspectRatio="none"
+        style={{ animation: 'waveSlide 11s linear infinite reverse', bottom: '3px' }}
+      >
+        <path d="M0,50 C480,85 960,25 1440,55 C1920,80 2400,30 2880,50 L2880,100 L0,100Z" fill={fill} />
       </svg>
-      <svg className="wave" viewBox="0 0 2880 120" preserveAspectRatio="none">
-        <path d="M0,90 C320,50 640,110 960,70 C1280,30 1600,100 1920,60 C2240,20 2560,90 2880,50 L2880,120 L0,120Z" fill={fill} />
+      <svg
+        className="absolute bottom-0 w-[200%] h-full opacity-30"
+        viewBox="0 0 2880 100"
+        preserveAspectRatio="none"
+        style={{ animation: 'waveSlide 15s linear infinite', bottom: '6px' }}
+      >
+        <path d="M0,70 C320,40 640,90 960,55 C1280,25 1600,80 1920,50 C2240,20 2560,75 2880,45 L2880,100 L0,100Z" fill={fill} />
       </svg>
     </div>
   );

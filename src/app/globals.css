@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══ THEME M1: Ocean Classic (default) ═══ */
+/* ═══ THEME M1: Ocean Classic (default — original) ═══ */
 :root, [data-theme="M1"] {
   --color-navy: #182F48;
   --color-ocean: #246DC9;
   --color-ocean-dark: #1a5ab0;
+  --color-teal: #3a8ef7;
   --color-foam: #EAF4F6;
   --color-sand: #F9FBFD;
   --color-muted: #8EA0A2;
@@ -20,38 +21,40 @@
   --heading-style: italic;
 }
 
-/* ═══ THEME M2: Sailey Teal (волны + бирюза) ═══ */
+/* ═══ THEME M2: Иссык-Куль Глубина (тёмный premium) ═══ */
 [data-theme="M2"] {
-  --color-navy: #064E5C;
-  --color-ocean: #0E7490;
-  --color-ocean-dark: #0C5E73;
-  --color-foam: #E0F7FA;
-  --color-sand: #F0FDFA;
-  --color-muted: #6B8A8E;
-  --color-accent: #0E7490;
-  --color-hero-overlay: linear-gradient(180deg, rgba(6,78,92,0.7) 0%, rgba(6,78,92,0.3) 50%, rgba(6,78,92,0.8) 100%);
-  --nav-bg: rgba(6,78,92,0.9);
-  --nav-bg-scrolled: rgba(6,78,92,0.98);
-  --card-radius: 12px;
-  --card-shadow: 0 4px 16px rgba(14,116,144,0.1);
+  --color-navy: #062D4F;
+  --color-ocean: #1478B6;
+  --color-ocean-dark: #0A5A8C;
+  --color-teal: #3DA89A;
+  --color-foam: #C8E6F0;
+  --color-sand: #F0F7FA;
+  --color-muted: #5A8BA5;
+  --color-accent: #1478B6;
+  --color-hero-overlay: linear-gradient(180deg, rgba(6,45,79,0.85) 0%, rgba(6,45,79,0.3) 50%, rgba(6,45,79,0.9) 100%);
+  --nav-bg: rgba(6,45,79,0.9);
+  --nav-bg-scrolled: rgba(6,45,79,0.98);
+  --card-radius: 20px;
+  --card-shadow: 0 8px 24px rgba(20,120,182,0.1);
   --section-padding: 80px;
   --heading-style: normal;
 }
 
-/* ═══ THEME M3: Sunset Warm ═══ */
+/* ═══ THEME M3: Иссык-Куль Закат (тёплый вечер) ═══ */
 [data-theme="M3"] {
-  --color-navy: #1C1917;
-  --color-ocean: #EA580C;
-  --color-ocean-dark: #C2410C;
-  --color-foam: #FFF7ED;
-  --color-sand: #FFFBF5;
-  --color-muted: #A8A29E;
-  --color-accent: #EA580C;
-  --color-hero-overlay: linear-gradient(135deg, rgba(28,25,23,0.8) 0%, rgba(28,25,23,0.3) 50%, rgba(234,88,12,0.15) 100%);
-  --nav-bg: rgba(28,25,23,0.85);
-  --nav-bg-scrolled: rgba(28,25,23,0.98);
+  --color-navy: #1A2F3A;
+  --color-ocean: #D4782C;
+  --color-ocean-dark: #B8621E;
+  --color-teal: #E8A84C;
+  --color-foam: #FFF3E6;
+  --color-sand: #FFFAF4;
+  --color-muted: #9B8A7A;
+  --color-accent: #D4782C;
+  --color-hero-overlay: linear-gradient(135deg, rgba(26,47,58,0.8) 0%, rgba(26,47,58,0.3) 50%, rgba(212,120,44,0.2) 100%);
+  --nav-bg: rgba(26,47,58,0.85);
+  --nav-bg-scrolled: rgba(26,47,58,0.98);
   --card-radius: 20px;
-  --card-shadow: 0 4px 20px rgba(234,88,12,0.06);
+  --card-shadow: 0 4px 20px rgba(212,120,44,0.08);
   --section-padding: 80px;
   --heading-style: normal;
 }
