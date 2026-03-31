@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Rubik, Roboto_Condensed } from 'next/font/google';
 import '../globals.css';
 import { getDictionary, type Locale, locales } from '@/lib/i18n';
+import { AuthProvider } from '@/lib/auth-context';
 
 const rubik = Rubik({ subsets: ['latin', 'cyrillic'], variable: '--font-rubik' });
 const robotoCondensed = Roboto_Condensed({
@@ -43,7 +44,7 @@ export default function LangLayout({
   return (
     <html lang={params.lang}>
       <body className={`${rubik.variable} ${robotoCondensed.variable} font-body text-navy bg-sand antialiased`}>
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
