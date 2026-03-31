@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: alykul-api
+    restart: always
+    ports:
+      - "127.0.0.1:8085:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://alykul:alykul_secret@aihub-postgres:5432/alykul
+      - REDIS_URL=redis://aihub-redis:6379/2
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - FRONTEND_URL=https://alykul.baimuras.pro
+    depends_on:
+      - migrate
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - aihub-net
+
+  migrate:
+    build: ./backend
+    container_name: alykul-migrate
+    command: >
+      sh -c "python -c \"
+      import asyncio
+      from app.core.database import engine, Base
+      from app.models.user import User
+      from app.models.vessel import Vessel
+      from app.models.route import Route
+      from app.models.trip import Trip
+      from app.models.booking import Booking, Payment, PromoCode, Review
+      async def init():
+          async with engine.begin() as conn:
+              await conn.run_sync(Base.metadata.create_all)
+          print('Tables created')
+      asyncio.run(init())
+      \""
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://alykul:alykul_secret@aihub-postgres:5432/alykul
+    networks:
+      - aihub-net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: alykul-web
+    restart: always
+    ports:
+      - "127.0.0.1:3010:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://alykul.baimuras.pro/api/v1
+    networks:
+      - aihub-net
+
+networks:
+  aihub-net:
+    external: true
