@@ -3,6 +3,7 @@ import { getDictionary, type Locale } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import HeroVideo from '@/components/HeroVideo';
 import WaveDivider from '@/components/WaveDivider';
+import WaveTop from '@/components/WaveTop';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
@@ -50,11 +51,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           <HeroBooking dict={t} />
         </div>
         <Navbar dict={t.nav} lang={params.lang} />
-        <WaveDivider nextColor="white" withYacht />
       </section>
 
       {/* STATS */}
-      <div className="relative bg-white px-6 md:px-14 py-12 pb-28">
+      <div className="relative bg-white px-6 md:px-14 pt-24 py-12 pb-28">
+        <WaveTop prevColor="hero" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { value: '5+', label: t.stats.years },
@@ -68,11 +69,12 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider nextColor="navy" />
+        <WaveDivider nextColor="navy" withYacht />
       </div>
 
       {/* USP */}
-      <section className="relative bg-navy text-foam px-6 md:px-14 py-16 pb-28">
+      <section className="relative bg-navy text-foam px-6 md:px-14 pt-24 py-16 pb-28">
+        <WaveTop prevColor="white" />
         <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
@@ -99,7 +101,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* GALLERY */}
-      <div className="relative bg-navy overflow-hidden py-4 pb-28">
+      <div className="relative bg-navy overflow-hidden pt-20 py-4 pb-28">
+        <WaveTop prevColor="navy" />
         <div className="flex gap-1 w-max">
           {galleryImages.map(img => (
             <Image key={img} src={`/images/${img}`} alt="" width={300} height={200} className="h-[200px] w-auto object-cover brightness-90 hover:brightness-110 transition-all" />
@@ -109,7 +112,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* ROUTES CATALOG */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="routes">
+      <section className="relative px-6 md:px-14 pt-24 py-16 pb-28" id="routes">
+        <WaveTop prevColor="navy" />
         <div className="flex justify-between items-start mb-8">
           <div>
             <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.routes_section.title}</span>
@@ -133,7 +137,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* SCHEDULE */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="schedule">
+      <section className="relative bg-[#F4F8FB] px-6 md:px-14 pt-24 py-16 pb-28" id="schedule">
+        <WaveTop prevColor="white" />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
@@ -173,7 +178,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* FLEET */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="fleet">
+      <section className="relative px-6 md:px-14 pt-24 py-16 pb-28" id="fleet">
+        <WaveTop prevColor="stone" />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.fleet_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.fleet_section.badge}</span>
@@ -203,7 +209,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* ABOUT */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="about">
+      <section className="relative px-6 md:px-14 pt-24 py-16 pb-28" id="about">
+        <WaveTop prevColor="white" />
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase mb-6">{t.about_section.title}</h2>
@@ -216,7 +223,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* REVIEWS */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="reviews">
+      <section className="relative bg-[#F4F8FB] px-6 md:px-14 pt-24 py-16 pb-28" id="reviews">
+        <WaveTop prevColor="white" />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.reviews_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.reviews_section.badge}</span>
@@ -238,7 +246,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* MAP */}
-      <div id="map" className="relative pb-28">
+      <div id="map" className="relative pt-20 pb-28">
+        <WaveTop prevColor="stone" />
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
           className="w-full h-[400px] border-0"
@@ -250,7 +259,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* FOOTER */}
-      <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">
+      <footer className="relative bg-navy text-foam px-6 md:px-14 pt-24 py-14" id="contacts">
+        <WaveTop prevColor="white" />
         <div className="grid md:grid-cols-4 gap-10 mb-10">
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.contacts}</h4>
