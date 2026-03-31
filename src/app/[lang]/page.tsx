@@ -49,10 +49,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           <p className="text-foam text-lg mb-8 opacity-90">{t.hero.subtitle}</p>
           <HeroBooking dict={t} />
         </div>
-
-        <WaveDivider color="white" withBoat />
         <Navbar dict={t.nav} lang={params.lang} />
       </section>
+
+      {/* WAVE: Hero → Stats */}
+      <WaveDivider color="white" withBoat />
 
       {/* STATS */}
       <div className="bg-white grid grid-cols-2 md:grid-cols-4 gap-6 px-6 md:px-14 py-8 shadow-sm">
@@ -69,9 +70,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         ))}
       </div>
 
+      {/* WAVE: Stats → USP */}
+      <WaveDivider color="navy" />
+
       {/* USP */}
-      <section className="relative bg-navy text-foam px-6 md:px-14 py-16">
-        <WaveDivider color="sand" flip />
+      <section className="bg-navy text-foam px-6 md:px-14 py-16">
         <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
@@ -94,11 +97,13 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider color="navy" />
       </section>
 
+      {/* WAVE: USP → Gallery */}
+      <WaveDivider color="navy" />
+
       {/* GALLERY */}
-      <div className="bg-navy overflow-hidden">
+      <div className="bg-navy overflow-hidden py-4">
         <div className="flex gap-1 w-max">
           {galleryImages.map(img => (
             <Image key={img} src={`/images/${img}`} alt="" width={300} height={200} className="h-[200px] w-auto object-cover brightness-90 hover:brightness-110 transition-all" />
@@ -106,9 +111,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
       </div>
 
+      {/* WAVE: Gallery → Routes */}
+      <WaveDivider color="white" withBoat />
+
       {/* ROUTES CATALOG */}
-      <section className="relative px-6 md:px-14 py-16" id="routes">
-        <WaveDivider color="white" flip />
+      <section className="px-6 md:px-14 py-16" id="routes">
         <div className="flex justify-between items-start mb-8">
           <div>
             <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.routes_section.title}</span>
@@ -130,9 +137,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
       </section>
 
+      {/* WAVE: Routes → Schedule */}
+      <WaveDivider color="stone" />
+
       {/* SCHEDULE */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
-        <WaveDivider color="stone" flip withBoat />
+      <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
@@ -170,9 +179,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
       </section>
 
+      {/* WAVE: Schedule → Fleet */}
+      <WaveDivider color="white" withBoat />
+
       {/* FLEET */}
-      <section className="relative px-6 md:px-14 py-16" id="fleet">
-        <WaveDivider color="white" flip />
+      <section className="px-6 md:px-14 py-16" id="fleet">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.fleet_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.fleet_section.badge}</span>
@@ -200,9 +211,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
       </section>
 
+      {/* WAVE: Fleet → About */}
+      <WaveDivider color="white" />
+
       {/* ABOUT */}
-      <section className="relative px-6 md:px-14 py-16" id="about">
-        <WaveDivider color="white" flip withBoat />
+      <section className="px-6 md:px-14 py-16" id="about">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase mb-6">{t.about_section.title}</h2>
@@ -213,9 +226,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
       </section>
 
+      {/* WAVE: About → Reviews */}
+      <WaveDivider color="stone" withBoat />
+
       {/* REVIEWS */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16" id="reviews">
-        <WaveDivider color="stone" flip />
+      <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="reviews">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.reviews_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.reviews_section.badge}</span>
@@ -235,9 +250,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
       </section>
 
+      {/* WAVE: Reviews → Map */}
+      <WaveDivider color="white" />
+
       {/* MAP */}
-      <div id="map" className="relative">
-        <WaveDivider color="white" flip />
+      <div id="map">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
           className="w-full h-[400px] border-0"
@@ -247,8 +264,10 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         />
       </div>
 
+      {/* WAVE: Map → Footer */}
+      <WaveDivider color="navy" withBoat />
+
       {/* FOOTER */}
-      <div className="relative"><WaveDivider color="navy" flip withBoat /></div>
       <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">
         <div className="grid md:grid-cols-4 gap-10 mb-10">
           <div className="flex flex-col gap-2">

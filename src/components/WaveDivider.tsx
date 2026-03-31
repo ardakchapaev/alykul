@@ -2,7 +2,7 @@
 
 import { useTheme } from '@/lib/theme-context';
 
-export default function WaveDivider({ color = 'white', flip = false, withBoat = false }: { color?: string; flip?: boolean; withBoat?: boolean }) {
+export default function WaveDivider({ color = 'white', withBoat = false }: { color?: string; withBoat?: boolean }) {
   const { theme } = useTheme();
   if (theme !== 'M2') return null;
 
@@ -14,86 +14,60 @@ export default function WaveDivider({ color = 'white', flip = false, withBoat = 
     stone: '#F4F8FB',
   };
   const fill = colorMap[color] || color;
-
-  // Sailey-style wave: textured, organic, like torn paper/water edge
-  const isLight = fill === '#ffffff' || fill === '#F7FBFD' || fill === '#F4F8FB' || fill === '#E8F4F8';
-  const boatFill = isLight ? '#0B5FA5' : 'rgba(255,255,255,0.85)';
-  const sailMain = isLight ? '#1E88C7' : 'rgba(255,255,255,0.6)';
-  const sailJib = isLight ? '#4ABFAD' : 'rgba(255,255,255,0.4)';
+  const isLight = ['#ffffff', '#F7FBFD', '#F4F8FB', '#D6EEF5', '#E8F4F8'].includes(fill);
+  const boatHull = isLight ? '#0B5FA5' : '#ffffff';
+  const sailA = isLight ? '#1E88C7' : 'rgba(255,255,255,0.8)';
+  const sailB = isLight ? '#4ABFAD' : 'rgba(255,255,255,0.5)';
 
   return (
-    <div
-      className="pointer-events-none overflow-hidden"
-      style={{
-        position: 'absolute',
-        left: 0,
-        width: '100%',
-        height: '80px',
-        zIndex: 5,
-        ...(flip ? { top: '-1px' } : { bottom: '-1px' }),
-        ...(flip ? { transform: 'rotate(180deg)' } : {}),
-      }}
-    >
-      {/* Sailey-style wave 1 — main, textured */}
+    <div style={{ position: 'relative', width: '100%', height: '150px', marginTop: '-1px', overflow: 'hidden', pointerEvents: 'none' }}>
+      {/* Layer 1 — big wave, fast */}
       <svg
-        className="absolute bottom-0 h-full"
-        style={{ width: '200%', animation: 'waveSlide 5s linear infinite' }}
-        viewBox="0 0 2880 80"
-        preserveAspectRatio="none"
+        style={{ position: 'absolute', bottom: 0, width: '200%', height: '100%', animation: 'waveSlide 6s linear infinite' }}
+        viewBox="0 0 2880 150" preserveAspectRatio="none"
       >
-        <path d="M0,45 C120,65 240,25 360,45 C480,65 600,25 720,45 C840,65 960,25 1080,45 C1200,65 1320,25 1440,45 C1560,65 1680,25 1800,45 C1920,65 2040,25 2160,45 C2280,65 2400,25 2520,45 C2640,65 2760,25 2880,45 L2880,80 L0,80Z" fill={fill} />
+        <path d={`M0,80 C240,140 480,20 720,80 C960,140 1200,20 1440,80 C1680,140 1920,20 2160,80 C2400,140 2640,20 2880,80 L2880,150 L0,150Z`} fill={fill} />
       </svg>
 
-      {/* Wave 2 — offset, faster */}
+      {/* Layer 2 — medium wave, reverse */}
       <svg
-        className="absolute bottom-0 h-full opacity-50"
-        style={{ width: '200%', animation: 'waveSlide 3.5s linear infinite reverse' }}
-        viewBox="0 0 2880 80"
-        preserveAspectRatio="none"
+        style={{ position: 'absolute', bottom: 0, width: '200%', height: '100%', animation: 'waveSlide 4s linear infinite reverse', opacity: 0.5 }}
+        viewBox="0 0 2880 150" preserveAspectRatio="none"
       >
-        <path d="M0,50 C160,30 320,60 480,40 C640,20 800,55 960,35 C1120,15 1280,55 1440,35 C1600,15 1760,55 1920,35 C2080,15 2240,55 2400,35 C2560,15 2720,50 2880,35 L2880,80 L0,80Z" fill={fill} />
+        <path d={`M0,90 C200,30 400,130 600,70 C800,10 1000,120 1200,60 C1400,0 1600,110 1800,50 C2000,0 2200,110 2400,60 C2600,10 2800,100 2880,70 L2880,150 L0,150Z`} fill={fill} />
       </svg>
 
-      {/* Wave 3 — subtle, slow */}
+      {/* Layer 3 — subtle slow wave */}
       <svg
-        className="absolute bottom-0 h-full opacity-25"
-        style={{ width: '200%', animation: 'waveSlide 8s linear infinite' }}
-        viewBox="0 0 2880 80"
-        preserveAspectRatio="none"
+        style={{ position: 'absolute', bottom: 0, width: '200%', height: '100%', animation: 'waveSlide 9s linear infinite', opacity: 0.25 }}
+        viewBox="0 0 2880 150" preserveAspectRatio="none"
       >
-        <path d="M0,55 C200,35 400,65 600,45 C800,25 1000,60 1200,40 C1400,20 1600,58 1800,38 C2000,18 2200,55 2400,38 C2600,20 2800,50 2880,42 L2880,80 L0,80Z" fill={fill} />
+        <path d={`M0,100 C360,40 720,120 1080,60 C1440,0 1800,130 2160,70 C2520,10 2700,90 2880,60 L2880,150 L0,150Z`} fill={fill} />
       </svg>
 
-      {/* Sailboat — large, rides the wave with bobbing motion */}
+      {/* Sailboat — follows a wave path, NOT straight line */}
       {withBoat && (
         <svg
-          className="absolute"
           style={{
-            bottom: '22px',
-            width: '64px',
-            height: '64px',
-            animation: 'sailboat 22s linear infinite, boatBob 2.5s ease-in-out infinite',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+            position: 'absolute',
+            bottom: '50px',
+            width: '56px',
+            height: '56px',
+            animation: 'sailboatWave 20s ease-in-out infinite',
+            filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.2))',
+            zIndex: 10,
           }}
-          viewBox="0 0 60 60"
-          fill="none"
+          viewBox="0 0 60 60" fill="none"
         >
-          {/* Hull */}
-          <path d="M8,44 C10,50 20,52 30,52 C40,52 50,50 52,44 L48,44 C46,48 38,50 30,50 C22,50 14,48 12,44 Z" fill={boatFill} />
-          {/* Deck */}
-          <path d="M12,44 L16,38 L44,38 L48,44 Z" fill={boatFill} opacity="0.7" />
-          {/* Mast */}
-          <line x1="30" y1="10" x2="30" y2="38" stroke={boatFill} strokeWidth="2" />
-          {/* Main sail */}
-          <path d="M30,10 L30,36 L48,32 Z" fill={sailMain} />
-          {/* Jib sail */}
-          <path d="M30,12 L30,32 L14,28 Z" fill={sailJib} />
-          {/* Flag */}
-          <path d="M30,10 L30,6 L36,8 L30,10Z" fill={sailMain} />
-          {/* Window dots */}
-          <circle cx="22" cy="42" r="1.5" fill={isLight ? '#ffffff' : 'rgba(0,0,0,0.2)'} />
-          <circle cx="30" cy="42" r="1.5" fill={isLight ? '#ffffff' : 'rgba(0,0,0,0.2)'} />
-          <circle cx="38" cy="42" r="1.5" fill={isLight ? '#ffffff' : 'rgba(0,0,0,0.2)'} />
+          <path d="M8,44 C10,50 20,52 30,52 C40,52 50,50 52,44 L48,44 C46,48 38,50 30,50 C22,50 14,48 12,44 Z" fill={boatHull} />
+          <path d="M12,44 L16,38 L44,38 L48,44 Z" fill={boatHull} opacity="0.7" />
+          <line x1="30" y1="10" x2="30" y2="38" stroke={boatHull} strokeWidth="2" />
+          <path d="M30,10 L30,36 L48,32 Z" fill={sailA} />
+          <path d="M30,12 L30,32 L14,28 Z" fill={sailB} />
+          <path d="M30,10 L30,6 L36,8 L30,10Z" fill={sailA} />
+          <circle cx="22" cy="42" r="1.5" fill={isLight ? '#fff' : 'rgba(0,0,0,0.2)'} />
+          <circle cx="30" cy="42" r="1.5" fill={isLight ? '#fff' : 'rgba(0,0,0,0.2)'} />
+          <circle cx="38" cy="42" r="1.5" fill={isLight ? '#fff' : 'rgba(0,0,0,0.2)'} />
         </svg>
       )}
     </div>
