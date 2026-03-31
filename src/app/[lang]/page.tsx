@@ -71,7 +71,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
       {/* USP */}
       <section className="relative bg-navy text-foam px-6 md:px-14 py-16">
-        <WaveDivider color="#F9FBFD" flip />
+        <WaveDivider color="sand" flip />
         <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
@@ -94,7 +94,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
-        <WaveDivider color="#182F48" />
+        <WaveDivider color="navy" />
       </section>
 
       {/* GALLERY */}
@@ -132,7 +132,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
       {/* SCHEDULE */}
       <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
-        <WaveDivider color="stone" flip />
+        <WaveDivider color="stone" flip withBoat />
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
@@ -202,7 +202,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
       {/* ABOUT */}
       <section className="relative px-6 md:px-14 py-16" id="about">
-        <WaveDivider color="white" flip />
+        <WaveDivider color="white" flip withBoat />
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase mb-6">{t.about_section.title}</h2>
@@ -248,7 +248,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* FOOTER */}
-      <div className="relative"><WaveDivider color="#182F48" flip /></div>
+      <div className="relative"><WaveDivider color="navy" flip withBoat /></div>
       <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">
         <div className="grid md:grid-cols-4 gap-10 mb-10">
           <div className="flex flex-col gap-2">
