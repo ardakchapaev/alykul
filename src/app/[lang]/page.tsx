@@ -6,6 +6,7 @@ import WaveDivider from '@/components/WaveDivider';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
+import SaileyTheme from '@/components/SaileyTheme';
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
   const t = await getDictionary(params.lang);
@@ -35,7 +36,10 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
   return (
     <>
-      {/* HERO */}
+      {/* M3: Full Sailey theme overlay */}
+      <SaileyTheme dict={t} lang={params.lang} catalogCards={catalogCards} reviews={reviews} galleryImages={galleryImages} />
+
+      {/* HERO (M1/M2) */}
       <section className="relative h-screen flex items-center overflow-hidden" id="hero">
         <HeroVideo />
         <div className="absolute inset-0 z-[1] bg-gradient-to-br from-[rgba(10,22,40,0.75)] via-[rgba(24,47,72,0.5)] to-[rgba(36,109,201,0.2)]" />
