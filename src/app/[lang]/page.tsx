@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { getDictionary, type Locale } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
+import HeroVideo from '@/components/HeroVideo';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 
@@ -34,9 +35,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
     <>
       {/* HERO */}
       <section className="relative h-screen flex items-center overflow-hidden" id="hero">
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/hero.jpg" alt="Issyk-Kul" fill className="object-cover" priority />
-        </div>
+        <HeroVideo />
         <div className="absolute inset-0 z-[1] bg-gradient-to-br from-[rgba(10,22,40,0.75)] via-[rgba(24,47,72,0.5)] to-[rgba(36,109,201,0.2)]" />
         <div className="relative z-[2] px-6 md:px-14 max-w-[650px]">
           <div className="flex items-center gap-3 text-foam/70 text-sm uppercase tracking-[2px] mb-10">
