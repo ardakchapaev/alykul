@@ -10,10 +10,11 @@ const TEAL = '#0E7490';
 const DARK = '#0C3547';
 const GOLD = '#C5A028';
 
-// Rough coastline SVG path (organic, irregular like Sailey)
-const WAVE_WHITE = "M0,30 C40,45 80,15 120,35 C160,55 200,20 240,40 C280,58 320,18 360,38 C400,56 440,16 480,36 C520,54 560,14 600,34 C640,52 680,12 720,32 C760,50 800,10 840,30 C880,48 920,10 960,30 C1000,48 1040,12 1080,32 C1120,50 1160,14 1200,34 C1240,52 1280,16 1320,36 C1360,54 1400,18 1440,38 L1440,80 L0,80Z";
+// Jagged coastline — torn paper / mountain ridge silhouette (matches Sailey reference exactly)
+// Sharp peaks, deep valleys, irregular rhythm — NOT smooth sine waves
+const COASTLINE_WHITE = "M0,65 L20,58 L35,62 L50,45 L62,50 L75,38 L85,42 L100,28 L115,35 L130,22 L145,30 L160,18 L172,25 L185,15 L200,22 L220,10 L235,18 L250,8 L268,15 L280,5 L295,12 L310,3 L328,10 L345,6 L360,14 L380,8 L400,18 L415,12 L435,22 L450,15 L470,28 L485,20 L500,32 L515,25 L535,35 L548,28 L565,18 L580,25 L595,15 L612,22 L625,12 L640,20 L660,8 L680,15 L695,5 L710,12 L730,18 L745,10 L762,22 L778,15 L795,25 L810,18 L830,30 L845,22 L860,35 L878,28 L895,40 L910,32 L930,45 L945,38 L960,48 L978,42 L995,52 L1010,45 L1030,55 L1048,48 L1065,58 L1080,50 L1100,42 L1115,48 L1130,38 L1148,45 L1165,32 L1180,40 L1200,28 L1215,35 L1235,22 L1250,30 L1268,18 L1285,25 L1300,15 L1318,22 L1335,12 L1350,20 L1370,10 L1388,18 L1405,8 L1420,15 L1440,20 L1440,120 L0,120Z";
 
-const WAVE_DARK = "M0,25 C50,40 100,10 150,30 C200,50 250,15 300,35 C350,52 400,12 450,32 C500,48 550,8 600,28 C650,45 700,10 750,30 C800,48 850,12 900,32 C950,48 1000,8 1050,28 C1100,45 1150,10 1200,30 C1250,48 1300,12 1350,32 C1400,48 1440,20 1440,25 L1440,80 L0,80Z";
+const COASTLINE_DARK = "M0,55 L18,48 L32,55 L48,40 L65,48 L80,32 L95,40 L110,25 L128,32 L142,18 L158,28 L175,12 L190,22 L208,8 L225,18 L240,5 L258,15 L275,3 L290,12 L308,5 L325,15 L340,8 L358,18 L375,10 L392,22 L410,15 L425,28 L442,20 L460,32 L475,22 L492,35 L510,25 L528,38 L545,28 L560,15 L578,25 L595,12 L610,22 L628,8 L645,18 L662,5 L680,15 L698,22 L715,12 L732,25 L750,15 L768,28 L785,18 L802,32 L820,22 L838,38 L855,28 L872,42 L890,32 L908,48 L925,38 L942,50 L960,42 L978,55 L995,45 L1012,58 L1030,48 L1048,40 L1065,48 L1082,35 L1100,45 L1118,30 L1135,40 L1152,25 L1170,35 L1188,20 L1205,30 L1222,15 L1240,25 L1258,12 L1275,22 L1292,8 L1310,18 L1328,5 L1345,15 L1362,8 L1380,18 L1398,10 L1415,20 L1440,15 L1440,120 L0,120Z";
 
 type SaileyProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -74,8 +75,8 @@ export default function SaileyTheme({ dict: t, lang, catalogCards }: SaileyProps
         </div>
 
         {/* Bottom wave — white, rough coastline */}
-        <svg style={{ position: 'absolute', bottom: '-1px', left: 0, width: '100%', height: '80px' }} viewBox="0 0 1440 80" preserveAspectRatio="none">
-          <path d={WAVE_WHITE} fill="#ffffff" />
+        <svg style={{ position: 'absolute', bottom: '-1px', left: 0, width: '100%', height: '120px' }} viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d={COASTLINE_WHITE} fill="#ffffff" />
         </svg>
       </div>
 
@@ -116,9 +117,9 @@ export default function SaileyTheme({ dict: t, lang, catalogCards }: SaileyProps
       {/* ══ FOOTER ══ */}
       <div style={{ position: 'relative' }}>
         {/* Top wave — dark coastline texture */}
-        <svg style={{ display: 'block', width: '100%', height: '80px' }} viewBox="0 0 1440 80" preserveAspectRatio="none">
-          <rect width="1440" height="80" fill="#ffffff" />
-          <path d={WAVE_DARK} fill={DARK} />
+        <svg style={{ display: 'block', width: '100%', height: '120px' }} viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <rect width="1440" height="120" fill="#ffffff" />
+          <path d={COASTLINE_DARK} fill={DARK} />
         </svg>
 
         <div style={{ background: DARK, padding: '40px 40px 20px', color: '#fff' }}>
