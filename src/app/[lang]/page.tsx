@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { getDictionary, type Locale } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import HeroVideo from '@/components/HeroVideo';
+import WaveDivider from '@/components/WaveDivider';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 
@@ -48,6 +49,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           <HeroBooking dict={t} />
         </div>
 
+        <WaveDivider color="white" />
         <Navbar dict={t.nav} lang={params.lang} />
       </section>
 
@@ -67,7 +69,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* USP */}
-      <section className="bg-navy text-foam px-6 md:px-14 py-16">
+      <section className="relative bg-navy text-foam px-6 md:px-14 py-16">
+        <WaveDivider color="#F9FBFD" flip />
         <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
@@ -90,6 +93,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </div>
           ))}
         </div>
+        <WaveDivider color="#182F48" />
       </section>
 
       {/* GALLERY */}
@@ -237,6 +241,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* FOOTER */}
+      <div className="relative"><WaveDivider color="#182F48" flip /></div>
       <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">
         <div className="grid md:grid-cols-4 gap-10 mb-10">
           <div className="flex flex-col gap-2">

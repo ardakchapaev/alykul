@@ -20,21 +20,21 @@
   --heading-style: italic;
 }
 
-/* ═══ THEME M2: Midnight Premium ═══ */
+/* ═══ THEME M2: Sailey Teal (волны + бирюза) ═══ */
 [data-theme="M2"] {
-  --color-navy: #0B0F1A;
-  --color-ocean: #6366F1;
-  --color-ocean-dark: #4F46E5;
-  --color-foam: #E0E7FF;
-  --color-sand: #F8FAFC;
-  --color-muted: #94A3B8;
-  --color-accent: #6366F1;
-  --color-hero-overlay: linear-gradient(180deg, rgba(11,15,26,0.85) 0%, rgba(11,15,26,0.4) 50%, rgba(11,15,26,0.95) 100%);
-  --nav-bg: rgba(11,15,26,0.7);
-  --nav-bg-scrolled: rgba(11,15,26,0.95);
-  --card-radius: 24px;
-  --card-shadow: 0 8px 32px rgba(99,102,241,0.08);
-  --section-padding: 100px;
+  --color-navy: #064E5C;
+  --color-ocean: #0E7490;
+  --color-ocean-dark: #0C5E73;
+  --color-foam: #E0F7FA;
+  --color-sand: #F0FDFA;
+  --color-muted: #6B8A8E;
+  --color-accent: #0E7490;
+  --color-hero-overlay: linear-gradient(180deg, rgba(6,78,92,0.7) 0%, rgba(6,78,92,0.3) 50%, rgba(6,78,92,0.8) 100%);
+  --nav-bg: rgba(6,78,92,0.9);
+  --nav-bg-scrolled: rgba(6,78,92,0.98);
+  --card-radius: 12px;
+  --card-shadow: 0 4px 16px rgba(14,116,144,0.1);
+  --section-padding: 80px;
   --heading-style: normal;
 }
 
@@ -67,6 +67,238 @@ select option {
 
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+/* ═══ ANIMATED WAVES (M2 only) ═══ */
+@keyframes waveSlide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.waves-container {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  width: 200%;
+  height: 100%;
+  animation: waveSlide 8s linear infinite;
+}
+
+.wave:nth-child(2) {
+  animation-duration: 12s;
+  animation-direction: reverse;
+  opacity: 0.6;
+  bottom: 5px;
+}
+
+.wave:nth-child(3) {
+  animation-duration: 16s;
+  opacity: 0.3;
+  bottom: 10px;
+}
+
+/* ═══ PREMIUM INTERACTIONS ═══ */
+
+/* Magnetic button effect */
+.btn-book, .btn-search, button[class*="bg-ocean"] {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.btn-book:hover, .btn-search:hover, button[class*="bg-ocean"]:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(var(--color-accent, 36, 109, 201), 0.35);
+}
+
+.btn-book:active, .btn-search:active, button[class*="bg-ocean"]:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Ripple effect on buttons */
+.btn-book::after, .btn-search::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.3) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-book:hover::after, .btn-search:hover::after {
+  opacity: 1;
+}
+
+/* Card lift on hover */
+.card, [class*="rounded-2xl"][class*="shadow"] {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+.card:hover, [class*="rounded-2xl"][class*="shadow"]:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+/* Image zoom on card hover */
+.card img, .card-img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.card:hover img, .card:hover .card-img {
+  transform: scale(1.08);
+}
+
+/* Stats counter pulse */
+@keyframes counterPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.stat-item h3, .counter {
+  transition: color 0.3s, transform 0.3s;
+}
+.stat-item:hover h3, .stat-item:hover .counter {
+  color: var(--color-accent, #246DC9) !important;
+  animation: counterPulse 0.6s ease;
+}
+
+/* USP card shine effect */
+.usp-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.usp-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.usp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+.usp-card:hover::before {
+  opacity: 1;
+}
+
+/* Nav link underline animation */
+nav a {
+  position: relative;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent, #246DC9);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+nav a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Scroll reveal animation */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+section {
+  animation: slideUp 0.6s ease-out;
+}
+
+/* Review card tilt on hover */
+.review-card {
+  transition: transform 0.3s ease;
+}
+.review-card:hover {
+  transform: perspective(800px) rotateY(-3deg) translateY(-4px);
+}
+
+/* Fleet card overlay */
+.fleet-card {
+  position: relative;
+  overflow: hidden;
+}
+.fleet-card img {
+  transition: transform 0.5s ease;
+}
+.fleet-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Tab active indicator */
+.tab {
+  position: relative;
+  transition: all 0.3s ease;
+}
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 20%;
+  width: 60%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-accent, #246DC9);
+}
+
+/* Smooth booking widget field focus glow */
+.booking-widget select:focus,
+.booking-widget input:focus,
+#booking select:focus,
+#booking input:focus {
+  box-shadow: 0 0 0 3px rgba(var(--color-accent, 36, 109, 201), 0.2);
+}
+
+/* Gallery horizontal scroll parallax */
+.gallery-row {
+  transition: transform 0.3s ease;
+}
+.gallery-row img {
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+.gallery-row img:hover {
+  filter: brightness(1.15) !important;
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+/* M2: Teal glow effects */
+[data-theme="M2"] .btn-book:hover,
+[data-theme="M2"] .btn-search:hover {
+  box-shadow: 0 8px 30px rgba(14,116,144,0.4);
+}
+
+[data-theme="M2"] .usp-card:hover {
+  box-shadow: 0 12px 30px rgba(14,116,144,0.15);
+}
+
+[data-theme="M2"] nav a::after {
+  background: #0E7490;
+}
+
+/* M3: Warm glow effects */
+[data-theme="M3"] .btn-book:hover,
+[data-theme="M3"] .btn-search:hover {
+  box-shadow: 0 8px 30px rgba(234,88,12,0.4);
 }
 
 /* ═══ THEME OVERRIDES ═══ */
