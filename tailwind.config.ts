@@ -23,6 +23,8 @@ const config: Config = {
         body: ['var(--font-outfit)', '"Outfit"', 'system-ui', 'sans-serif'],
         "m3-display": ['var(--font-cormorant)', '"Cormorant Garamond"', 'Georgia', 'serif'],
         "m3-body": ['var(--font-outfit)', '"Outfit"', 'system-ui', 'sans-serif'],
+        "m4-display": ['var(--font-playfair)', '"Playfair Display"', 'Georgia', 'serif'],
+        "m4-body": ['var(--font-inter)', '"Inter"', 'system-ui', 'sans-serif'],
       },
     },
   },

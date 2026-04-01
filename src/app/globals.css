@@ -40,7 +40,7 @@
   --heading-style: normal;
 }
 
-/* ═══ THEME M3: Иссык-Куль Закат (тёплый вечер) ═══ */
+/* ═══ THEME M3: Иссык-Куль Закат / Sailey (тёплый вечер) ═══ */
 [data-theme="M3"] {
   --color-navy: #1A2F3A;
   --color-ocean: #D4782C;
@@ -57,6 +57,46 @@
   --card-shadow: 0 4px 20px rgba(212,120,44,0.08);
   --section-padding: 80px;
   --heading-style: normal;
+}
+
+/* ═══ THEME M4: Deep Ocean (тёмный иммерсивный) ═══ */
+[data-theme="M4"] {
+  --color-navy: #0B1929;
+  --color-ocean: #00B4D8;
+  --color-ocean-dark: #0096C7;
+  --color-teal: #48CAE4;
+  --color-foam: #E0F7FA;
+  --color-sand: #0D2137;
+  --color-muted: #7BA3B8;
+  --color-accent: #00B4D8;
+  --color-gold: #F6C344;
+  --color-hero-overlay: linear-gradient(135deg, rgba(11,25,41,0.85) 0%, rgba(11,25,41,0.4) 50%, rgba(0,180,216,0.15) 100%);
+  --nav-bg: rgba(11,25,41,0.7);
+  --nav-bg-scrolled: rgba(11,25,41,0.97);
+  --card-radius: 16px;
+  --card-shadow: 0 4px 24px rgba(0,180,216,0.08);
+  --section-padding: 80px;
+  --heading-style: normal;
+}
+
+/* ═══ THEME M5: Coastal Luxury (светлый премиум) ═══ */
+[data-theme="M5"] {
+  --color-navy: #0F2B46;
+  --color-ocean: #1E6FD9;
+  --color-ocean-dark: #1858B0;
+  --color-teal: #3B8AE8;
+  --color-foam: #F0F5FA;
+  --color-sand: #FAFBFD;
+  --color-muted: #8A9BB0;
+  --color-accent: #1E6FD9;
+  --color-gold: #E8B86D;
+  --color-hero-overlay: linear-gradient(135deg, rgba(15,43,70,0.75) 0%, rgba(15,43,70,0.3) 50%, rgba(30,111,217,0.1) 100%);
+  --nav-bg: rgba(250,251,253,0.85);
+  --nav-bg-scrolled: rgba(250,251,253,0.98);
+  --card-radius: 12px;
+  --card-shadow: 0 2px 16px rgba(15,43,70,0.06);
+  --section-padding: 96px;
+  --heading-style: italic;
 }
 
 html {
@@ -511,7 +551,7 @@ nav.scrolled, nav[class*="fixed"] {
   pointer-events: none;
 }
 
-/* M3: Warm glow on hero */
+/* M3: Warm glow on hero (Sailey) */
 [data-theme="M3"] #hero::after {
   content: '';
   position: absolute;
@@ -520,3 +560,63 @@ nav.scrolled, nav[class*="fixed"] {
   background: radial-gradient(ellipse at 20% 80%, rgba(234,88,12,0.12) 0%, transparent 60%);
   pointer-events: none;
 }
+
+/* M4: Cyan glow on hero (Deep Ocean) */
+[data-theme="M4"] #hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(0,180,216,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* M4: Color overrides */
+[data-theme="M4"] .bg-ocean { background-color: var(--color-ocean) !important; }
+[data-theme="M4"] .text-ocean { color: var(--color-ocean) !important; }
+[data-theme="M4"] .hover\:bg-ocean-dark:hover { background-color: var(--color-ocean-dark) !important; }
+[data-theme="M4"] .bg-navy { background-color: var(--color-navy) !important; }
+[data-theme="M4"] .text-navy { color: var(--color-navy) !important; }
+[data-theme="M4"] .bg-foam { background-color: var(--color-foam) !important; }
+[data-theme="M4"] .bg-sand { background-color: var(--color-sand) !important; }
+[data-theme="M4"] .rounded-2xl { border-radius: var(--card-radius) !important; }
+
+/* M4: Cyan glow on buttons */
+[data-theme="M4"] .btn-book:hover,
+[data-theme="M4"] .btn-search:hover {
+  box-shadow: 0 8px 30px rgba(0,180,216,0.4);
+}
+[data-theme="M4"] .btn-search,
+[data-theme="M4"] .btn-book { background-color: var(--color-ocean) !important; }
+[data-theme="M4"] .btn-search:hover,
+[data-theme="M4"] .btn-book:hover { background-color: var(--color-ocean-dark) !important; }
+
+/* M5: Gold glow on hero (Coastal Luxury) */
+[data-theme="M5"] #hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 80% 20%, rgba(232,184,109,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* M5: Color overrides */
+[data-theme="M5"] .bg-ocean { background-color: var(--color-ocean) !important; }
+[data-theme="M5"] .text-ocean { color: var(--color-ocean) !important; }
+[data-theme="M5"] .hover\:bg-ocean-dark:hover { background-color: var(--color-ocean-dark) !important; }
+[data-theme="M5"] .bg-navy { background-color: var(--color-navy) !important; }
+[data-theme="M5"] .text-navy { color: var(--color-navy) !important; }
+[data-theme="M5"] .bg-foam { background-color: var(--color-foam) !important; }
+[data-theme="M5"] .bg-sand { background-color: var(--color-sand) !important; }
+[data-theme="M5"] .rounded-2xl { border-radius: var(--card-radius) !important; }
+
+/* M5: Blue glow on buttons */
+[data-theme="M5"] .btn-book:hover,
+[data-theme="M5"] .btn-search:hover {
+  box-shadow: 0 8px 30px rgba(30,111,217,0.3);
+}
+[data-theme="M5"] .btn-search,
+[data-theme="M5"] .btn-book { background-color: var(--color-ocean) !important; }
+[data-theme="M5"] .btn-search:hover,
+[data-theme="M5"] .btn-book:hover { background-color: var(--color-ocean-dark) !important; }

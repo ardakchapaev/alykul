@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Outfit } from 'next/font/google';
+import { Cormorant_Garamond, Outfit, Playfair_Display, Inter } from 'next/font/google';
 import '../globals.css';
 import { getDictionary, type Locale, locales } from '@/lib/i18n';
 import { AuthProvider } from '@/lib/auth-context';
@@ -14,6 +14,17 @@ const cormorant = Cormorant_Garamond({
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
+  weight: ['300', '400', '500', '600'],
+});
+const playfair = Playfair_Display({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-playfair',
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+});
+const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-inter',
   weight: ['300', '400', '500', '600'],
 });
 
@@ -48,7 +59,7 @@ export default function LangLayout({
 }) {
   return (
     <html lang={params.lang}>
-      <body className={`${cormorant.variable} ${outfit.variable} font-body text-navy bg-sand antialiased`}>
+      <body className={`${cormorant.variable} ${outfit.variable} ${playfair.variable} ${inter.variable} font-body text-navy bg-sand antialiased`}>
         <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
       </body>
     </html>
