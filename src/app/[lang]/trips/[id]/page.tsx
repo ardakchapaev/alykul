@@ -6,11 +6,12 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { api, type TripDetail } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import SeatMap from '@/components/SeatMap';
 
 const t = {
-  ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...' },
-  en: { back: 'Back to trips', departure: 'Departure', duration: 'Duration', min: 'min', seats: 'Available seats', price: 'Price per seat', passengers: 'Number of guests', total: 'Total', book: 'Book Now', login_first: 'Sign in to book', vessel: 'Vessel', route: 'Route', pier: 'Pier', loading: 'Loading...' },
-  ky: { back: 'Рейстерге кайтуу', departure: 'Жөнөө', duration: 'Узактыгы', min: 'мүн', seats: 'Бош орундар', price: 'Орун баасы', passengers: 'Конок саны', total: 'Жалпы', book: 'Брондоо', login_first: 'Брондоо үчүн кириңиз', vessel: 'Кеме', route: 'Маршрут', pier: 'Причал', loading: 'Жүктөлүүдө...' },
+  ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...', seats_title: 'Выбор мест' },
+  en: { back: 'Back to trips', departure: 'Departure', duration: 'Duration', min: 'min', seats: 'Available seats', price: 'Price per seat', passengers: 'Number of guests', total: 'Total', book: 'Book Now', login_first: 'Sign in to book', vessel: 'Vessel', route: 'Route', pier: 'Pier', loading: 'Loading...', seats_title: 'Select seats' },
+  ky: { back: 'Рейстерге кайтуу', departure: 'Жөнөө', duration: 'Узактыгы', min: 'мүн', seats: 'Бош орундар', price: 'Орун баасы', passengers: 'Конок саны', total: 'Жалпы', book: 'Брондоо', login_first: 'Брондоо үчүн кириңиз', vessel: 'Кеме', route: 'Маршрут', pier: 'Причал', loading: 'Жүктөлүүдө...', seats_title: 'Орун тандоо' },
 };
 
 export default function TripPage() {
@@ -24,6 +25,7 @@ export default function TripPage() {
   const [trip, setTrip] = useState<TripDetail | null>(null);
   const [passengers, setPassengers] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
   useEffect(() => {
     api.getTrip(tripId).then(setTrip).catch(console.error).finally(() => setLoading(false));
@@ -38,6 +40,14 @@ export default function TripPage() {
 
   const formatDate = (iso: string) => new Date(iso).toLocaleDateString(lang === 'ky' ? 'ru' : lang, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const formatTime = (iso: string) => new Date(iso).toLocaleTimeString(lang === 'ky' ? 'ru' : lang, { hour: '2-digit', minute: '2-digit' });
+
+  const handleSeatToggle = (seatId: number) => {
+    setSelectedSeats(prev => {
+      if (prev.includes(seatId)) return prev.filter(s => s !== seatId);
+      if (prev.length >= passengers) return [...prev.slice(1), seatId];
+      return [...prev, seatId];
+    });
+  };
 
   const handleBook = () => {
     if (!user || !token) {
@@ -99,6 +109,51 @@ export default function TripPage() {
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Seat Map */}
+          <div className="bg-white rounded-2xl p-6 border border-gray-100">
+            <h3 className="font-bold text-lg mb-4">{labels.seats_title}</h3>
+            <SeatMap
+              vesselType={trip.vessel.vessel_type}
+              capacity={trip.capacity}
+              availableSeats={trip.available_seats}
+              selectedSeats={selectedSeats}
+              onSelectSeat={handleSeatToggle}
+            />
+            {selectedSeats.length > 0 && (
+              <div className="mt-4 text-sm text-muted">
+                Выбрано мест: {selectedSeats.join(', ')}
+              </div>
+            )}
+          </div>
+
+          {/* Route details */}
+          <div className="bg-white rounded-2xl p-6 border border-gray-100">
+            <h3 className="font-bold text-lg mb-3">Что включено</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {['Спасательные жилеты', 'Страховка', 'Экскурсия от капитана', 'Фото на борту'].map(item => (
+                <div key={item} className="flex items-center gap-2 text-sm">
+                  <span className="text-green-500">&#10003;</span> {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Cancellation policy */}
+          <div className="bg-white rounded-2xl p-6 border border-gray-100">
+            <h3 className="font-bold text-lg mb-3">Условия отмены</h3>
+            <div className="space-y-2 text-sm text-muted">
+              <p>&bull; Бесплатная отмена за 24 часа до отправления</p>
+              <p>&bull; Возврат 50% за 12-24 часа до отправления</p>
+              <p>&bull; Перенос даты бесплатно за 6+ часов</p>
+            </div>
+          </div>
+
+          {/* Weather notice */}
+          <div className="bg-amber-50 rounded-2xl p-6 border border-amber-200">
+            <h3 className="font-bold text-lg mb-2 text-amber-800">&#9925; Погодные условия</h3>
+            <p className="text-sm text-amber-700">Рейс может быть отменён при штормовом предупреждении. В этом случае предлагается полный возврат или перенос на другую дату.</p>
           </div>
         </div>
 

@@ -5,9 +5,9 @@ import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 const t = {
-  ru: { title: 'Бронирование подтверждено!', subtitle: 'Покажите QR-код при посадке на судно', booking: 'Бронирование', qr: 'QR-код для посадки', my: 'Мои бронирования', home: 'На главную', trips: 'Ещё рейсы', note: 'Сохраните эту страницу или сделайте скриншот QR-кода' },
-  en: { title: 'Booking Confirmed!', subtitle: 'Show the QR code when boarding', booking: 'Booking', qr: 'QR code for boarding', my: 'My Bookings', home: 'Home', trips: 'More Trips', note: 'Save this page or take a screenshot of the QR code' },
-  ky: { title: 'Брондоо ырасталды!', subtitle: 'Кемеге отурганда QR-кодду көрсөтүңүз', booking: 'Брондоо', qr: 'Отуруу үчүн QR-код', my: 'Менин брондоолорум', home: 'Башкы бет', trips: 'Башка рейстер', note: 'Бул баракчаны сактаңыз же QR-коддун скриншотун тартыңыз' },
+  ru: { title: 'Бронирование подтверждено!', subtitle: 'Покажите QR-код при посадке на судно', booking: 'Бронирование', qr: 'QR-код для посадки', my: 'Мои бронирования', home: 'На главную', trips: 'Ещё рейсы', note: 'Сохраните эту страницу или сделайте скриншот QR-кода', download: 'Скачать билет (PDF)', share: 'Поделиться билетом', calendar: 'Добавить в календарь' },
+  en: { title: 'Booking Confirmed!', subtitle: 'Show the QR code when boarding', booking: 'Booking', qr: 'QR code for boarding', my: 'My Bookings', home: 'Home', trips: 'More Trips', note: 'Save this page or take a screenshot of the QR code', download: 'Download Ticket (PDF)', share: 'Share Ticket', calendar: 'Add to Calendar' },
+  ky: { title: 'Брондоо ырасталды!', subtitle: 'Кемеге отурганда QR-кодду көрсөтүңүз', booking: 'Брондоо', qr: 'Отуруу үчүн QR-код', my: 'Менин брондоолорум', home: 'Башкы бет', trips: 'Башка рейстер', note: 'Бул баракчаны сактаңыз же QR-коддун скриншотун тартыңыз', download: 'Билетти жүктөө (PDF)', share: 'Билетти бөлүшүү', calendar: 'Календарга кошуу' },
 };
 
 export default function BookingConfirmedPage() {
@@ -40,6 +40,79 @@ function ConfirmedInner() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={qrUrl} alt="QR Code" className="mx-auto rounded-xl" width={250} height={250} />
           </div>
+
+          {/* Download ticket (print-to-PDF) */}
+          <button
+            onClick={() => {
+              const printWindow = window.open('', '_blank');
+              if (!printWindow) return;
+              printWindow.document.write(`
+                <html><head><title>Ticket #${bookingId}</title>
+                <style>
+                  body { font-family: sans-serif; padding: 40px; text-align: center; }
+                  h1 { font-size: 24px; margin-bottom: 8px; }
+                  .qr { margin: 20px auto; }
+                  .info { margin: 16px 0; font-size: 14px; color: #666; }
+                  .footer { margin-top: 30px; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 16px; }
+                </style></head><body>
+                  <h1>АЛЫКУЛ — Электронный билет</h1>
+                  <div class="info">Бронирование #${bookingId}</div>
+                  <img class="qr" src="${qrUrl}" width="200" height="200" />
+                  <div class="info">Покажите QR-код при посадке на судно</div>
+                  <div class="footer">alykul.baimuras.pro · Озеро Иссык-Куль · +996 555 123 456</div>
+                  <script>window.print();</script>
+                </body></html>
+              `);
+            }}
+            className="w-full py-3 bg-navy text-white rounded-xl font-semibold text-sm hover:bg-navy/90 transition-colors mb-3 flex items-center justify-center gap-2"
+          >
+            {labels.download}
+          </button>
+
+          {/* Share ticket */}
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: `Алыкул — Билет #${bookingId}`,
+                  text: `Мой билет на рейс. Бронирование #${bookingId}`,
+                  url: window.location.href,
+                }).catch(() => {});
+              } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Ссылка скопирована!');
+              }
+            }}
+            className="w-full py-3 border border-gray-200 text-navy rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors mb-3 flex items-center justify-center gap-2"
+          >
+            {labels.share}
+          </button>
+
+          {/* Add to calendar */}
+          <button
+            onClick={() => {
+              const event = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'BEGIN:VEVENT',
+                `SUMMARY:Алыкул — Рейс #${bookingId}`,
+                'LOCATION:Чолпон-Ата, Озеро Иссык-Куль',
+                `DESCRIPTION:Покажите QR-код при посадке. Бронирование #${bookingId}`,
+                'END:VEVENT',
+                'END:VCALENDAR'
+              ].join('\r\n');
+              const blob = new Blob([event], { type: 'text/calendar' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `alykul-ticket-${bookingId}.ics`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="w-full py-3 border border-gray-200 text-navy rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors mb-4 flex items-center justify-center gap-2"
+          >
+            {labels.calendar}
+          </button>
 
           <p className="text-xs text-muted">{labels.note}</p>
         </div>
