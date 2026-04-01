@@ -8,12 +8,10 @@ import LanguageSwitcher from './LanguageSwitcher';
 const FOOTER_BG = '#0C3547';
 const GOLD = '#C5A028';
 
-// SVG coastline paths — realistic torn edge matching Sailey reference
-// Hero bottom: water photo hangs down with ragged shoreline edge
-const HERO_BOTTOM_PATH = "M0,0 L0,85 C8,82 12,88 18,84 C22,80 25,86 30,82 C34,78 38,85 42,80 C45,76 48,83 52,78 C55,74 58,82 62,76 C66,72 68,80 72,74 C76,70 78,78 82,73 C86,68 88,76 92,71 C95,67 97,74 100,72 C104,70 106,78 110,73 C114,68 116,76 120,72 C124,68 126,74 130,70 C134,66 137,73 140,68 C143,64 146,72 150,66 C154,62 156,70 160,64 C164,60 167,68 170,63 C173,58 176,67 180,62 C184,57 186,66 190,60 C194,55 196,64 200,58 C204,53 207,62 210,56 C213,52 216,60 220,55 C224,50 226,58 230,52 C234,48 237,56 240,50 C244,46 246,54 250,48 C254,44 256,52 260,46 C264,42 266,50 270,44 C274,40 277,48 280,43 C284,38 286,46 290,40 C293,36 296,44 300,38 C310,42 320,36 330,44 C340,38 350,46 360,40 C370,44 380,38 390,46 C400,40 410,48 420,42 C430,46 440,40 450,48 C460,44 470,50 480,46 C490,52 500,46 510,54 C520,48 530,56 540,50 C550,54 560,48 570,56 C580,52 590,58 600,54 C610,58 620,52 630,60 C640,55 650,62 660,57 C670,62 680,56 690,64 C700,58 710,66 720,60 C730,65 740,58 750,67 C760,62 770,68 780,64 C790,68 800,62 810,70 C820,65 830,72 840,67 C850,72 860,66 870,74 C880,68 890,76 900,70 C920,75 940,68 960,76 C980,70 1000,78 1020,72 C1040,78 1060,72 1080,80 C1100,74 1120,82 1140,76 C1160,80 1180,74 1200,82 C1220,77 1240,84 1260,78 C1280,82 1300,76 1320,84 C1340,78 1360,86 1380,80 C1400,84 1420,78 1440,85 L1440,0Z";
-
-// Footer top: water photo with ragged TOP edge
-const FOOTER_TOP_PATH = "M0,120 L0,35 C10,38 20,32 30,36 C40,40 50,34 60,38 C70,42 80,36 90,40 C100,44 110,38 120,42 C130,46 140,40 150,44 C160,48 170,42 180,46 C190,50 200,44 210,48 C220,52 230,46 240,50 C250,54 260,48 270,52 C280,56 290,50 300,54 C310,58 320,52 330,56 C340,60 350,54 360,58 C370,62 380,56 390,60 C400,64 410,58 420,62 C440,58 460,66 480,60 C500,64 520,58 540,62 C560,56 580,64 600,58 C620,54 640,62 660,56 C680,52 700,60 720,54 C740,50 760,58 780,52 C800,48 820,56 840,50 C860,46 880,54 900,48 C920,44 940,52 960,46 C980,42 1000,50 1020,44 C1040,40 1060,48 1080,42 C1100,38 1120,46 1140,40 C1160,36 1180,44 1200,38 C1220,34 1240,42 1260,36 C1280,32 1300,40 1320,34 C1340,30 1360,38 1380,32 C1400,28 1420,36 1440,30 L1440,120Z";
+// Torn paper edge — traced from Sailey/Stitch reference screenshot
+// Irregular rip: deep tears on left, shallower middle, deep right, with micro-jaggedness
+// This is the WHITE shape that sits on top of the dark section, torn along the top edge
+const TORN_PAPER = "M0,150 L0,72 L5,74 L8,68 L12,71 L15,65 L18,69 L22,60 L26,64 L30,55 L33,59 L36,50 L40,54 L43,45 L46,48 L50,42 L54,46 L58,38 L60,42 L64,35 L68,40 L72,32 L74,36 L78,28 L82,33 L86,25 L88,30 L92,22 L96,28 L100,20 L103,25 L106,18 L110,23 L114,16 L118,22 L122,15 L125,20 L128,14 L132,19 L136,12 L140,17 L143,10 L146,15 L150,8 L154,14 L158,7 L162,12 L165,6 L168,10 L172,5 L176,9 L180,4 L184,8 L188,3 L192,7 L198,10 L204,6 L210,12 L216,8 L222,14 L228,10 L234,16 L240,12 L248,18 L256,14 L264,20 L272,16 L280,22 L288,18 L296,24 L304,20 L312,26 L320,22 L330,28 L340,24 L350,30 L360,26 L372,32 L384,28 L396,34 L408,30 L420,36 L432,32 L444,38 L456,34 L470,40 L484,36 L498,42 L512,38 L528,44 L544,40 L560,46 L576,42 L594,48 L612,44 L630,50 L648,46 L668,52 L688,48 L708,54 L728,50 L750,46 L772,50 L794,44 L816,48 L838,42 L860,46 L882,40 L904,44 L926,38 L948,42 L970,36 L992,40 L1014,34 L1036,38 L1058,32 L1078,36 L1098,30 L1116,34 L1134,28 L1150,32 L1166,26 L1180,30 L1194,24 L1206,28 L1218,22 L1228,26 L1238,20 L1248,24 L1256,18 L1264,22 L1272,16 L1278,20 L1284,14 L1290,18 L1296,12 L1302,16 L1308,10 L1314,14 L1320,8 L1326,12 L1332,6 L1338,10 L1344,5 L1350,9 L1356,4 L1362,8 L1368,3 L1374,7 L1380,2 L1386,6 L1392,3 L1398,7 L1404,4 L1410,8 L1416,5 L1422,10 L1428,6 L1434,12 L1440,8 L1440,150 Z";
 
 type SaileyProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,9 +44,9 @@ export default function SaileyTheme({ dict: t, lang, catalogCards }: SaileyProps
         <div style={{ position: 'relative', height: '360px', overflow: 'hidden' }}>
           <Image src="/images/hero.jpg" alt="" fill style={{ objectFit: 'cover' }} priority />
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,80,100,0.35)' }} />
-          {/* Torn edge SVG — white shape covers bottom */}
-          <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '120px' }} viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d={HERO_BOTTOM_PATH} fill="#ffffff" transform="scale(1,-1) translate(0,-120)" />
+          {/* Torn paper edge — white rip at bottom */}
+          <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '150px' }} viewBox="0 0 1440 150" preserveAspectRatio="none">
+            <path d={TORN_PAPER} fill="#ffffff" />
           </svg>
 
           {/* Nav */}
@@ -124,9 +122,9 @@ export default function SaileyTheme({ dict: t, lang, catalogCards }: SaileyProps
         {/* Ocean texture with torn TOP edge */}
         <div style={{ position: 'relative', overflow: 'hidden', paddingTop: '80px' }}>
           <Image src="/images/hero.jpg" alt="" fill style={{ objectFit: 'cover', filter: 'brightness(0.3)' }} />
-          {/* Torn top edge — white covers top part */}
-          <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '120px', zIndex: 5 }} viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d={FOOTER_TOP_PATH} fill="#ffffff" transform="scale(1,-1) translate(0,-120)" />
+          {/* Torn paper edge — white rip at top (flipped) */}
+          <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '150px', zIndex: 5, transform: 'scaleY(-1)' }} viewBox="0 0 1440 150" preserveAspectRatio="none">
+            <path d={TORN_PAPER} fill="#ffffff" />
           </svg>
           <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(180deg, ${FOOTER_BG}dd 0%, ${FOOTER_BG}f5 100%)` }} />
 
