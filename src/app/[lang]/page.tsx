@@ -75,8 +75,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             { value: '8', label: t.stats.vessels },
             { value: '15', label: t.stats.routes },
           ].map(stat => (
-            <div key={stat.label} className="text-center">
-              <h3 className="font-heading font-bold text-3xl md:text-5xl text-ocean">{stat.value}</h3>
+            <div key={stat.label} className="text-center stat-hover group cursor-default transition-transform duration-300">
+              <h3 className="font-heading font-bold text-3xl md:text-5xl text-ocean group-hover:text-ocean-dark transition-colors">{stat.value}</h3>
               <p className="text-muted text-sm mt-1">{stat.label}</p>
             </div>
           ))}
@@ -131,8 +131,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {catalogCards.map(card => (
-            <div key={card.name} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <Image src={card.img} alt={card.alt} width={400} height={250} className="w-full h-[200px] object-cover" />
+            <div key={card.name} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
+              <Image src={card.img} alt={card.alt} width={400} height={250} className="w-full h-[200px] object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="p-5">
                 <div className="text-xs font-semibold text-ocean uppercase tracking-wider mb-2">{card.category}</div>
                 <h3 className="font-bold text-lg mb-1">{card.name}</h3>
@@ -167,7 +167,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             </thead>
             <tbody>
               {scheduleData.map((row, i) => (
-                <tr key={i} className="border-b border-gray-200 hover:bg-white/60 transition-colors">
+                <tr key={i} className="border-b border-gray-200 hover:bg-ocean/5 transition-colors">
                   <td className="py-3 px-4 text-sm">{row.route}</td>
                   <td className="py-3 px-4 text-sm">{row.vessel}</td>
                   <td className="py-3 px-4 text-sm">{row.departure}</td>
@@ -198,8 +198,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             { img: '/images/ep03.jpg', name: t.fleet_section.nomad, desc: t.fleet_section.nomad_desc, specs: [`${t.fleet_section.up_to} 12 ${t.fleet_section.pax}`, t.fleet_section.sailing] },
             { img: '/images/scene6.jpg', name: t.fleet_section.speedboats, desc: t.fleet_section.speedboats_desc, specs: [`${t.fleet_section.up_to} 8 ${t.fleet_section.pax}`, `${t.fleet_section.up_to} 60 ${t.fleet_section.kmh}`] },
           ].map(vessel => (
-            <div key={vessel.name} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-              <Image src={vessel.img} alt={vessel.name} width={400} height={250} className="w-full h-[220px] object-cover" />
+            <div key={vessel.name} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
+              <Image src={vessel.img} alt={vessel.name} width={400} height={250} className="w-full h-[220px] object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="p-5">
                 <h3 className="font-bold text-lg mb-2">{vessel.name}</h3>
                 <div className="flex flex-wrap gap-2 mb-3">
@@ -236,8 +236,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {reviews.map(review => (
-            <div key={review.name} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-              <Image src={review.img} alt={review.name} width={400} height={200} className="w-full h-[200px] object-cover" />
+            <div key={review.name} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1.5 border border-gray-100">
+              <Image src={review.img} alt={review.name} width={400} height={200} className="w-full h-[200px] object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="p-5">
                 <div className="text-yellow-400 text-lg mb-2">{'★'.repeat(review.stars)}{'☆'.repeat(5 - review.stars)}</div>
                 <div className="font-bold">{review.name}</div>

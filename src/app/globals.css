@@ -635,3 +635,58 @@ nav.scrolled, nav[class*="fixed"] {
 [data-theme="M5"] .btn-book { background-color: var(--color-ocean) !important; }
 [data-theme="M5"] .btn-search:hover,
 [data-theme="M5"] .btn-book:hover { background-color: var(--color-ocean-dark) !important; }
+
+/* ═══ M1: VISUAL ENHANCEMENTS 2026 ═══ */
+
+/* M1: Noise/grain texture overlay for premium depth */
+[data-theme="M1"]::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* M1: Enhanced button hover — scale + glow */
+[data-theme="M1"] .btn-book:hover,
+[data-theme="M1"] .btn-search:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(36,109,201,0.4);
+}
+
+/* M1: Staggered fade-in for grid children */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+[data-theme="M1"] .grid > * {
+  animation: fadeInUp 0.6s ease-out both;
+}
+[data-theme="M1"] .grid > *:nth-child(1) { animation-delay: 0.1s; }
+[data-theme="M1"] .grid > *:nth-child(2) { animation-delay: 0.2s; }
+[data-theme="M1"] .grid > *:nth-child(3) { animation-delay: 0.3s; }
+[data-theme="M1"] .grid > *:nth-child(4) { animation-delay: 0.4s; }
+[data-theme="M1"] .grid > *:nth-child(5) { animation-delay: 0.5s; }
+[data-theme="M1"] .grid > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* M1: Schedule table row hover */
+[data-theme="M1"] table tbody tr:hover {
+  background-color: rgba(36,109,201,0.05);
+}
+
+/* M1: Review card hover lift */
+[data-theme="M1"] .review-card:hover,
+[data-theme="M1"] #reviews .bg-white:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(24,47,72,0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* M1: Stat item hover scale */
+[data-theme="M1"] .stat-hover:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
