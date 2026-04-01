@@ -19,8 +19,10 @@ const config: Config = {
         muted: "#8EA0A2",
       },
       fontFamily: {
-        heading: ['"Roboto Condensed"', 'sans-serif'],
-        body: ['Rubik', 'sans-serif'],
+        heading: ['var(--font-cormorant)', '"Cormorant Garamond"', 'Georgia', 'serif'],
+        body: ['var(--font-outfit)', '"Outfit"', 'system-ui', 'sans-serif'],
+        "m3-display": ['var(--font-cormorant)', '"Cormorant Garamond"', 'Georgia', 'serif'],
+        "m3-body": ['var(--font-outfit)', '"Outfit"', 'system-ui', 'sans-serif'],
       },
     },
   },

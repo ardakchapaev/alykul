@@ -1,16 +1,20 @@
 import type { Metadata } from 'next';
-import { Rubik, Roboto_Condensed } from 'next/font/google';
+import { Cormorant_Garamond, Outfit } from 'next/font/google';
 import '../globals.css';
 import { getDictionary, type Locale, locales } from '@/lib/i18n';
 import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/lib/theme-context';
 
-const rubik = Rubik({ subsets: ['latin', 'cyrillic'], variable: '--font-rubik' });
-const robotoCondensed = Roboto_Condensed({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
-  variable: '--font-roboto-condensed',
-  weight: ['400', '700'],
+  variable: '--font-cormorant',
+  weight: ['300', '400', '600', '700'],
   style: ['normal', 'italic'],
+});
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  weight: ['300', '400', '500', '600'],
 });
 
 export async function generateStaticParams() {
@@ -44,7 +48,7 @@ export default function LangLayout({
 }) {
   return (
     <html lang={params.lang}>
-      <body className={`${rubik.variable} ${robotoCondensed.variable} font-body text-navy bg-sand antialiased`}>
+      <body className={`${cormorant.variable} ${outfit.variable} font-body text-navy bg-sand antialiased`}>
         <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
       </body>
     </html>
