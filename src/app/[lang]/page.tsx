@@ -10,6 +10,7 @@ import SaileyBlogWrapper from '@/components/SaileyBlogTheme';
 import SaileyWrapper from '@/components/SaileyTheme';
 import DeepOceanWrapper from '@/components/DeepOceanTheme';
 import CoastalLuxuryWrapper from '@/components/CoastalLuxuryTheme';
+import AiChatWidget from '@/components/AiChatWidget';
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
   const t = await getDictionary(params.lang);
@@ -297,6 +298,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           &copy; 2026 {t.footer.copyright}
         </div>
       </footer>
+
+      <AiChatWidget />
     </>
   );
 }
