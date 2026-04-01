@@ -6,7 +6,7 @@ import WaveDivider from '@/components/WaveDivider';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
-import SaileyTheme from '@/components/SaileyTheme';
+import SaileyWrapper from '@/components/SaileyTheme';
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
   const t = await getDictionary(params.lang);
@@ -36,8 +36,116 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
   return (
     <>
-      {/* M3: Full Sailey theme overlay */}
-      <SaileyTheme dict={t} lang={params.lang} catalogCards={catalogCards} reviews={reviews} galleryImages={galleryImages} />
+      {/* M3: Sailey wrapper — hero + torn edges + footer from Sailey, middle content from M1 */}
+      <SaileyWrapper lang={params.lang}>
+        {/* Stats through Map — same content as M1 */}
+        <div className="bg-white px-6 md:px-14 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { value: '5+', label: t.stats.years },
+              { value: '12K+', label: t.stats.guests },
+              { value: '8', label: t.stats.vessels },
+              { value: '15', label: t.stats.routes },
+            ].map(stat => (
+              <div key={stat.label} className="text-center">
+                <h3 className="font-heading font-bold text-3xl md:text-5xl text-ocean">{stat.value}</h3>
+                <p className="text-muted text-sm mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <section className="bg-navy text-foam px-6 md:px-14 py-16">
+          <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
+          <p className="text-muted mb-12">{t.usp.subtitle}</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { Icon: IconBooking, title: t.usp.online, desc: t.usp.online_desc },
+              { Icon: IconFleet, title: t.usp.fleet, desc: t.usp.fleet_desc },
+              { Icon: IconExperience, title: t.usp.experience, desc: t.usp.experience_desc },
+              { Icon: IconSafety, title: t.usp.safety, desc: t.usp.safety_desc },
+              { Icon: IconMultilang, title: t.usp.multilang, desc: t.usp.multilang_desc },
+              { Icon: IconPrices, title: t.usp.prices, desc: t.usp.prices_desc },
+            ].map(item => (
+              <div key={item.title} className="usp-card flex gap-4">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-ocean-dark to-sky flex items-center justify-center shrink-0 text-white shadow-lg shadow-ocean/30">
+                  <item.Icon />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">{item.title}</h3>
+                  <p className="text-sm opacity-70 leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="px-6 md:px-14 py-16" id="routes">
+          <div className="flex justify-between items-start mb-8">
+            <div>
+              <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.routes_section.title}</span>
+              <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.routes_section.badge}</span>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {catalogCards.map(card => (
+              <div key={card.name} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
+                <Image src={card.img} alt={card.alt} width={400} height={250} className="w-full h-[200px] object-cover" />
+                <div className="p-5">
+                  <div className="text-xs font-semibold text-ocean uppercase tracking-wider mb-2">{card.category}</div>
+                  <h3 className="font-bold text-lg mb-1">{card.name}</h3>
+                  <div className="text-ocean font-bold mb-3">{card.price}</div>
+                  <BookButton service={card.name} price={card.price} label={t.routes_section.book} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="bg-[#F4F8FB] px-6 md:px-14 py-16" id="schedule">
+          <div className="mb-8">
+            <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
+            <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
+          </div>
+          <p className="text-muted mb-8">{t.schedule_section.subtitle}</p>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-navy text-white text-sm font-semibold">
+                  <th className="text-left py-3.5 px-4">{t.schedule_section.route}</th>
+                  <th className="text-left py-3.5 px-4">{t.schedule_section.vessel}</th>
+                  <th className="text-left py-3.5 px-4">{t.schedule_section.departure}</th>
+                  <th className="text-left py-3.5 px-4">{t.schedule_section.duration}</th>
+                  <th className="text-left py-3.5 px-4">{t.schedule_section.price}</th>
+                  <th className="text-left py-3.5 px-4">{t.schedule_section.frequency}</th>
+                  <th className="py-3.5 px-4"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {scheduleData.map((row, i) => (
+                  <tr key={i} className="border-b border-gray-200 hover:bg-white/60 transition-colors">
+                    <td className="py-3 px-4 text-sm">{row.route}</td>
+                    <td className="py-3 px-4 text-sm">{row.vessel}</td>
+                    <td className="py-3 px-4 text-sm">{row.departure}</td>
+                    <td className="py-3 px-4 text-sm">{row.duration}</td>
+                    <td className="py-3 px-4 text-sm font-semibold">{row.price}</td>
+                    <td className="py-3 px-4"><span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${row.freqClass}`}>{row.freq}</span></td>
+                    <td className="py-3 px-4">
+                      <BookButton service={row.route} price={row.price} label={t.routes_section.book} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <div id="map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
+            className="w-full h-[400px] border-0"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </SaileyWrapper>
 
       {/* HERO (M1/M2) */}
       <section className="relative h-screen flex items-center overflow-hidden" id="hero">
