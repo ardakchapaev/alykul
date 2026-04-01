@@ -2,7 +2,7 @@
 
 import { useTheme, THEMES } from '@/lib/theme-context';
 import Image from 'next/image';
-import { ReactNode, useState, useEffect, useRef } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { ScrollReveal } from './M3Animations';
 
 type Props = { lang: string; children: ReactNode };
@@ -14,28 +14,25 @@ export default function SaileyWrapper({ lang }: Props) {
   const t = getTrans(lang);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-white overflow-auto">
+    <div className="fixed inset-0 z-[9999] bg-[#0A1628] overflow-auto">
       <M3Nav lang={lang} t={t} />
       <M3Hero t={t} lang={lang} />
-      {/* Sand texture background — visible between white content blocks */}
-      <div className="relative py-6 md:py-10 flex flex-col gap-6 md:gap-10" style={{ backgroundImage: 'url(/images/m3-sand-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
-        <M3About t={t} />
-        <M3TrustBadges t={t} />
-        <M3Gallery t={t} />
-        <M3Catalog t={t} lang={lang} />
-        <M3Schedule t={t} lang={lang} />
-        <M3Fleet t={t} />
-        <M3Reviews t={t} lang={lang} />
-        <M3FAQ t={t} />
-        <M3MapSection t={t} />
-      </div>
+      <M3DiagonalStrips t={t} />
+      <M3BentoServices t={t} />
+      <M3TextCTA t={t} lang={lang} />
+      <M3Catalog t={t} lang={lang} />
+      <M3PhotoDivider />
+      <M3Schedule t={t} lang={lang} />
+      <M3Reviews t={t} lang={lang} />
+      <M3FAQ t={t} />
+      <M3MapSection t={t} />
       <M3Footer t={t} lang={lang} />
       <M3AiChat />
     </div>
   );
 }
 
-/* ═══════════════ NAVBAR ═══════════════ */
+/* ═══════════════ NAVBAR — Grand Regatta style: transparent, centered logo ═══════════════ */
 function M3Nav({ lang, t }: { lang: string; t: Tr }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -44,100 +41,115 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const container = document.querySelector('[class*="fixed inset-0 z-\\[9999\\]"]');
+    const onScroll = () => {
+      const scrollY = container ? (container as HTMLElement).scrollTop : window.scrollY;
+      setScrolled(scrollY > 60);
+    };
+    const target = container || window;
+    target.addEventListener('scroll', onScroll, { passive: true });
+    return () => target.removeEventListener('scroll', onScroll);
   }, []);
 
-  const links = [
+  const leftLinks = [
+    { href: '#m3-about', label: t.nav.about },
+    { href: '#m3-fleet', label: t.nav.fleet },
     { href: '#m3-catalog', label: t.nav.routes },
     { href: '#m3-schedule', label: t.nav.schedule },
-    { href: '#m3-fleet', label: t.nav.fleet },
+  ];
+  const rightLinks = [
     { href: '#m3-reviews', label: t.nav.reviews },
-    { href: '#m3-contacts', label: t.nav.contacts },
   ];
   const langLabels: Record<string, string> = { ru: 'RU', en: 'EN', ky: 'KY' };
   const themes = THEMES;
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-500 font-m3-body ${
-      scrolled ? 'bg-navy/95 backdrop-blur-xl shadow-2xl py-2' : 'bg-gradient-to-b from-black/40 to-transparent py-4'
+      scrolled ? 'bg-[#0A1628]/95 backdrop-blur-xl shadow-2xl py-2' : 'bg-transparent py-5'
     }`}>
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <a href="#" className="flex items-center gap-2 group">
-            <svg viewBox="0 0 36 36" className="w-8 h-8" fill="none">
-              <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#3a8ef7" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-            </svg>
-            <span className="text-white font-m3-display text-lg font-bold tracking-wide hidden sm:block">АЛЫКУЛ</span>
-          </a>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-7">
-          {links.map(l => (
-            <a key={l.href} href={l.href} className="text-white/80 text-[13px] font-medium tracking-[1px] hover:text-white transition-colors">{l.label}</a>
+        {/* Left nav links */}
+        <div className="hidden lg:flex items-center gap-6 flex-1">
+          {leftLinks.map(l => (
+            <a key={l.href} href={l.href} className="text-white/70 text-[11px] font-medium tracking-[2px] uppercase hover:text-white transition-colors">{l.label}</a>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Book CTA */}
-          <a href={`/${lang}/trips`} className="hidden lg:inline-block bg-[#D4782C] hover:bg-[#B8621E] text-white text-xs font-semibold px-4 py-1.5 rounded-full transition-colors font-m3-body">
-            {t.nav.booking}
-          </a>
+        {/* Center monogram logo */}
+        <a href="#" className="flex flex-col items-center gap-0 group flex-shrink-0 mx-4 lg:mx-8">
+          <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+            <circle cx="24" cy="24" r="22" stroke="#00A896" strokeWidth="1" opacity="0.5" />
+            <path d="M16 32Q20 24 24 12Q28 24 32 32" stroke="#00A896" strokeWidth="2" fill="none" strokeLinecap="round" />
+            <path d="M14 34Q19 30 24 32Q29 34 34 30" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+          </svg>
+          <span className="text-white font-m3-display text-[10px] tracking-[4px] uppercase mt-1 hidden sm:block">ALYKUL</span>
+        </a>
+
+        {/* Right nav links + CTAs */}
+        <div className="hidden lg:flex items-center gap-6 flex-1 justify-end">
+          {rightLinks.map(l => (
+            <a key={l.href} href={l.href} className="text-white/70 text-[11px] font-medium tracking-[2px] uppercase hover:text-white transition-colors">{l.label}</a>
+          ))}
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
-              className="flex items-center gap-1 text-white/70 text-xs font-semibold hover:text-white transition-colors px-2 py-1.5">
+              className="flex items-center gap-1 text-white/60 text-[11px] font-medium tracking-[1px] hover:text-white transition-colors px-2 py-1.5">
               {langLabels[lang] || 'RU'}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-navy/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
+              <div className="absolute right-0 top-full mt-1 bg-[#0A1628]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
                 {['ru', 'en', 'ky'].map(l => (
                   <a key={l} href={`/${l}`} onClick={() => setLangOpen(false)}
-                    className={`block px-4 py-2 text-xs font-medium ${l === lang ? 'text-sky bg-white/5' : 'text-white/60 hover:text-white hover:bg-white/5'}`}>{langLabels[l]}</a>
+                    className={`block px-4 py-2 text-xs font-medium ${l === lang ? 'text-[#00A896] bg-white/5' : 'text-white/60 hover:text-white hover:bg-white/5'}`}>{langLabels[l]}</a>
                 ))}
               </div>
             )}
           </div>
           {/* Theme */}
-          <div className="relative hidden lg:block">
+          <div className="relative">
             <button onClick={() => { setThemeOpen(!themeOpen); setLangOpen(false); }}
-              className="flex items-center gap-1 text-white/70 text-xs font-semibold hover:text-white transition-colors px-2 py-1.5">
+              className="flex items-center gap-1 text-white/60 text-[11px] font-medium tracking-[1px] hover:text-white transition-colors px-2 py-1.5">
               {theme}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             {themeOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-navy/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
+              <div className="absolute right-0 top-full mt-1 bg-[#0A1628]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
                 {themes.map(th => (
                   <button key={th} onClick={() => { setTheme(th); setThemeOpen(false); }}
-                    className={`block w-full text-left px-4 py-2 text-xs font-medium ${th === theme ? 'text-sky bg-white/5' : 'text-white/60 hover:text-white hover:bg-white/5'}`}>{th}</button>
+                    className={`block w-full text-left px-4 py-2 text-xs font-medium ${th === theme ? 'text-[#00A896] bg-white/5' : 'text-white/60 hover:text-white hover:bg-white/5'}`}>{th}</button>
                 ))}
               </div>
             )}
           </div>
-          {/* Burger */}
-          <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2" onClick={() => setOpen(!open)} aria-label="Menu">
-            <span className={`h-[2px] w-full bg-white transition-all ${open ? 'rotate-45 translate-y-[7px]' : ''}`} />
-            <span className={`h-[2px] w-full bg-white transition-opacity ${open ? 'opacity-0' : ''}`} />
-            <span className={`h-[2px] w-full bg-white transition-all ${open ? '-rotate-45 -translate-y-[7px]' : ''}`} />
-          </button>
+          {/* Book CTA */}
+          <a href={`/${lang}/trips`} className="border border-white/40 hover:bg-white hover:text-[#0A1628] text-white text-[11px] font-medium tracking-[2px] uppercase px-5 py-2 transition-all">
+            {t.nav.booking}
+          </a>
         </div>
+
+        {/* Burger */}
+        <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2" onClick={() => setOpen(!open)} aria-label="Menu">
+          <span className={`h-[1.5px] w-full bg-white transition-all ${open ? 'rotate-45 translate-y-[7px]' : ''}`} />
+          <span className={`h-[1.5px] w-full bg-white transition-opacity ${open ? 'opacity-0' : ''}`} />
+          <span className={`h-[1.5px] w-full bg-white transition-all ${open ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+        </button>
       </div>
+
+      {/* Mobile menu */}
       {open && (
-        <div className="fixed inset-0 bg-navy/[0.98] z-[10001] flex flex-col items-center justify-center gap-6 lg:hidden">
+        <div className="fixed inset-0 bg-[#0A1628]/[0.98] z-[10001] flex flex-col items-center justify-center gap-6 lg:hidden">
           <button className="absolute top-4 right-5 text-white text-3xl" onClick={() => setOpen(false)}>&times;</button>
-          {links.map(l => (
-            <a key={l.href} href={l.href} className="text-white font-m3-display text-2xl hover:text-sky transition-colors" onClick={() => setOpen(false)}>{l.label}</a>
+          {[...leftLinks, ...rightLinks].map(l => (
+            <a key={l.href} href={l.href} className="text-white font-m3-display text-2xl italic hover:text-[#00A896] transition-colors" onClick={() => setOpen(false)}>{l.label}</a>
           ))}
-          <a href={`/${lang}/trips`} className="bg-[#D4782C] hover:bg-[#B8621E] text-white font-m3-body text-lg font-semibold px-8 py-3 rounded-full transition-colors" onClick={() => setOpen(false)}>
+          <a href={`/${lang}/trips`} className="border border-white/40 hover:bg-white hover:text-[#0A1628] text-white font-m3-body text-sm tracking-[2px] uppercase px-8 py-3 transition-all mt-4" onClick={() => setOpen(false)}>
             {t.nav.booking}
           </a>
           <div className="flex gap-3 mt-6 border-t border-white/10 pt-6">
             {themes.map(th => (
               <button key={th} onClick={() => { setTheme(th); setOpen(false); }}
-                className={`px-4 py-2 rounded-full text-sm font-semibold ${th === theme ? 'bg-sky text-navy' : 'border border-white/20 text-white/60 hover:text-white'}`}>{th}</button>
+                className={`px-4 py-2 text-sm font-semibold ${th === theme ? 'bg-[#00A896] text-white' : 'border border-white/20 text-white/60 hover:text-white'}`}>{th}</button>
             ))}
           </div>
         </div>
@@ -146,88 +158,292 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
   );
 }
 
-/* ═══════════════ HERO — Original layout with YouTube video instead of slider ═══════════════ */
+/* ═══════════════ HERO — Grand Regatta: fullscreen ocean, elegant serif, yacht overlay ═══════════════ */
 function M3Hero({ t, lang }: { t: Tr; lang: string }) {
   return (
-    <section className="relative h-screen min-h-[600px] bg-navy overflow-hidden">
-      {/* ── Full-screen YouTube video background ── */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-          style={{ width: '100vw', height: '56.25vw', minHeight: '100%', minWidth: '177.78vh' }}>
-          <iframe
-            src="https://www.youtube.com/embed/J68rZPaqmbM?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=J68rZPaqmbM&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1"
-            className="w-full h-full border-0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-navy/60 pointer-events-none" />
+    <section className="relative h-screen min-h-[700px] overflow-hidden">
+      {/* Fullscreen aerial ocean background */}
+      <div className="absolute inset-0">
+        <Image src="/images/hero.jpg" alt="Issyk-Kul aerial" fill className="object-cover" priority />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628]/50 via-[#0A1628]/20 to-[#0A1628]/70" />
       </div>
 
-      {/* ── Social icons top-center ── */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20 hidden md:flex gap-4">
-        {['TW', 'FB', 'IG'].map(s => (
-          <span key={s} className="text-white/40 text-[10px] font-semibold tracking-widest hover:text-white cursor-pointer transition-colors font-m3-body">{s}</span>
-        ))}
-      </div>
-
-      {/* ── Hero title ── */}
-      <div className="absolute bottom-32 md:bottom-24 left-0 right-0 z-10 px-6 md:px-12">
-        <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider leading-[1.1] font-m3-display">
-          {t.hero.line1}
+      {/* Central elegant title */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center">
+        <h1 className="font-m3-display text-white leading-[1.15]" style={{ fontSize: 'clamp(2.2rem, 6vw, 5rem)' }}>
+          <span className="block font-normal">{t.hero.line1}</span>
+          <span className="block italic font-light">{t.hero.line2}</span>
+          <span className="block font-normal">{t.hero.line3}</span>
+          <span className="block italic font-light">{t.hero.line4}</span>
         </h1>
-        <p className="text-white/50 text-sm md:text-base mt-2 tracking-[0.15em] uppercase font-m3-body">
-          {t.hero.line2}
-        </p>
+        <a href={`/${lang}/trips`} className="mt-10 border border-white/50 text-white text-[11px] tracking-[3px] uppercase px-8 py-3 hover:bg-white hover:text-[#0A1628] transition-all font-m3-body">
+          {t.hero.cta}
+        </a>
+      </div>
 
-        {/* ── Booking Widget ── */}
-        <div className="mt-6 bg-white/[0.08] backdrop-blur-xl border border-[#E8A84C]/20 rounded-2xl p-4 max-w-3xl">
-          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end">
+      {/* Yacht overlay image */}
+      <div className="absolute bottom-0 right-0 w-[45%] max-w-[600px] z-10 hidden lg:block pointer-events-none">
+        <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
+          <Image src="/images/scene6.jpg" alt="Yacht" fill className="object-cover object-center" style={{ maskImage: 'linear-gradient(to top, transparent 0%, black 20%, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 20%, black 80%, transparent 100%)' }} />
+        </div>
+      </div>
+
+      {/* Location label bottom-left */}
+      <div className="absolute bottom-8 left-6 md:left-12 z-10">
+        <span className="text-white/50 text-[10px] tracking-[3px] uppercase font-m3-body">{t.hero.location}</span>
+      </div>
+
+      {/* Date label bottom-right */}
+      <div className="absolute bottom-8 right-6 md:right-12 z-10">
+        <span className="text-white/50 text-[10px] tracking-[3px] uppercase font-m3-body">{t.hero.season}</span>
+      </div>
+
+      {/* Booking widget overlay at very bottom */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 w-full max-w-3xl px-4 hidden md:block">
+        <div className="bg-white/[0.08] backdrop-blur-xl border border-white/10 rounded-xl p-4">
+          <div className="flex gap-3 items-end">
             <div className="flex-1">
-              <label className="text-white/50 text-[10px] uppercase tracking-wider font-m3-body mb-1 block">{t.booking.pier}</label>
-              <select className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#E8A84C]/40 appearance-none cursor-pointer">
+              <label className="text-white/40 text-[9px] uppercase tracking-[2px] font-m3-body mb-1 block">{t.booking.pier}</label>
+              <select className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#00A896]/40 appearance-none cursor-pointer">
                 <option value="cholpon-ata">{t.booking.piers.cholpon}</option>
                 <option value="bosteri">{t.booking.piers.bosteri}</option>
                 <option value="tamga">{t.booking.piers.tamga}</option>
               </select>
             </div>
             <div className="flex-1">
-              <label className="text-white/50 text-[10px] uppercase tracking-wider font-m3-body mb-1 block">{t.booking.date}</label>
-              <input type="date" className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#E8A84C]/40" />
+              <label className="text-white/40 text-[9px] uppercase tracking-[2px] font-m3-body mb-1 block">{t.booking.date}</label>
+              <input type="date" className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#00A896]/40" />
             </div>
             <div className="flex-1">
-              <label className="text-white/50 text-[10px] uppercase tracking-wider font-m3-body mb-1 block">{t.booking.guests}</label>
-              <select className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#E8A84C]/40 appearance-none cursor-pointer">
+              <label className="text-white/40 text-[9px] uppercase tracking-[2px] font-m3-body mb-1 block">{t.booking.guests}</label>
+              <select className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#00A896]/40 appearance-none cursor-pointer">
                 {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n} {t.booking.guestLabel}</option>)}
                 <option value="10+">10+</option>
               </select>
             </div>
-            <a href={`/${lang}/trips`} className="bg-[#D4782C] hover:bg-[#B8621E] text-white font-semibold px-6 py-2.5 rounded-lg transition-colors font-m3-body text-sm text-center whitespace-nowrap">
+            <a href={`/${lang}/trips`} className="bg-[#00A896] hover:bg-[#008F80] text-white font-semibold px-6 py-2.5 rounded-lg transition-colors font-m3-body text-sm whitespace-nowrap">
               {t.booking.search}
             </a>
           </div>
         </div>
       </div>
+    </section>
+  );
+}
 
-      {/* ── Slide counter bottom-left ── */}
-      <div className="absolute bottom-8 left-6 md:left-12 z-10 flex items-center gap-3">
-        <span className="text-white text-2xl font-bold font-m3-display">01</span>
-        <div className="w-12 h-[1px] bg-white/30" />
-        <span className="text-white/40 text-sm font-m3-body">01</span>
+/* ═══════════════ DIAGONAL IMAGE STRIPS — Pirate Lines style ═══════════════ */
+function M3DiagonalStrips({ t }: { t: Tr }) {
+  const images = [
+    '/images/scene1.jpg',
+    '/images/scene3.jpg',
+    '/images/scene5.jpg',
+    '/images/scene7.jpg',
+    '/images/scene9.jpg',
+  ];
+
+  return (
+    <section className="relative py-24 md:py-32 bg-white overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          {/* Left: brush-script heading */}
+          <div className="lg:w-[40%] text-center lg:text-left">
+            <ScrollReveal>
+              <h2 className="font-m3-display italic text-[#0A1628] leading-[1.1]" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>
+                {t.diagonal.title}
+              </h2>
+              <p className="mt-6 text-[#0A1628]/60 font-m3-body text-base max-w-md mx-auto lg:mx-0 leading-relaxed">
+                {t.diagonal.desc}
+              </p>
+            </ScrollReveal>
+          </div>
+
+          {/* Right: diagonal strips */}
+          <div className="lg:w-[60%] flex gap-3 md:gap-4 h-[400px] md:h-[500px]" style={{ transform: 'rotate(-3deg)' }}>
+            {images.map((img, i) => (
+              <div key={i} className="flex-1 overflow-hidden rounded-lg relative group" style={{ clipPath: 'polygon(5% 0, 100% 3%, 95% 100%, 0 97%)' }}>
+                <Image src={img} alt={`Activity ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-[#0A1628]/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* ── Bottom metrics bar ── */}
-      <div className="absolute bottom-0 left-0 right-0 z-10">
-        <div className="flex items-center justify-around px-6 md:px-12 py-4 border-t border-white/10 bg-navy/30 backdrop-blur-sm">
-          {[
-            { label: t.stats.years, val: '5+' },
-            { label: t.stats.guests, val: '12K+' },
-            { label: t.stats.vessels, val: '8' },
-            { label: t.stats.routes, val: '15' },
-          ].map(m => (
-            <div key={m.label} className="text-center">
-              <div className="text-white/40 text-[10px] uppercase tracking-wider font-m3-body">— {m.label}</div>
-              <div className="text-white font-bold text-sm md:text-base mt-0.5 font-m3-display">{m.val}</div>
+      {/* Angular section edge */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-[#f7f8fa]" style={{ clipPath: 'polygon(0 60%, 100% 0, 100% 100%, 0 100%)' }} />
+    </section>
+  );
+}
+
+/* ═══════════════ BENTO SERVICE CARDS — "Our tours include everything" ═══════════════ */
+function M3BentoServices({ t }: { t: Tr }) {
+  const cards = t.bento.items;
+
+  return (
+    <section id="m3-about" className="relative py-20 md:py-28 bg-[#f7f8fa]">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-14">
+            <h2 className="font-m3-display font-bold text-[#0A1628] tracking-tight" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+              {t.bento.title}
+            </h2>
+          </div>
+        </ScrollReveal>
+
+        {/* Bento grid: asymmetric layout */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 auto-rows-[200px] md:auto-rows-[220px]">
+          {cards.map((card: { img: string; icon: string; title: string }, i: number) => (
+            <ScrollReveal key={i} className={i === 0 ? 'col-span-2 row-span-1' : i === 3 ? 'col-span-2 lg:col-span-1' : ''}>
+              <div className="relative h-full rounded-2xl overflow-hidden group cursor-pointer border border-black/[0.05] bg-white shadow-sm hover:shadow-xl transition-shadow">
+                <div className="absolute inset-0">
+                  <Image src={card.img} alt={card.title} fill className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/80 via-[#0A1628]/30 to-transparent" />
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <span className="text-2xl mb-2 block">{card.icon}</span>
+                  <h3 className="font-m3-display font-semibold text-white text-lg">{card.title}</h3>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+
+      {/* Angular bottom edge */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white" style={{ clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0 100%)' }} />
+    </section>
+  );
+}
+
+/* ═══════════════ TEXT BLOCK + CTA ═══════════════ */
+function M3TextCTA({ t, lang }: { t: Tr; lang: string }) {
+  return (
+    <section className="py-20 md:py-28 bg-white">
+      <div className="max-w-[800px] mx-auto px-6 text-center">
+        <ScrollReveal>
+          <p className="font-m3-body text-[#0A1628]/70 text-lg md:text-xl leading-relaxed mb-10">
+            {t.textCta.desc}
+          </p>
+          <a href={`/${lang}/trips`} className="inline-block border-2 border-[#0A1628] text-[#0A1628] text-[12px] tracking-[3px] uppercase font-semibold px-10 py-4 hover:bg-[#0A1628] hover:text-white transition-all font-m3-body">
+            {t.textCta.btn}
+          </a>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ CATALOG WITH TABS — "NEED GEARS" / Pirate Lines style ═══════════════ */
+function M3Catalog({ t, lang }: { t: Tr; lang: string }) {
+  const [activeTab, setActiveTab] = useState(0);
+  const tabs = t.catalog.tabs;
+  const allItems = t.catalog.tabItems;
+
+  return (
+    <section id="m3-catalog" className="py-20 md:py-28 bg-[#f7f8fa]" style={{ clipPath: 'polygon(0 3%, 100% 0, 100% 97%, 0 100%)' }}>
+      <div className="max-w-[1200px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-10">
+            <span className="text-[#00A896] text-[11px] tracking-[4px] uppercase font-m3-body font-semibold">{t.catalog.badge}</span>
+            <h2 className="font-m3-display font-bold text-[#0A1628] mt-3" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+              {t.catalog.title}
+            </h2>
+          </div>
+        </ScrollReveal>
+
+        {/* Tab bar */}
+        <div className="flex justify-center gap-2 mb-12 flex-wrap">
+          {tabs.map((tab: string, i: number) => (
+            <button key={i} onClick={() => setActiveTab(i)}
+              className={`px-6 py-2.5 text-[11px] tracking-[2px] uppercase font-m3-body font-semibold transition-all ${
+                activeTab === i
+                  ? 'bg-[#0A1628] text-white'
+                  : 'bg-white text-[#0A1628]/60 border border-[#0A1628]/10 hover:border-[#0A1628]/30'
+              }`}>
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Product cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {allItems[activeTab].map((item: { img: string; title: string; price: string }, i: number) => (
+            <ScrollReveal key={`${activeTab}-${i}`}>
+              <div className="group bg-white rounded-xl overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="relative h-[240px] overflow-hidden">
+                  <Image src={item.img} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="p-5">
+                  <h3 className="font-m3-display font-semibold text-[#0A1628] text-base mb-1">{item.title}</h3>
+                  <p className="font-m3-body text-[#00A896] font-bold text-lg mb-4">{item.price}</p>
+                  <a href={`/${lang}/trips`} className="block text-center bg-[#0A1628] hover:bg-[#00A896] text-white text-[11px] tracking-[2px] uppercase font-semibold py-3 transition-colors font-m3-body">
+                    {t.catalog.book}
+                  </a>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ FULLSCREEN PHOTO DIVIDER ═══════════════ */
+function M3PhotoDivider() {
+  return (
+    <section className="relative h-[60vh] min-h-[400px] overflow-hidden">
+      <Image src="/images/scene7.jpg" alt="Water activities" fill className="object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A1628]/60 to-transparent" />
+      {/* Diagonal overlay stripe */}
+      <div className="absolute inset-0" style={{ clipPath: 'polygon(0 0, 35% 0, 20% 100%, 0 100%)', background: 'linear-gradient(180deg, rgba(0,168,150,0.3) 0%, rgba(10,22,40,0.5) 100%)' }} />
+    </section>
+  );
+}
+
+/* ═══════════════ SCHEDULE — Dark bg, teal header ═══════════════ */
+function M3Schedule({ t, lang }: { t: Tr; lang: string }) {
+  const rows = t.schedule.rows;
+  return (
+    <section id="m3-schedule" className="py-20 md:py-28 bg-[#0A1628]">
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <span className="text-[#00A896] text-[11px] tracking-[4px] uppercase font-m3-body font-semibold">{t.schedule.badge}</span>
+            <h2 className="font-m3-display font-bold text-white mt-3" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>{t.schedule.title}</h2>
+            <p className="font-m3-body text-white/40 mt-3 text-sm">{t.schedule.sub}</p>
+          </div>
+        </ScrollReveal>
+
+        <div className="rounded-xl overflow-hidden border border-white/10">
+          {/* Header */}
+          <div className="hidden md:grid grid-cols-5 gap-0 bg-[#00A896] text-white text-[11px] font-semibold font-m3-body uppercase tracking-[2px]">
+            <div className="px-5 py-3">{t.schedule.col_route}</div>
+            <div className="px-5 py-3">{t.schedule.col_time}</div>
+            <div className="px-5 py-3">{t.schedule.col_duration}</div>
+            <div className="px-5 py-3">{t.schedule.col_price}</div>
+            <div className="px-5 py-3"></div>
+          </div>
+          {/* Rows */}
+          {rows.map((row: { route: string; time: string; duration: string; price: string }, i: number) => (
+            <div key={i} className={`grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-0 px-5 py-4 ${i % 2 === 0 ? 'bg-white/[0.03]' : 'bg-white/[0.06]'} border-b border-white/5 last:border-b-0`}>
+              <div className="font-m3-body text-white font-semibold text-sm">
+                <span className="md:hidden text-[#00A896] text-xs mr-2">{t.schedule.col_route}:</span>{row.route}
+              </div>
+              <div className="font-m3-body text-white/70 text-sm">
+                <span className="md:hidden text-[#00A896] text-xs mr-2">{t.schedule.col_time}:</span>{row.time}
+              </div>
+              <div className="font-m3-body text-white/70 text-sm">
+                <span className="md:hidden text-[#00A896] text-xs mr-2">{t.schedule.col_duration}:</span>{row.duration}
+              </div>
+              <div className="font-m3-body text-[#00A896] font-bold text-sm">
+                <span className="md:hidden text-white/50 text-xs font-normal mr-2">{t.schedule.col_price}:</span>{row.price}
+              </div>
+              <div className="md:text-right">
+                <a href={`/${lang}/trips`} className="inline-block bg-[#00A896] hover:bg-[#008F80] text-white text-[10px] tracking-[1px] uppercase font-semibold px-4 py-1.5 transition-colors font-m3-body">
+                  {t.catalog.book}
+                </a>
+              </div>
             </div>
           ))}
         </div>
@@ -248,7 +464,7 @@ function TestimonialsColumn({ testimonials, className = '', duration = 15 }: {
         {[0, 1].map(copy => (
           <div key={copy} className="flex flex-col gap-6">
             {testimonials.map((r, i) => (
-              <div key={`${copy}-${i}`} className="p-8 rounded-3xl border border-black/[0.04] shadow-lg shadow-ocean/[0.06] max-w-xs w-full bg-white">
+              <div key={`${copy}-${i}`} className="p-8 rounded-xl border border-black/[0.04] shadow-lg max-w-xs w-full bg-white">
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: 5 }).map((_, si) => (
                     <svg key={si} className={`w-3.5 h-3.5 ${si < r.stars ? 'text-amber-400' : 'text-gray-200'}`} fill="currentColor" viewBox="0 0 20 20">
@@ -256,14 +472,14 @@ function TestimonialsColumn({ testimonials, className = '', duration = 15 }: {
                     </svg>
                   ))}
                 </div>
-                <p className="font-m3-body text-navy/80 text-sm leading-relaxed mb-5">{r.text}</p>
+                <p className="font-m3-body text-[#0A1628]/80 text-sm leading-relaxed mb-5">{r.text}</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full overflow-hidden relative flex-shrink-0">
                     <Image src={r.img} alt={r.name} fill className="object-cover" />
                   </div>
                   <div>
-                    <div className="font-m3-body font-semibold text-sm text-navy leading-tight">{r.name}</div>
-                    <div className="font-m3-body text-muted text-xs leading-tight">{r.city}</div>
+                    <div className="font-m3-body font-semibold text-sm text-[#0A1628] leading-tight">{r.name}</div>
+                    <div className="font-m3-body text-[#0A1628]/50 text-xs leading-tight">{r.city}</div>
                   </div>
                 </div>
               </div>
@@ -288,7 +504,7 @@ function M3Reviews({ t, lang }: { t: Tr; lang: string }) {
     { img: '/images/q01.jpg', name: ru ? 'Айгуль К.' : 'Aigul K.', city: ru ? 'г. Бишкек' : 'Bishkek', stars: 5, text: ru ? 'Потрясающий закатный круиз из Чолпон-Аты! Вид на горы с воды — это нечто невероятное.' : 'Amazing sunset cruise! Mountain views from the water are incredible.' },
     { img: '/images/captain2.jpg', name: ru ? 'Бакыт М.' : 'Bakyt M.', city: ru ? 'г. Каракол' : 'Karakol', stars: 5, text: ru ? 'Профессиональная команда! Капитан рассказал историю озера, дети в восторге.' : 'Professional crew! Captain told lake history, kids loved it.' },
     { img: '/images/scene8.jpg', name: ru ? 'Дмитрий С.' : 'Dmitry S.', city: ru ? 'г. Алматы' : 'Almaty', stars: 4, text: ru ? 'Скоростной тур из Бостери — адреналин! Лучший опыт на Иссык-Куле.' : 'Speed tour from Bosteri — pure adrenaline!' },
-    { img: '/images/scene4.jpg', name: ru ? 'Мария Л.' : 'Maria L.', city: ru ? 'г. Москва' : 'Moscow', stars: 5, text: ru ? 'Яхта «Nomad» — VIP уровень. Романтический ужин на воде с видом на закат.' : 'Yacht "Nomad" is VIP level. Romantic dinner with sunset views.' },
+    { img: '/images/scene4.jpg', name: ru ? 'Мария Л.' : 'Maria L.', city: ru ? 'г. Москва' : 'Moscow', stars: 5, text: ru ? 'Яхта Nomad — VIP уровень. Романтический ужин на воде с видом на закат.' : 'Yacht Nomad is VIP level. Romantic dinner with sunset views.' },
     { img: '/images/scene3.jpg', name: ru ? 'Азамат Т.' : 'Azamat T.', city: ru ? 'г. Бишкек' : 'Bishkek', stars: 5, text: ru ? 'Корпоратив на теплоходе — 80 человек, всё организовано идеально.' : 'Corporate event — 80 people, perfectly organized.' },
     { img: '/images/promo.jpg', name: ru ? 'Елена Р.' : 'Elena R.', city: ru ? 'г. Ош' : 'Osh', stars: 5, text: ru ? 'Детский праздник на Алыкул — дети до сих пор вспоминают!' : 'Kids party on Alykul — kids still remember it!' },
     { img: '/images/scene1.jpg', name: ru ? 'Тимур К.' : 'Timur K.', city: ru ? 'г. Астана' : 'Astana', stars: 4, text: ru ? 'Утренний круиз из Бостери. Тихо, спокойно, горы в воде.' : 'Morning cruise. Quiet, peaceful, mountains in the water.' },
@@ -297,13 +513,13 @@ function M3Reviews({ t, lang }: { t: Tr; lang: string }) {
   ];
 
   return (
-    <section id="m3-reviews" className="py-20 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm">
+    <section id="m3-reviews" className="py-20 md:py-28 bg-white">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         <ScrollReveal>
           <div className="text-center mb-12">
-            <div className="inline-block border border-ocean/20 py-1 px-4 rounded-lg text-ocean text-xs font-m3-body font-semibold uppercase tracking-wider mb-4">{t.reviews.badge}</div>
-            <h2 className="font-m3-display font-bold text-navy" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{t.reviews.title}</h2>
-            <p className="font-m3-body text-muted mt-3">{t.reviews.sub}</p>
+            <span className="text-[#00A896] text-[11px] tracking-[4px] uppercase font-m3-body font-semibold">{t.reviews.badge}</span>
+            <h2 className="font-m3-display font-bold text-[#0A1628] mt-3" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>{t.reviews.title}</h2>
+            <p className="font-m3-body text-[#0A1628]/50 mt-3">{t.reviews.sub}</p>
           </div>
         </ScrollReveal>
         <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[700px] overflow-hidden">
@@ -316,389 +532,33 @@ function M3Reviews({ t, lang }: { t: Tr; lang: string }) {
   );
 }
 
-/* ═══════════════ ABOUT US ═══════════════ */
-function M3About({ t }: { t: Tr }) {
-  const services = t.about.services;
-  const stats = [
-    { val: '5+', label: t.about.s_years },
-    { val: '12K+', label: t.about.s_guests },
-    { val: '8', label: t.about.s_vessels },
-    { val: '98%', label: t.about.s_rate },
-  ];
-
-  return (
-    <section id="m3-about" className="py-20 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm overflow-hidden">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-3 font-m3-display">{t.about.title}</h2>
-            <div className="w-20 h-[2px] bg-gradient-to-r from-ocean to-sky rounded-full mx-auto mb-5" />
-            <p className="text-muted text-base max-w-2xl mx-auto font-m3-body">{t.about.intro}</p>
-          </div>
-        </ScrollReveal>
-
-        {/* Services grid — 2x3 */}
-        <div className="grid md:grid-cols-2 gap-8 mb-20">
-          {/* Left col */}
-          <div className="space-y-6">
-            {services.filter((_: unknown, i: number) => i % 2 === 0).map((s: { icon: string; title: string; desc: string }) => (
-              <ScrollReveal key={s.title}>
-                <div className="flex gap-4 group cursor-pointer">
-                  <div className="w-12 h-12 rounded-xl bg-ocean/10 flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-ocean group-hover:text-white transition-all">{s.icon}</div>
-                  <div>
-                    <h4 className="font-semibold text-navy text-base mb-1 font-m3-body">{s.title}</h4>
-                    <p className="text-muted text-sm leading-relaxed font-m3-body">{s.desc}</p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-          {/* Right col */}
-          <div className="space-y-6">
-            {services.filter((_: unknown, i: number) => i % 2 === 1).map((s: { icon: string; title: string; desc: string }) => (
-              <ScrollReveal key={s.title}>
-                <div className="flex gap-4 group cursor-pointer">
-                  <div className="w-12 h-12 rounded-xl bg-ocean/10 flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-ocean group-hover:text-white transition-all">{s.icon}</div>
-                  <div>
-                    <h4 className="font-semibold text-navy text-base mb-1 font-m3-body">{s.title}</h4>
-                    <p className="text-muted text-sm leading-relaxed font-m3-body">{s.desc}</p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-
-        {/* Stats */}
-        <ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-            {stats.map(s => (
-              <div key={s.label} className="text-center group">
-                <div className="text-3xl md:text-4xl font-bold text-navy mb-1 font-m3-display">{s.val}</div>
-                <p className="text-muted text-sm font-m3-body">{s.label}</p>
-                <div className="w-0 group-hover:w-full h-[2px] bg-ocean mx-auto mt-2 transition-all duration-500" />
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        {/* CTA */}
-        <ScrollReveal>
-          <div className="text-center bg-gradient-to-r from-navy to-ocean-dark rounded-2xl p-10 md:p-14 text-white">
-            <h3 className="text-2xl md:text-3xl font-bold mb-3 font-m3-display">{t.about.cta_title}</h3>
-            <p className="text-white/70 mb-6 max-w-lg mx-auto font-m3-body">{t.about.cta_desc}</p>
-            <a href="#m3-fleet" className="inline-block bg-white text-navy px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow font-m3-body">{t.about.cta_btn}</a>
-          </div>
-        </ScrollReveal>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════ GALLERY — Horizontal Carousel (Gallery4 style) ═══════════════ */
-function M3Gallery({ t }: { t: Tr }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [current, setCurrent] = useState(0);
-
-  const items = [
-    { img: '/images/hero.jpg', title: t.gallery.c1, desc: t.gallery.d1 },
-    { img: '/images/scene7.jpg', title: t.gallery.c2, desc: t.gallery.d2 },
-    { img: '/images/alykul1.jpg', title: t.gallery.c3, desc: t.gallery.d3 },
-    { img: '/images/q02.jpg', title: t.gallery.c4, desc: t.gallery.d4 },
-    { img: '/images/ep03.jpg', title: t.gallery.c5, desc: t.gallery.d5 },
-    { img: '/images/scene6.jpg', title: t.gallery.c6, desc: t.gallery.d6 },
-  ];
-
-  const scrollTo = (dir: 'prev' | 'next') => {
-    if (!scrollRef.current) return;
-    const cardW = scrollRef.current.firstElementChild?.clientWidth || 320;
-    const gap = 20;
-    scrollRef.current.scrollBy({ left: dir === 'next' ? cardW + gap : -(cardW + gap), behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const cardW = el.firstElementChild?.clientWidth || 320;
-      setCurrent(Math.round(el.scrollLeft / (cardW + 20)));
-    };
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
-  }, []);
-
-  return (
-    <section className="py-24 md:py-32 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8">
-        {/* Header */}
-        <div className="mb-8 flex items-end justify-between md:mb-14">
-          <div className="flex flex-col gap-3">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-navy font-m3-display">{t.gallery.title}</h2>
-            <p className="max-w-lg text-muted text-sm font-m3-body">{t.gallery.sub}</p>
-          </div>
-          <div className="hidden md:flex shrink-0 gap-2">
-            <button onClick={() => scrollTo('prev')} className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center text-navy hover:bg-foam transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m15 19-7-7 7-7"/></svg>
-            </button>
-            <button onClick={() => scrollTo('next')} className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center text-navy hover:bg-foam transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Carousel */}
-      <div ref={scrollRef} className="flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide pl-4 md:pl-[max(2rem,calc(50vw-660px))]" style={{ scrollbarWidth: 'none' }}>
-        {items.map((item, i) => (
-          <a key={i} href="#m3-fleet" className="group snap-start flex-shrink-0 w-[300px] lg:w-[360px] rounded-xl overflow-hidden relative">
-            <div className="relative h-[27rem] md:h-[24rem] lg:h-[28rem] w-full overflow-hidden rounded-xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.img} alt={item.title} className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 md:p-8 text-white">
-                <div className="mb-2 pt-4 text-xl font-semibold font-m3-display">{item.title}</div>
-                <div className="mb-8 line-clamp-2 text-white/70 text-sm font-m3-body">{item.desc}</div>
-                <div className="flex items-center text-sm font-m3-body">
-                  {t.gallery.more}
-                  <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
-                </div>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-
-      {/* Dots */}
-      <div className="mt-8 flex justify-center gap-2">
-        {items.map((_, i) => (
-          <button key={i} onClick={() => { if (scrollRef.current) { const cw = scrollRef.current.firstElementChild?.clientWidth || 320; scrollRef.current.scrollTo({ left: i * (cw + 20), behavior: 'smooth' }); } }}
-            className={`h-2 w-2 rounded-full transition-colors ${current === i ? 'bg-navy' : 'bg-navy/20'}`}
-            aria-label={`Slide ${i + 1}`} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════ TRUST BADGES ═══════════════ */
-function M3TrustBadges({ t }: { t: Tr }) {
-  const badges = t.trust.items;
-  return (
-    <section className="py-12 bg-gradient-to-r from-[#1A2F3A] to-[#1A2F3A]/95 rounded-2xl mx-4 md:mx-8 shadow-sm">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {badges.map((b: { icon: string; title: string; desc: string }) => (
-            <ScrollReveal key={b.title}>
-              <div className="text-center group">
-                <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-[#E8A84C]/10 border border-[#E8A84C]/20 flex items-center justify-center text-2xl group-hover:bg-[#E8A84C]/20 transition-colors">
-                  {b.icon}
-                </div>
-                <h4 className="text-white font-semibold text-sm font-m3-body mb-1">{b.title}</h4>
-                <p className="text-white/50 text-xs font-m3-body">{b.desc}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════ CATALOG WITH PRICES ═══════════════ */
-function M3Catalog({ t, lang }: { t: Tr; lang: string }) {
-  const items = t.catalog.items;
-  return (
-    <section id="m3-catalog" className="py-20 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm">
-      <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-        <ScrollReveal>
-          <div className="text-center mb-12">
-            <div className="inline-block border border-[#D4782C]/20 py-1 px-4 rounded-lg text-[#D4782C] text-xs font-m3-body font-semibold uppercase tracking-wider mb-4">{t.catalog.badge}</div>
-            <h2 className="font-m3-display font-bold text-navy" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{t.catalog.title}</h2>
-            <p className="font-m3-body text-muted mt-3">{t.catalog.sub}</p>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {items.map((item: { img: string; title: string; price: string; desc: string }) => (
-            <ScrollReveal key={item.title}>
-              <div className="group rounded-2xl overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-shadow bg-white">
-                <div className="relative h-[220px] overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute top-3 right-3 bg-[#D4782C] text-white text-xs font-bold px-3 py-1 rounded-full font-m3-body shadow-lg">
-                    {item.price}
-                  </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="font-m3-display font-bold text-navy text-lg mb-2">{item.title}</h3>
-                  <p className="font-m3-body text-muted text-sm mb-4 line-clamp-2">{item.desc}</p>
-                  <a href={`/${lang}/trips`} className="inline-block w-full text-center bg-[#D4782C] hover:bg-[#B8621E] text-white font-semibold py-2.5 rounded-lg transition-colors font-m3-body text-sm">
-                    {t.catalog.book}
-                  </a>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════ SCHEDULE ═══════════════ */
-function M3Schedule({ t, lang }: { t: Tr; lang: string }) {
-  const rows = t.schedule.rows;
-  return (
-    <section id="m3-schedule" className="py-20 bg-[#1A2F3A] rounded-2xl mx-4 md:mx-8 shadow-sm">
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
-        <ScrollReveal>
-          <div className="text-center mb-12">
-            <div className="inline-block border border-[#E8A84C]/20 py-1 px-4 rounded-lg text-[#E8A84C] text-xs font-m3-body font-semibold uppercase tracking-wider mb-4">{t.schedule.badge}</div>
-            <h2 className="font-m3-display font-bold text-white" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{t.schedule.title}</h2>
-            <p className="font-m3-body text-white/50 mt-3">{t.schedule.sub}</p>
-          </div>
-        </ScrollReveal>
-
-        <div className="rounded-2xl overflow-hidden border border-white/10">
-          {/* Header */}
-          <div className="hidden md:grid grid-cols-5 gap-0 bg-[#D4782C] text-white text-xs font-semibold font-m3-body uppercase tracking-wider">
-            <div className="px-5 py-3">{t.schedule.col_route}</div>
-            <div className="px-5 py-3">{t.schedule.col_time}</div>
-            <div className="px-5 py-3">{t.schedule.col_duration}</div>
-            <div className="px-5 py-3">{t.schedule.col_price}</div>
-            <div className="px-5 py-3"></div>
-          </div>
-          {/* Rows */}
-          {rows.map((row: { route: string; time: string; duration: string; price: string }, i: number) => (
-            <div key={i} className={`grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-0 px-5 py-4 ${i % 2 === 0 ? 'bg-white/[0.03]' : 'bg-white/[0.06]'} border-b border-white/5 last:border-b-0`}>
-              <div className="font-m3-body text-white font-semibold text-sm">
-                <span className="md:hidden text-[#E8A84C] text-xs mr-2">{t.schedule.col_route}:</span>{row.route}
-              </div>
-              <div className="font-m3-body text-white/70 text-sm">
-                <span className="md:hidden text-[#E8A84C] text-xs mr-2">{t.schedule.col_time}:</span>{row.time}
-              </div>
-              <div className="font-m3-body text-white/70 text-sm">
-                <span className="md:hidden text-[#E8A84C] text-xs mr-2">{t.schedule.col_duration}:</span>{row.duration}
-              </div>
-              <div className="font-m3-body text-[#E8A84C] font-bold text-sm">
-                <span className="md:hidden text-white/50 text-xs font-normal mr-2">{t.schedule.col_price}:</span>{row.price}
-              </div>
-              <div className="md:text-right">
-                <a href={`/${lang}/trips`} className="inline-block bg-[#D4782C] hover:bg-[#B8621E] text-white text-xs font-semibold px-4 py-1.5 rounded-full transition-colors font-m3-body">
-                  {t.catalog.book}
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════ FLEET — Interactive Image Accordion ═══════════════ */
-function M3Fleet({ t }: { t: Tr }) {
-  const [activeIdx, setActiveIdx] = useState(0);
-
-  const vessels = t.fleet.items;
-
-  return (
-    <section id="m3-fleet" className="py-20 bg-navy rounded-2xl mx-4 md:mx-8 shadow-sm">
-      <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-        <ScrollReveal>
-          <div className="text-center mb-12">
-            <h2 className="font-bold text-white text-2xl md:text-3xl font-m3-display">{t.fleet.title}</h2>
-            <p className="text-white/40 mt-2 text-sm font-m3-body">{t.fleet.sub}</p>
-          </div>
-        </ScrollReveal>
-
-        {/* Desktop: image accordion */}
-        <div className="hidden md:flex items-center justify-center gap-3 px-4">
-          {vessels.map((v: { img: string; name: string; desc: string; specs: string[] }, i: number) => (
-            <div
-              key={v.name}
-              className="relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-700 ease-in-out"
-              style={{ width: activeIdx === i ? '500px' : '80px', height: '420px' }}
-              onMouseEnter={() => setActiveIdx(i)}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={v.img} alt={v.name} className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/40" />
-
-              {/* Active: bottom info */}
-              {activeIdx === i && (
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                  <h3 className="text-white font-semibold text-lg mb-2 font-m3-display">{v.name}</h3>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {v.specs.map((s: string) => (
-                      <span key={s} className="text-[10px] font-medium bg-white/15 text-white/80 px-2 py-0.5 rounded-full">{s}</span>
-                    ))}
-                  </div>
-                  <p className="text-white/50 text-xs leading-relaxed font-m3-body">{v.desc}</p>
-                </div>
-              )}
-
-              {/* Inactive: rotated title */}
-              {activeIdx !== i && (
-                <span className="absolute bottom-20 left-1/2 -translate-x-1/2 rotate-90 text-white text-sm font-semibold whitespace-nowrap tracking-wide font-m3-body">
-                  {v.name}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile: stacked cards */}
-        <div className="flex flex-col gap-4 md:hidden">
-          {vessels.map((v: { img: string; name: string; desc: string; specs: string[] }) => (
-            <div key={v.name} className="relative rounded-2xl overflow-hidden h-[220px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={v.img} alt={v.name} className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <h3 className="text-white font-semibold text-base font-m3-display">{v.name}</h3>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {v.specs.map((s: string) => (
-                    <span key={s} className="text-[9px] bg-white/15 text-white/70 px-2 py-0.5 rounded-full">{s}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ═══════════════ FAQ ACCORDION ═══════════════ */
 function M3FAQ({ t }: { t: Tr }) {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
-
   const items = t.faq.items;
 
   return (
-    <section className="py-20 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm">
-      <div className="max-w-[640px] mx-auto px-6">
+    <section className="py-20 md:py-28 bg-[#f7f8fa]">
+      <div className="max-w-[700px] mx-auto px-6">
         <ScrollReveal>
           <div className="text-center mb-12">
-            <h2 className="font-bold text-navy text-2xl md:text-3xl font-m3-display">{t.faq.title}</h2>
+            <h2 className="font-m3-display font-bold text-[#0A1628]" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)' }}>{t.faq.title}</h2>
           </div>
         </ScrollReveal>
 
-        <div className="border border-black/[0.06] rounded-xl bg-white overflow-hidden shadow-sm">
+        <div className="space-y-3">
           {items.map((item: { q: string; a: string }, i: number) => (
-            <div key={i} className={`border-b border-black/[0.06] last:border-b-0 ${openIdx === i ? 'bg-foam/30' : ''}`}>
+            <div key={i} className={`bg-white rounded-xl border border-black/[0.06] overflow-hidden transition-shadow ${openIdx === i ? 'shadow-md' : 'shadow-sm'}`}>
               <button
                 onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                className="w-full flex items-center justify-between gap-4 p-4 text-left font-m3-body font-semibold text-navy text-sm hover:bg-foam/20 transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between gap-4 p-5 text-left font-m3-body font-semibold text-[#0A1628] text-sm hover:bg-[#f7f8fa]/50 transition-colors cursor-pointer"
               >
                 {item.q}
-                <svg className={`w-4 h-4 shrink-0 text-muted transition-transform duration-200 ${openIdx === i ? 'rotate-180' : ''}`}
+                <svg className={`w-4 h-4 shrink-0 text-[#00A896] transition-transform duration-200 ${openIdx === i ? 'rotate-180' : ''}`}
                   fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
               </button>
               <div className={`overflow-hidden transition-all duration-300 ${openIdx === i ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="px-4 pb-4 text-muted text-sm font-m3-body leading-relaxed">{item.a}</div>
+                <div className="px-5 pb-5 text-[#0A1628]/60 text-sm font-m3-body leading-relaxed">{item.a}</div>
               </div>
             </div>
           ))}
@@ -711,15 +571,15 @@ function M3FAQ({ t }: { t: Tr }) {
 /* ═══════════════ MAP — Cholpon-Ata ═══════════════ */
 function M3MapSection({ t }: { t: Tr }) {
   return (
-    <section className="py-20 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm">
+    <section id="m3-contacts" className="py-20 bg-white">
       <div className="max-w-[1280px] mx-auto px-6 md:px-10">
         <ScrollReveal>
           <div className="text-center mb-10">
-            <h2 className="font-bold text-navy text-2xl md:text-3xl font-m3-display">{t.map.title}</h2>
-            <p className="font-m3-body text-muted mt-2 text-sm">{t.map.sub}</p>
+            <h2 className="font-m3-display font-bold text-[#0A1628]" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)' }}>{t.map.title}</h2>
+            <p className="font-m3-body text-[#0A1628]/50 mt-2 text-sm">{t.map.sub}</p>
           </div>
         </ScrollReveal>
-        <div className="rounded-2xl overflow-hidden shadow-lg border border-black/[0.04]">
+        <div className="rounded-xl overflow-hidden shadow-lg border border-black/[0.04]">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23918.78!2d77.0685!3d42.6461!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
             className="w-full h-[400px] md:h-[500px] border-0"
@@ -731,80 +591,99 @@ function M3MapSection({ t }: { t: Tr }) {
   );
 }
 
-/* ═══════════════ FOOTER — Taped Design ═══════════════ */
+/* ═══════════════ FOOTER — Dark navy, Pirate Lines style ═══════════════ */
 function M3Footer({ t, lang }: { t: Tr; lang: string }) {
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState('');
 
   return (
-    <footer id="m3-contacts" className="relative py-8 px-4 max-w-5xl mx-auto" style={{ backgroundImage: 'url(/images/m3-footer-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      {/* Main card with tape */}
-      <div className="relative bg-transparent rounded-3xl px-6 md:px-10 py-10 flex flex-col md:flex-row justify-between items-start gap-8">
-        {/* Tape decorations */}
-        <div className="hidden md:block absolute -top-3 -left-6 w-[70px] h-[28px] bg-white/60 rounded-sm" style={{ transform: 'rotate(-15deg)' }} />
-        <div className="hidden md:block absolute -top-3 -right-6 w-[70px] h-[28px] bg-white/60 rounded-sm" style={{ transform: 'rotate(15deg)' }} />
-
-        {/* Logo + desc */}
-        <div className="flex flex-col gap-3 max-w-[280px]">
-          <div className="flex items-center gap-2">
-            <svg viewBox="0 0 36 36" className="w-7 h-7" fill="none">
-              <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#7ec8f0" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-            </svg>
-            <span className="text-white font-bold text-xl font-m3-display drop-shadow-md">АЛЫКУЛ</span>
+    <footer className="bg-[#0A1628] pt-16 pb-8">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-10">
+        {/* Top section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 md:gap-8 pb-12 border-b border-white/10">
+          {/* Logo + desc */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none">
+                <circle cx="24" cy="24" r="22" stroke="#00A896" strokeWidth="1" opacity="0.5" />
+                <path d="M16 32Q20 24 24 12Q28 24 32 32" stroke="#00A896" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <path d="M14 34Q19 30 24 32Q29 34 34 30" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+              </svg>
+              <span className="text-white font-m3-display text-xl tracking-[2px]">ALYKUL</span>
+            </div>
+            <p className="text-white/50 text-sm font-m3-body max-w-[280px] leading-relaxed">
+              {t.foot.desc}
+            </p>
+            {/* Newsletter */}
+            <div className="mt-4">
+              <label className="text-white/40 text-[9px] tracking-[2px] uppercase font-m3-body mb-2 block">{t.foot.newsletter}</label>
+              <div className="flex">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="email@example.com"
+                  className="flex-1 bg-white/5 border border-white/10 px-4 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#00A896]/40 rounded-l-lg"
+                />
+                <button className="bg-[#00A896] hover:bg-[#008F80] text-white px-4 py-2.5 text-sm font-m3-body font-semibold transition-colors rounded-r-lg">
+                  OK
+                </button>
+              </div>
+            </div>
           </div>
-          <p className="text-white/80 text-sm font-m3-body drop-shadow-sm">
-            {t.foot.desc}
-          </p>
+
+          {/* Link columns */}
+          <div className="flex flex-col gap-3">
+            <h4 className="uppercase text-[10px] font-semibold text-white/40 tracking-[2px] font-m3-body mb-1">{t.foot.trips}</h4>
+            <a href={`/${lang}/trips`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.cruises}</a>
+            <a href={`/${lang}/trips`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.charters}</a>
+            <a href={`/${lang}/trips`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.speed}</a>
+            <a href={`/${lang}/trips`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.kids}</a>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h4 className="uppercase text-[10px] font-semibold text-white/40 tracking-[2px] font-m3-body mb-1">{t.foot.scheduleLabel}</h4>
+            <a href="#m3-schedule" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.nav.schedule}</a>
+            <a href="#m3-fleet" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.nav.fleet}</a>
+            <a href="#m3-reviews" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.nav.reviews}</a>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h4 className="uppercase text-[10px] font-semibold text-white/40 tracking-[2px] font-m3-body mb-1">{t.foot.contact}</h4>
+            <a href="tel:+996555123456" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">+996 555 123 456</a>
+            <a href="mailto:info@alykul.kg" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">info@alykul.kg</a>
+            <span className="text-white/60 text-sm font-m3-body">{t.hero.location}</span>
+          </div>
         </div>
 
-        {/* Nav columns */}
-        <div className="flex flex-row gap-12 md:gap-16">
-          <div className="flex flex-col gap-3">
-            <h4 className="uppercase text-xs font-semibold text-white/60 tracking-wider font-m3-body">{t.foot.routes}</h4>
-            <a href={`/${lang}/trips`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.cruises}</a>
-            <a href={`/${lang}/trips`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.charters}</a>
-            <a href={`/${lang}/trips`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.speed}</a>
-            <a href="#m3-schedule" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.nav.schedule}</a>
+        {/* Bottom bar */}
+        <div className="mt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <p className="text-white/30 text-xs font-m3-body">&copy;{year} Alykul. {t.foot.rights}</p>
+          <div className="flex items-center gap-6">
+            <span className="text-white/30 text-[10px] tracking-[3px] uppercase font-m3-body">{t.foot.followUs}</span>
+            {[
+              { href: 'https://instagram.com', label: 'IG', icon: 'M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465a4.9 4.9 0 011.772 1.153 4.9 4.9 0 011.153 1.772c.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122s-.01 3.056-.06 4.122c-.05 1.065-.218 1.79-.465 2.428a4.9 4.9 0 01-1.153 1.772 4.9 4.9 0 01-1.772 1.153c-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06s-3.056-.01-4.122-.06c-1.065-.05-1.79-.218-2.428-.465a4.9 4.9 0 01-1.772-1.153 4.9 4.9 0 01-1.153-1.772c-.247-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12s.01-3.056.06-4.122c.05-1.066.217-1.79.465-2.428a4.9 4.9 0 011.153-1.772A4.9 4.9 0 015.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2z' },
+              { href: 'https://t.me', label: 'TG', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.28-.02-.12.03-2.07 1.32-5.84 3.87-.55.38-1.05.56-1.5.55-.49-.01-1.44-.28-2.15-.51-.87-.28-1.56-.44-1.5-.92.03-.25.38-.51 1.05-.78 4.12-1.79 6.87-2.97 8.26-3.54 3.93-1.62 4.75-1.9 5.28-1.91.12 0 .37.03.54.17.14.12.18.28.2.45-.01.06.01.24 0 .37z' },
+              { href: 'https://wa.me/996555123456', label: 'WA', icon: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z' },
+            ].map(s => (
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-[#00A896] hover:border-[#00A896]/30 transition-colors">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d={s.icon} /></svg>
+              </a>
+            ))}
           </div>
-          <div className="flex flex-col gap-3">
-            <h4 className="uppercase text-xs font-semibold text-white/60 tracking-wider font-m3-body">{t.foot.company}</h4>
-            <a href="#m3-reviews" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.nav.reviews}</a>
-            <a href="#m3-faq" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">FAQ</a>
-            <a href={`/${lang}/privacy`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.privacy}</a>
-            <a href={`/${lang}/checkout`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.account}</a>
-          </div>
-          <div className="hidden md:flex flex-col gap-3">
-            <h4 className="uppercase text-xs font-semibold text-white/60 tracking-wider font-m3-body">{t.foot.contact}</h4>
-            <a href="tel:+996555123456" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">+996 555 123 456</a>
-            <a href="mailto:info@alykul.kg" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">info@alykul.kg</a>
-            <span className="text-white/80 text-sm font-m3-body drop-shadow-sm">Чолпон-Ата</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="mt-4 px-2 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 text-sm text-white/50 font-m3-body">
-        <p className="drop-shadow-sm">&copy;{year} Алыкул. {t.foot.rights}</p>
-        <div className="flex gap-4 items-center">
-          {[
-            { href: 'https://instagram.com', label: 'Instagram' },
-            { href: 'https://t.me', label: 'Telegram' },
-            { href: 'https://wa.me/996555123456', label: 'WhatsApp' },
-          ].map(s => (
-            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-sky transition-colors drop-shadow-sm">{s.label}</a>
-          ))}
         </div>
       </div>
     </footer>
   );
 }
 
-/* ═══════════════ AI CHAT WIDGET — floating button + card ═══════════════ */
+/* ═══════════════ AI CHAT WIDGET ═══════════════ */
 function M3AiChat() {
   const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
-    { role: 'ai', text: 'Здравствуйте! Я AI-ассистент Алыкул. Чем могу помочь? 🚢' },
+    { role: 'ai', text: 'Zdravstvuyte! I am the Alykul AI assistant. How can I help?' },
   ]);
 
   const send = () => {
@@ -819,10 +698,9 @@ function M3AiChat() {
 
   return (
     <>
-      {/* Floating button */}
       {!open && (
         <button onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-[10002] w-14 h-14 rounded-full bg-navy shadow-2xl shadow-navy/30 flex items-center justify-center text-white hover:scale-110 transition-transform"
+          className="fixed bottom-6 right-6 z-[10002] w-14 h-14 rounded-full bg-[#00A896] shadow-2xl shadow-[#00A896]/30 flex items-center justify-center text-white hover:scale-110 transition-transform"
           aria-label="AiChat">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24">
             <path d="M12 3C6.5 3 2 6.58 2 11c0 2.13 1.02 4.05 2.67 5.47L3.5 21l4.6-2.26C9.3 19.24 10.62 19.5 12 19.5c5.5 0 10-3.58 10-8S17.5 3 12 3Z" fill="currentColor" opacity="0.2"/>
@@ -832,44 +710,40 @@ function M3AiChat() {
         </button>
       )}
 
-      {/* Chat card */}
       {open && (
         <div className="fixed bottom-6 right-6 z-[10002] w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-black/[0.06] flex flex-col overflow-hidden" style={{ height: '500px' }}>
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-black/[0.06] bg-navy text-white">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-black/[0.06] bg-[#0A1628] text-white">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-sky/20 flex items-center justify-center">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 24c11.4-0 18-6.6 18-18C24 17.4 17.4 24 6 24ZM18 0C6.6 0 0 6.6 0 18 0 6.6 6.6 0 18 0Z"/></svg>
+              <div className="w-8 h-8 rounded-full bg-[#00A896]/20 flex items-center justify-center">
+                <svg className="w-4 h-4 text-[#00A896]" fill="currentColor" viewBox="0 0 24 24"><path d="M6 24c11.4-0 18-6.6 18-18C24 17.4 17.4 24 6 24ZM18 0C6.6 0 0 6.6 0 18 0 6.6 6.6 0 18 0Z"/></svg>
               </div>
               <div>
                 <div className="text-sm font-semibold font-m3-body">AiChat</div>
-                <div className="text-[10px] text-white/50 font-m3-body">Алыкул AI-ассистент</div>
+                <div className="text-[10px] text-white/50 font-m3-body">Alykul AI Assistant</div>
               </div>
             </div>
             <button onClick={() => setOpen(false)} className="text-white/60 hover:text-white text-xl">&times;</button>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 font-m3-body">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] px-3 py-2 rounded-xl text-sm ${
-                  m.role === 'user' ? 'bg-ocean text-white rounded-br-sm' : 'bg-foam text-navy rounded-bl-sm'
+                  m.role === 'user' ? 'bg-[#00A896] text-white rounded-br-sm' : 'bg-[#f7f8fa] text-[#0A1628] rounded-bl-sm'
                 }`}>{m.text}</div>
               </div>
             ))}
           </div>
 
-          {/* Input */}
           <div className="border-t border-black/[0.06] p-3 flex gap-2">
             <input
               value={msg}
               onChange={e => setMsg(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && send()}
-              placeholder="Спросите что-нибудь..."
-              className="flex-1 bg-foam/50 border border-black/[0.06] rounded-lg px-3 py-2 text-sm text-navy outline-none focus:border-ocean/30 font-m3-body"
+              placeholder="Ask anything..."
+              className="flex-1 bg-[#f7f8fa] border border-black/[0.06] rounded-lg px-3 py-2 text-sm text-[#0A1628] outline-none focus:border-[#00A896]/30 font-m3-body"
             />
-            <button onClick={send} className="w-9 h-9 rounded-lg bg-ocean text-white flex items-center justify-center hover:bg-sky transition-colors flex-shrink-0">
+            <button onClick={send} className="w-9 h-9 rounded-lg bg-[#00A896] text-white flex items-center justify-center hover:bg-[#008F80] transition-colors flex-shrink-0">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/></svg>
             </button>
           </div>
@@ -881,13 +755,13 @@ function M3AiChat() {
 
 function getAiReply(q: string): string {
   const ql = q.toLowerCase();
-  if (ql.includes('цен') || ql.includes('стоим') || ql.includes('price')) return 'Закатный круиз — от 1 400 KGS, скоростной тур — от 2 000 KGS, приватный чартер — от 7 000 KGS. Подробнее в разделе Маршруты!';
-  if (ql.includes('брон') || ql.includes('book')) return 'Для бронирования нажмите кнопку «Забронировать» на любом маршруте — вы будете перенаправлены в WhatsApp для подтверждения.';
-  if (ql.includes('расписан') || ql.includes('schedule') || ql.includes('время')) return 'Рейсы с 1 июня по 15 сентября. Закатный круиз — 18:00, утренний — 10:00, скоростные туры — 12:00, 14:00, 16:00.';
-  if (ql.includes('флот') || ql.includes('яхт') || ql.includes('fleet') || ql.includes('судн')) return 'У нас 8 судов: теплоход «Алыкул» (до 200 чел), яхта «Nomad» (до 12 чел, VIP), скоростные катера (до 60 км/ч).';
-  if (ql.includes('дет') || ql.includes('kids') || ql.includes('ребён')) return 'Детские праздники на теплоходе — от 1 000 KGS/чел. Аниматоры, еда, безопасность. Доступны по выходным.';
-  if (ql.includes('безопас') || ql.includes('safety')) return 'Все суда оснащены спасательными жилетами. Капитаны сертифицированы. Страховка включена.';
-  return 'Спасибо за вопрос! Для подробной информации свяжитесь с нами по WhatsApp: +996 555 123 456 или выберите маршрут на сайте.';
+  if (ql.includes('цен') || ql.includes('стоим') || ql.includes('price')) return 'Sunset cruise from 1,400 KGS, speed tour from 2,000 KGS, private charter from 7,000 KGS. See the Routes section!';
+  if (ql.includes('брон') || ql.includes('book')) return 'Click "Book Now" on any route to be redirected to WhatsApp for confirmation.';
+  if (ql.includes('расписан') || ql.includes('schedule') || ql.includes('время')) return 'Season: June 1 - September 15. Sunset cruise 18:00, morning 10:00, speed tours 12:00, 14:00, 16:00.';
+  if (ql.includes('флот') || ql.includes('яхт') || ql.includes('fleet') || ql.includes('судн')) return 'We have 8 vessels: steamship Alykul (up to 200 pax), yacht Nomad (up to 12 pax VIP), speedboats (up to 60 km/h).';
+  if (ql.includes('дет') || ql.includes('kids') || ql.includes('ребён')) return 'Kids parties on the steamship from 1,000 KGS/person. Animators, food, safety. Available on weekends.';
+  if (ql.includes('безопас') || ql.includes('safety')) return 'All vessels have life jackets. Captains are certified. Insurance included.';
+  return 'Thank you for your question! Contact us via WhatsApp: +996 555 123 456 or choose a route on the website.';
 }
 
 /* ═══════════════ TRANSLATIONS ═══════════════ */
@@ -898,80 +772,106 @@ function getTrans(lang: string) {
   const ky = lang === 'ky';
   return {
     nav: {
+      about: ru ? 'О нас' : ky ? 'Биз жонундо' : 'About',
+      fleet: ru ? 'Флот' : ky ? 'Флот' : 'Fleet',
       routes: ru ? 'Маршруты' : ky ? 'Маршруттар' : 'Routes',
       schedule: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
-      fleet: ru ? 'Флот' : ky ? 'Флот' : 'Fleet',
-      booking: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
-      about: ru ? 'О нас' : ky ? 'Биз жөнүндө' : 'About',
       reviews: ru ? 'Отзывы' : ky ? 'Пикирлер' : 'Reviews',
+      booking: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
       contacts: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contacts',
     },
     hero: {
-      line1: ru ? 'ЛУЧШИЙ ОТДЫХ' : ky ? 'ЭҢ ЖАКШЫ ЭС АЛУУ' : 'BEST VACATION',
-      line2: ru ? 'на Иссык-Куле' : ky ? 'Ысык-Көлдө' : 'with Yachting',
-      book: ru ? 'Бронировать' : ky ? 'Брондоо' : 'Book',
-      s1name: ru ? 'Теплоход\nАлыкул' : 'Steamship\nAlykul',
-      s2name: ru ? 'Закатный\nКруиз' : 'Sunset\nCruise',
-      s3name: ru ? 'Яхта\nNomad' : 'Yacht\nNomad',
+      line1: ru ? 'Лучший отдых.' : ky ? 'Эн жакшы эс алуу.' : 'The finest escape.',
+      line2: ru ? 'Ежегодные круизы' : ky ? 'Жыл сайын круиздер' : 'Annual cruises',
+      line3: ru ? 'на элитных яхтах' : ky ? 'элиталык яхталарда' : 'on elite yachts',
+      line4: ru ? 'на Иссык-Куле' : ky ? 'Ысык-Колдо' : 'on Issyk-Kul',
+      cta: ru ? 'Забронировать круиз' : ky ? 'Круиз брондоо' : 'Book a cruise',
+      location: ru ? 'Чолпон-Ата, Кыргызстан' : ky ? 'Чолпон-Ата, Кыргызстан' : 'Cholpon-Ata, Kyrgyzstan',
+      season: ru ? '1 июня — 15 сентября' : ky ? '1 июнь — 15 сентябрь' : 'June 1 — September 15',
     },
-    stats: {
-      years: ru ? 'лет на озере' : ky ? 'жыл көлдө' : 'years',
-      guests: ru ? 'довольных гостей' : ky ? 'ыраазы конок' : 'guests',
-      vessels: ru ? 'судов' : ky ? 'кеме' : 'vessels',
-      routes: ru ? 'маршрутов' : ky ? 'маршрут' : 'routes',
+    diagonal: {
+      title: ru ? 'Лучший водный\nотдых в жизни' : ky ? 'Омурундогу эн жакшы\nсуу эс алуу' : 'The best water\nvacation of your life',
+      desc: ru ? 'От закатных круизов до скоростных туров — откройте для себя магию горного озера Иссык-Куль на высоте 1607 метров. Чистейшая вода, величественные горы и незабываемые впечатления.' : ky ? 'Кун батыш круиздеринен тездик турларга чейин — Ысык-Колдун сыйкырын ачыныз.' : 'From sunset cruises to speed tours — discover the magic of mountain lake Issyk-Kul at 1607m altitude. Crystal-clear water, majestic mountains, unforgettable experiences.',
+    },
+    bento: {
+      title: ru ? 'Наши туры включают все:' : ky ? 'Биздин турлар бардыгын камтыйт:' : 'Our tours take care of it all:',
+      items: [
+        { img: '/images/hero.jpg', icon: '\u2693', title: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise' },
+        { img: '/images/scene2.jpg', icon: '\ud83d\ude90', title: ru ? 'Трансферы' : ky ? 'Трансферлер' : 'Transfers' },
+        { img: '/images/scene10.jpg', icon: '\ud83c\udf7d\ufe0f', title: ru ? 'Банкет на борту' : ky ? 'Бортто банкет' : 'Onboard Banquet' },
+        { img: '/images/captain.jpg', icon: '\ud83e\udded', title: ru ? 'Капитан-гид' : ky ? 'Капитан-гид' : 'Captain Guide' },
+        { img: '/images/scene6.jpg', icon: '\ud83d\udea4', title: ru ? 'Скоростные катера' : ky ? 'Ылдам катерлер' : 'Speedboats' },
+      ],
+    },
+    textCta: {
+      desc: ru ? 'Алыкул — первый оператор цифрового бронирования водного транспорта на озере Иссык-Куль. Мы объединяем проверенный флот из 8 судов, опытных капитанов с многолетним стажем и современные технологии, чтобы каждый гость получил незабываемый опыт на высочайшем горном озере мира.' : ky ? 'Алыкул — Ысык-Колдогу суу транспортун санариптик брондоонун биринчи оператору. Биз сыналган флотту, тажрыйбалуу капитандарды жана заманбап технологияларды бириктиребиз.' : 'Alykul is the first digital water transport booking operator on Lake Issyk-Kul. We combine a certified fleet of 8 vessels, experienced captains with years of expertise, and modern technology to give every guest an unforgettable experience on the world\'s highest mountain lake.',
+      btn: ru ? 'ЗАБРОНИРОВАТЬ' : ky ? 'БРОНДОО' : 'BOOK A TRIP',
+    },
+    catalog: {
+      badge: ru ? 'Маршруты и цены' : ky ? 'Маршруттар жана баалар' : 'Routes & Prices',
+      title: ru ? 'МАРШРУТЫ И ЦЕНЫ' : ky ? 'МАРШРУТТАР ЖАНА БААЛАР' : 'ROUTES & PRICES',
+      book: ru ? 'ЗАБРОНИРОВАТЬ' : ky ? 'БРОНДОО' : 'BOOK NOW',
+      tabs: ru ? ['Круизы', 'Чартеры', 'Скоростные', 'Детские'] : ky ? ['Круиздер', 'Чартерлер', 'Ылдам', 'Балдар'] : ['Cruises', 'Charters', 'Speed', 'Kids'],
+      tabItems: [
+        /* Cruises */
+        [
+          { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise', price: '1 400 KGS' },
+          { img: '/images/scene7.jpg', title: ru ? 'Утренний круиз' : ky ? 'Эртенки круиз' : 'Morning Cruise', price: '1 200 KGS' },
+          { img: '/images/alykul1.jpg', title: ru ? 'Дневной круиз' : ky ? 'Кундузгу круиз' : 'Day Cruise', price: '1 600 KGS' },
+          { img: '/images/cruise.jpg', title: ru ? 'Ночной круиз' : ky ? 'Тунку круиз' : 'Night Cruise', price: '2 500 KGS' },
+        ],
+        /* Charters */
+        [
+          { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: '7 000 KGS' },
+          { img: '/images/scene11.jpg', title: ru ? 'Романтик-чартер' : ky ? 'Романтик чартер' : 'Romantic Charter', price: '9 000 KGS' },
+          { img: '/images/scene12.jpg', title: ru ? 'Корпоративный' : ky ? 'Корпоративдик' : 'Corporate', price: '15 000 KGS' },
+          { img: '/images/alykul2.jpg', title: ru ? 'Свадебный' : ky ? 'Той' : 'Wedding', price: '25 000 KGS' },
+        ],
+        /* Speed */
+        [
+          { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: '2 000 KGS' },
+          { img: '/images/scene3.jpg', title: ru ? 'Вейкборд' : ky ? 'Вейкборд' : 'Wakeboard', price: '2 500 KGS' },
+          { img: '/images/scene5.jpg', title: ru ? 'Водные лыжи' : ky ? 'Суу лыжалары' : 'Water Skiing', price: '2 500 KGS' },
+          { img: '/images/scene9.jpg', title: ru ? 'Рыбалка' : ky ? 'Балык уулоо' : 'Fishing', price: '3 000 KGS' },
+        ],
+        /* Kids */
+        [
+          { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', price: '1 000 KGS' },
+          { img: '/images/scene1.jpg', title: ru ? 'Школьная экскурсия' : ky ? 'Мектеп экскурсиясы' : 'School Trip', price: '800 KGS' },
+          { img: '/images/scene4.jpg', title: ru ? 'Семейный круиз' : ky ? 'Уй-булолук круиз' : 'Family Cruise', price: '1 200 KGS' },
+          { img: '/images/scene8.jpg', title: ru ? 'День рождения' : ky ? 'Туулган кун' : 'Birthday', price: '1 500 KGS' },
+        ],
+      ],
+    },
+    schedule: {
+      badge: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
+      title: ru ? 'Расписание рейсов' : ky ? 'Рейстердин расписаниеси' : 'Trip Schedule',
+      sub: ru ? 'Сезон: 1 июня — 15 сентября, ежедневно' : ky ? 'Сезон: 1 июнь — 15 сентябрь' : 'Season: June 1 — September 15, daily',
+      col_route: ru ? 'Маршрут' : ky ? 'Маршрут' : 'Route',
+      col_time: ru ? 'Время' : ky ? 'Убакыт' : 'Time',
+      col_duration: ru ? 'Длительность' : ky ? 'Узактыгы' : 'Duration',
+      col_price: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
+      rows: [
+        { route: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 400 KGS' },
+        { route: ru ? 'Утренний круиз' : ky ? 'Эртенки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: '1 200 KGS' },
+        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мун' : '45 min', price: '2 000 KGS' },
+        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS' },
+        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax') },
+      ],
     },
     reviews: {
-      title: ru ? 'Отзывы гостей' : ky ? 'Конок пикирлери' : 'Guest Reviews',
       badge: ru ? 'Отзывы' : ky ? 'Пикирлер' : 'Testimonials',
+      title: ru ? 'Отзывы гостей' : ky ? 'Конок пикирлери' : 'Guest Reviews',
       sub: ru ? '12 000+ довольных гостей за 5 лет' : ky ? '5 жылда 12 000+ ыраазы конок' : '12,000+ happy guests over 5 years',
     },
-    about: {
-      title: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About Us',
-      intro: ru ? 'Алыкул — первый оператор цифрового бронирования водного транспорта на озере Иссык-Куль. Мы объединяем проверенный флот, опытных капитанов и современные технологии.' : 'Alykul is the first digital water transport booking operator on Lake Issyk-Kul, combining certified fleet, experienced captains, and modern technology.',
-      services: [
-        { icon: '⚡', title: ru ? 'Онлайн-бронирование' : 'Online Booking', desc: ru ? 'Выбирайте маршрут, дату и оплачивайте онлайн за 2 минуты' : 'Choose route, date, pay online in 2 minutes' },
-        { icon: '⛵', title: ru ? 'Проверенный флот' : 'Certified Fleet', desc: ru ? 'Каждое судно сертифицировано и проходит ежедневный осмотр' : 'Every vessel certified and inspected daily' },
-        { icon: '🏔️', title: ru ? '5+ лет опыта' : '5+ Years', desc: ru ? 'Более 5 лет организации водных туров на Иссык-Куле' : 'Over 5 years of water tours on Issyk-Kul' },
-        { icon: '🛡️', title: ru ? 'Безопасность' : 'Safety', desc: ru ? 'Спасательное оборудование, обученные капитаны, страховка' : 'Safety equipment, trained captains, insurance' },
-        { icon: '🌐', title: ru ? 'Мультиязычность' : 'Multilingual', desc: ru ? 'Платформа на русском, кыргызском и английском' : 'Platform in Russian, Kyrgyz, English' },
-        { icon: '💎', title: ru ? 'Лучшие цены' : 'Best Prices', desc: ru ? 'Прямое бронирование без наценок посредников' : 'Direct booking, no middleman markups' },
-      ],
-      s_years: ru ? 'лет опыта' : 'years',
-      s_guests: ru ? 'довольных гостей' : 'happy guests',
-      s_vessels: ru ? 'судов' : 'vessels',
-      s_rate: ru ? 'довольны' : 'satisfaction',
-      cta_title: ru ? 'Готовы к приключению?' : 'Ready for Adventure?',
-      cta_desc: ru ? 'Забронируйте водную прогулку на Иссык-Куле и создайте незабываемые воспоминания.' : 'Book a water tour on Issyk-Kul and create unforgettable memories.',
-      cta_btn: ru ? 'Выбрать маршрут' : 'Choose Route',
-    },
-    gallery: {
-      title: ru ? 'Наши маршруты' : ky ? 'Биздин маршруттар' : 'Our Routes',
-      sub: ru ? 'Откройте для себя лучшие водные приключения на Иссык-Куле' : 'Discover the best water adventures on Issyk-Kul',
-      more: ru ? 'Подробнее' : 'Read more',
-      c1: ru ? 'Закатный круиз' : 'Sunset Cruise', d1: ru ? 'Незабываемый вечер на теплоходе «Алыкул» с видом на горы Тянь-Шаня.' : 'Unforgettable evening on steamship "Alykul" with Tian Shan views.',
-      c2: ru ? 'Утренний круиз' : 'Morning Cruise', d2: ru ? 'Тихая водная гладь, горы в утренней дымке, кофе на палубе.' : 'Calm waters, mountains in morning haze, coffee on deck.',
-      c3: ru ? 'Теплоход «Алыкул»' : 'Steamship "Alykul"', d3: ru ? 'Флагман флота — 200 гостей, 2 палубы, банкетный зал.' : 'Fleet flagship — 200 guests, 2 decks, banquet hall.',
-      c4: ru ? 'Приватный чартер' : 'Private Charter', d4: ru ? 'Яхта «Nomad» — VIP-обслуживание, романтика, до 12 гостей.' : 'Yacht "Nomad" — VIP service, romance, up to 12 guests.',
-      c5: ru ? 'Скоростной тур' : 'Speed Tour', d5: ru ? 'Адреналин на скоростных катерах — до 60 км/ч по волнам Иссык-Куля.' : 'Adrenaline on speedboats — up to 60 km/h on Issyk-Kul waves.',
-      c6: ru ? 'Детский праздник' : "Kids' Party", d6: ru ? 'Праздник для детей на борту с аниматорами и развлекательной программой.' : 'Kids celebration on board with animators and entertainment.',
-    },
-    fleet: {
-      title: ru ? 'Наш флот' : ky ? 'Биздин флот' : 'Our Fleet',
-      sub: ru ? 'Сертифицированные суда с ежедневным техосмотром' : ky ? 'Күн сайын текшерилген кемелер' : 'Certified vessels with daily inspection',
-      items: [
-        { img: '/images/q02.jpg', name: ru ? 'Теплоход «Алыкул»' : 'Steamship "Alykul"', desc: ru ? 'Флагман флота. Круизы, корпоративы, свадьбы, детские праздники.' : 'Fleet flagship. Cruises, events, weddings, kids parties.', specs: [ru ? 'до 200 чел' : 'up to 200 pax', ru ? '2 палубы' : '2 decks', ru ? 'банкетный зал' : 'banquet hall'] },
-        { img: '/images/ep03.jpg', name: ru ? 'Яхта «Nomad»' : 'Yacht "Nomad"', desc: ru ? 'Приватные чартеры, романтические прогулки, VIP-обслуживание.' : 'Private charters, romantic walks, VIP service.', specs: [ru ? 'до 12 чел' : 'up to 12 pax', ru ? 'парусная' : 'sailing'] },
-        { img: '/images/scene6.jpg', name: ru ? 'Скоростные катера' : 'Speedboats', desc: ru ? 'Адреналиновые туры, водные лыжи, вейкборд, рыбалка.' : 'Adrenaline tours, water skiing, wakeboarding, fishing.', specs: [ru ? 'до 8 чел' : 'up to 8 pax', ru ? 'до 60 км/ч' : 'up to 60 km/h'] },
-      ],
-    },
     faq: {
-      title: ru ? 'Частые вопросы' : ky ? 'Көп берилүүчү суроолор' : 'FAQ',
+      title: ru ? 'Частые вопросы' : ky ? 'Коп берилуучу суроолор' : 'FAQ',
       items: [
-        { q: ru ? 'Как забронировать круиз?' : 'How to book a cruise?', a: ru ? 'Выберите маршрут на сайте, укажите дату и количество гостей. Бронирование через WhatsApp занимает 2 минуты. Оплата на месте или онлайн.' : 'Choose a route, select date and guests. WhatsApp booking takes 2 minutes. Pay on-site or online.' },
-        { q: ru ? 'Какие документы нужны для посадки?' : 'What documents are needed?', a: ru ? 'Только удостоверение личности. Для детей до 14 лет — свидетельство о рождении. Иностранным гражданам — паспорт.' : 'Only ID. Children under 14 — birth certificate. Foreign citizens — passport.' },
-        { q: ru ? 'Можно ли отменить бронирование?' : 'Can I cancel a booking?', a: ru ? 'Да, бесплатная отмена за 24 часа до отправления. При отмене менее чем за 24 часа — удерживается 20% стоимости.' : 'Yes, free cancellation 24h before departure. Less than 24h — 20% fee.' },
-        { q: ru ? 'Есть ли спасательное оборудование?' : 'Is there safety equipment?', a: ru ? 'Все суда оснащены спасательными жилетами, кругами и аптечкой. Капитаны сертифицированы и проходят ежегодную аттестацию.' : 'All vessels have life jackets, rings and first aid. Captains are certified annually.' },
-        { q: ru ? 'Работаете ли вы в плохую погоду?' : 'Do you operate in bad weather?', a: ru ? 'Безопасность — приоритет. При штормовом предупреждении рейсы переносятся. Мы уведомляем за 2 часа до отправления.' : 'Safety first. Cruises reschedule in storms. We notify 2 hours before departure.' },
+        { q: ru ? 'Как забронировать круиз?' : ky ? 'Круизди кантип брондойм?' : 'How to book a cruise?', a: ru ? 'Выберите маршрут на сайте, укажите дату и количество гостей. Бронирование через WhatsApp занимает 2 минуты. Оплата на месте или онлайн.' : ky ? 'Сайттан маршрутту танданыз, датаны жана коноктордун санын коргозунуз.' : 'Choose a route, select date and guests. WhatsApp booking takes 2 minutes. Pay on-site or online.' },
+        { q: ru ? 'Какие документы нужны для посадки?' : ky ? 'Кайсы документтер керек?' : 'What documents are needed?', a: ru ? 'Только удостоверение личности. Для детей до 14 лет — свидетельство о рождении. Иностранным гражданам — паспорт.' : ky ? 'Жеке кулуктук гана. 14 жашка чейинки балдарга — тууган кунукук.' : 'Only ID. Children under 14 — birth certificate. Foreign citizens — passport.' },
+        { q: ru ? 'Можно ли отменить бронирование?' : ky ? 'Брондоону жокко чыгарса болобу?' : 'Can I cancel a booking?', a: ru ? 'Да, бесплатная отмена за 24 часа до отправления. При отмене менее чем за 24 часа — удерживается 20% стоимости.' : ky ? 'Ооба, жонотуудон 24 саат мурун акысыз жокко чыгаруу.' : 'Yes, free cancellation 24h before departure. Less than 24h — 20% fee.' },
+        { q: ru ? 'Есть ли спасательное оборудование?' : ky ? 'Куткаруу жабдыктары барбы?' : 'Is there safety equipment?', a: ru ? 'Все суда оснащены спасательными жилетами, кругами и аптечкой. Капитаны сертифицированы и проходят ежегодную аттестацию.' : ky ? 'Бардык кемелерде куткаруу жилеттери, шакектери жана биринчи жардам бар.' : 'All vessels have life jackets, rings and first aid. Captains are certified annually.' },
+        { q: ru ? 'Работаете ли вы в плохую погоду?' : ky ? 'Жаман аба ырайында иштейсизби?' : 'Do you operate in bad weather?', a: ru ? 'Безопасность — приоритет. При штормовом предупреждении рейсы переносятся. Мы уведомляем за 2 часа до отправления.' : ky ? 'Коопсуздук — биринчи орунда. Бороон эскертуусундо рейстер которулот.' : 'Safety first. Cruises reschedule in storms. We notify 2 hours before departure.' },
       ],
     },
     map: {
@@ -990,53 +890,18 @@ function getTrans(lang: string) {
         tamga: ru ? 'Тамга' : ky ? 'Тамга' : 'Tamga',
       },
     },
-    trust: {
-      items: [
-        { icon: '🛡️', title: ru ? 'Сертифицированный флот' : ky ? 'Сертификатталган флот' : 'Certified Fleet', desc: ru ? 'Все суда прошли государственную сертификацию' : ky ? 'Бардык кемелер сертификатталган' : 'All vessels state-certified' },
-        { icon: '🔍', title: ru ? 'Ежедневный осмотр' : ky ? 'Күн сайын текшерүү' : 'Daily Inspection', desc: ru ? 'Технический осмотр перед каждым рейсом' : ky ? 'Ар бир рейстен мурун текшерүү' : 'Technical check before every trip' },
-        { icon: '🦺', title: ru ? 'Спасательное оборудование' : ky ? 'Куткаруу жабдыктары' : 'Safety Equipment', desc: ru ? 'Жилеты, круги и аптечка на каждом судне' : ky ? 'Жилеттер, чөгөлөтпөс шакектер' : 'Life jackets, rings & first aid on every vessel' },
-        { icon: '📋', title: ru ? 'Страховка включена' : ky ? 'Камсыздандыруу кирген' : 'Insurance Included', desc: ru ? 'Страхование пассажиров включено в стоимость' : ky ? 'Жүргүнчүлөрдүн камсыздандыруусу кирген' : 'Passenger insurance included in price' },
-      ],
-    },
-    catalog: {
-      badge: ru ? 'Маршруты' : ky ? 'Маршруттар' : 'Routes',
-      title: ru ? 'Маршруты и цены' : ky ? 'Маршруттар жана баалар' : 'Routes & Prices',
-      sub: ru ? 'Выберите идеальное водное приключение на Иссык-Куле' : ky ? 'Ысык-Көлдөгү идеалдуу суу сапарыңызды тандаңыз' : 'Choose your perfect water adventure on Issyk-Kul',
-      book: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
-      items: [
-        { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', price: '1 400 KGS', desc: ru ? 'Незабываемый вечер на теплоходе с видом на горы Тянь-Шаня и закат над озером.' : ky ? 'Тянь-Шань тоолоруна жана көлгө карай күн батышын көрүү.' : 'Unforgettable evening on steamship with Tian Shan mountain sunset views.' },
-        { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: '7 000 KGS', desc: ru ? 'Яхта «Nomad» — VIP-обслуживание, романтика, до 12 гостей.' : ky ? '«Nomad» яхтасы — VIP тейлөө, романтика.' : 'Yacht "Nomad" — VIP service, romance, up to 12 guests.' },
-        { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: '2 000 KGS', desc: ru ? 'Адреналин на скоростных катерах — до 60 км/ч по волнам Иссык-Куля.' : ky ? 'Ылдам катерлерде адреналин — Ысык-Көлдүн толкундарында.' : 'Adrenaline on speedboats — up to 60 km/h on Issyk-Kul waves.' },
-        { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax'), desc: ru ? 'Праздник для детей с аниматорами и развлекательной программой на борту.' : ky ? 'Балдар үчүн аниматорлор жана көңүл ачуу программасы.' : 'Kids celebration with animators and entertainment on board.' },
-      ],
-    },
-    schedule: {
-      badge: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
-      title: ru ? 'Расписание рейсов' : ky ? 'Рейстердин расписаниеси' : 'Trip Schedule',
-      sub: ru ? 'Сезон: 1 июня — 15 сентября, ежедневно' : ky ? 'Сезон: 1 июнь — 15 сентябрь' : 'Season: June 1 — September 15, daily',
-      col_route: ru ? 'Маршрут' : ky ? 'Маршрут' : 'Route',
-      col_time: ru ? 'Время' : ky ? 'Убакыт' : 'Time',
-      col_duration: ru ? 'Длительность' : ky ? 'Узактыгы' : 'Duration',
-      col_price: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
-      rows: [
-        { route: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 400 KGS' },
-        { route: ru ? 'Утренний круиз' : ky ? 'Эртеңки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: '1 200 KGS' },
-        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мүн' : '45 min', price: '2 000 KGS' },
-        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS' },
-        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax') },
-      ],
-    },
     foot: {
-      desc: ru ? 'Первая платформа онлайн-бронирования водного транспорта на озере Иссык-Куль.' : 'First online water transport booking platform on Lake Issyk-Kul.',
-      routes: ru ? 'Маршруты' : 'Routes',
-      cruises: ru ? 'Круизы' : 'Cruises',
-      charters: ru ? 'Чартеры' : 'Charters',
-      speed: ru ? 'Скоростные туры' : 'Speed Tours',
-      company: ru ? 'Компания' : 'Company',
-      privacy: ru ? 'Конфиденциальность' : 'Privacy',
-      contact: ru ? 'Контакты' : 'Contacts',
-      rights: ru ? 'Все права защищены.' : 'All rights reserved.',
-      account: ru ? 'Личный кабинет' : ky ? 'Жеке кабинет' : 'Account',
+      desc: ru ? 'Первая платформа онлайн-бронирования водного транспорта на озере Иссык-Куль. Круизы, чартеры, скоростные туры с 2019 года.' : ky ? 'Ысык-Колдогу суу транспортун онлайн брондоонун биринчи платформасы.' : 'First online water transport booking platform on Lake Issyk-Kul. Cruises, charters, speed tours since 2019.',
+      newsletter: ru ? 'Подпишитесь на новости' : ky ? 'Жанылыктарга жазылыныз' : 'Subscribe to newsletter',
+      trips: ru ? 'Маршруты' : ky ? 'Маршруттар' : 'Trips',
+      cruises: ru ? 'Круизы' : ky ? 'Круиздер' : 'Cruises',
+      charters: ru ? 'Чартеры' : ky ? 'Чартерлер' : 'Charters',
+      speed: ru ? 'Скоростные туры' : ky ? 'Ылдам турлар' : 'Speed Tours',
+      kids: ru ? 'Детские' : ky ? 'Балдар' : 'Kids',
+      scheduleLabel: ru ? 'Информация' : ky ? 'Маалымат' : 'Information',
+      contact: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contact',
+      rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
+      followUs: ru ? 'Мы в соцсетях' : ky ? 'Соц тармактарда' : 'Follow us',
     },
   };
 }

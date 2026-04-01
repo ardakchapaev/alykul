@@ -6,6 +6,7 @@ import WaveDivider from '@/components/WaveDivider';
 import HeroBooking from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
+import SaileyBlogWrapper from '@/components/SaileyBlogTheme';
 import SaileyWrapper from '@/components/SaileyTheme';
 import DeepOceanWrapper from '@/components/DeepOceanTheme';
 import CoastalLuxuryWrapper from '@/components/CoastalLuxuryTheme';
@@ -38,6 +39,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
   return (
     <>
+      {/* M2: Sailey Blog — full overlay */}
+      <SaileyBlogWrapper lang={params.lang} />
       {/* M3: Sailey theme — full overlay (original) */}
       <SaileyWrapper lang={params.lang}>{null}</SaileyWrapper>
       {/* M4: Deep Ocean — full overlay */}
