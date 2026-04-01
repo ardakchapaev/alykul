@@ -16,11 +16,14 @@ export default function SaileyWrapper({ lang }: Props) {
   return (
     <div className="fixed inset-0 z-[9999] bg-white overflow-auto">
       <M3Nav lang={lang} t={t} />
-      <M3Hero t={t} />
+      <M3Hero t={t} lang={lang} />
       {/* Sand texture background — visible between white content blocks */}
       <div className="relative py-6 md:py-10 flex flex-col gap-6 md:gap-10" style={{ backgroundImage: 'url(/images/m3-sand-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
         <M3About t={t} />
+        <M3TrustBadges t={t} />
         <M3Gallery t={t} />
+        <M3Catalog t={t} lang={lang} />
+        <M3Schedule t={t} lang={lang} />
         <M3Fleet t={t} />
         <M3Reviews t={t} lang={lang} />
         <M3FAQ t={t} />
@@ -47,6 +50,9 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
   }, []);
 
   const links = [
+    { href: '#m3-catalog', label: t.nav.routes },
+    { href: '#m3-schedule', label: t.nav.schedule },
+    { href: '#m3-fleet', label: t.nav.fleet },
     { href: '#m3-reviews', label: t.nav.reviews },
     { href: '#m3-contacts', label: t.nav.contacts },
   ];
@@ -75,6 +81,10 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Book CTA */}
+          <a href={`/${lang}/trips`} className="hidden lg:inline-block bg-[#D4782C] hover:bg-[#B8621E] text-white text-xs font-semibold px-4 py-1.5 rounded-full transition-colors font-m3-body">
+            {t.nav.booking}
+          </a>
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
@@ -121,6 +131,9 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
           {links.map(l => (
             <a key={l.href} href={l.href} className="text-white font-m3-display text-2xl hover:text-sky transition-colors" onClick={() => setOpen(false)}>{l.label}</a>
           ))}
+          <a href={`/${lang}/trips`} className="bg-[#D4782C] hover:bg-[#B8621E] text-white font-m3-body text-lg font-semibold px-8 py-3 rounded-full transition-colors" onClick={() => setOpen(false)}>
+            {t.nav.booking}
+          </a>
           <div className="flex gap-3 mt-6 border-t border-white/10 pt-6">
             {themes.map(th => (
               <button key={th} onClick={() => { setTheme(th); setOpen(false); }}
@@ -134,7 +147,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
 }
 
 /* ═══════════════ HERO — Original layout with YouTube video instead of slider ═══════════════ */
-function M3Hero({ t }: { t: Tr }) {
+function M3Hero({ t, lang }: { t: Tr; lang: string }) {
   return (
     <section className="relative h-screen min-h-[600px] bg-navy overflow-hidden">
       {/* ── Full-screen YouTube video background ── */}
@@ -166,6 +179,34 @@ function M3Hero({ t }: { t: Tr }) {
         <p className="text-white/50 text-sm md:text-base mt-2 tracking-[0.15em] uppercase font-m3-body">
           {t.hero.line2}
         </p>
+
+        {/* ── Booking Widget ── */}
+        <div className="mt-6 bg-white/[0.08] backdrop-blur-xl border border-[#E8A84C]/20 rounded-2xl p-4 max-w-3xl">
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end">
+            <div className="flex-1">
+              <label className="text-white/50 text-[10px] uppercase tracking-wider font-m3-body mb-1 block">{t.booking.pier}</label>
+              <select className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#E8A84C]/40 appearance-none cursor-pointer">
+                <option value="cholpon-ata">{t.booking.piers.cholpon}</option>
+                <option value="bosteri">{t.booking.piers.bosteri}</option>
+                <option value="tamga">{t.booking.piers.tamga}</option>
+              </select>
+            </div>
+            <div className="flex-1">
+              <label className="text-white/50 text-[10px] uppercase tracking-wider font-m3-body mb-1 block">{t.booking.date}</label>
+              <input type="date" className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#E8A84C]/40" />
+            </div>
+            <div className="flex-1">
+              <label className="text-white/50 text-[10px] uppercase tracking-wider font-m3-body mb-1 block">{t.booking.guests}</label>
+              <select className="w-full bg-white/10 border border-white/10 rounded-lg px-3 py-2.5 text-white text-sm font-m3-body outline-none focus:border-[#E8A84C]/40 appearance-none cursor-pointer">
+                {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n} {t.booking.guestLabel}</option>)}
+                <option value="10+">10+</option>
+              </select>
+            </div>
+            <a href={`/${lang}/trips`} className="bg-[#D4782C] hover:bg-[#B8621E] text-white font-semibold px-6 py-2.5 rounded-lg transition-colors font-m3-body text-sm text-center whitespace-nowrap">
+              {t.booking.search}
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* ── Slide counter bottom-left ── */}
@@ -439,6 +480,122 @@ function M3Gallery({ t }: { t: Tr }) {
   );
 }
 
+/* ═══════════════ TRUST BADGES ═══════════════ */
+function M3TrustBadges({ t }: { t: Tr }) {
+  const badges = t.trust.items;
+  return (
+    <section className="py-12 bg-gradient-to-r from-[#1A2F3A] to-[#1A2F3A]/95 rounded-2xl mx-4 md:mx-8 shadow-sm">
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {badges.map((b: { icon: string; title: string; desc: string }) => (
+            <ScrollReveal key={b.title}>
+              <div className="text-center group">
+                <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-[#E8A84C]/10 border border-[#E8A84C]/20 flex items-center justify-center text-2xl group-hover:bg-[#E8A84C]/20 transition-colors">
+                  {b.icon}
+                </div>
+                <h4 className="text-white font-semibold text-sm font-m3-body mb-1">{b.title}</h4>
+                <p className="text-white/50 text-xs font-m3-body">{b.desc}</p>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ CATALOG WITH PRICES ═══════════════ */
+function M3Catalog({ t, lang }: { t: Tr; lang: string }) {
+  const items = t.catalog.items;
+  return (
+    <section id="m3-catalog" className="py-20 bg-white rounded-2xl mx-4 md:mx-8 shadow-sm">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="inline-block border border-[#D4782C]/20 py-1 px-4 rounded-lg text-[#D4782C] text-xs font-m3-body font-semibold uppercase tracking-wider mb-4">{t.catalog.badge}</div>
+            <h2 className="font-m3-display font-bold text-navy" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{t.catalog.title}</h2>
+            <p className="font-m3-body text-muted mt-3">{t.catalog.sub}</p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map((item: { img: string; title: string; price: string; desc: string }) => (
+            <ScrollReveal key={item.title}>
+              <div className="group rounded-2xl overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-shadow bg-white">
+                <div className="relative h-[220px] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute top-3 right-3 bg-[#D4782C] text-white text-xs font-bold px-3 py-1 rounded-full font-m3-body shadow-lg">
+                    {item.price}
+                  </div>
+                </div>
+                <div className="p-5">
+                  <h3 className="font-m3-display font-bold text-navy text-lg mb-2">{item.title}</h3>
+                  <p className="font-m3-body text-muted text-sm mb-4 line-clamp-2">{item.desc}</p>
+                  <a href={`/${lang}/trips`} className="inline-block w-full text-center bg-[#D4782C] hover:bg-[#B8621E] text-white font-semibold py-2.5 rounded-lg transition-colors font-m3-body text-sm">
+                    {t.catalog.book}
+                  </a>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ SCHEDULE ═══════════════ */
+function M3Schedule({ t, lang }: { t: Tr; lang: string }) {
+  const rows = t.schedule.rows;
+  return (
+    <section id="m3-schedule" className="py-20 bg-[#1A2F3A] rounded-2xl mx-4 md:mx-8 shadow-sm">
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="inline-block border border-[#E8A84C]/20 py-1 px-4 rounded-lg text-[#E8A84C] text-xs font-m3-body font-semibold uppercase tracking-wider mb-4">{t.schedule.badge}</div>
+            <h2 className="font-m3-display font-bold text-white" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{t.schedule.title}</h2>
+            <p className="font-m3-body text-white/50 mt-3">{t.schedule.sub}</p>
+          </div>
+        </ScrollReveal>
+
+        <div className="rounded-2xl overflow-hidden border border-white/10">
+          {/* Header */}
+          <div className="hidden md:grid grid-cols-5 gap-0 bg-[#D4782C] text-white text-xs font-semibold font-m3-body uppercase tracking-wider">
+            <div className="px-5 py-3">{t.schedule.col_route}</div>
+            <div className="px-5 py-3">{t.schedule.col_time}</div>
+            <div className="px-5 py-3">{t.schedule.col_duration}</div>
+            <div className="px-5 py-3">{t.schedule.col_price}</div>
+            <div className="px-5 py-3"></div>
+          </div>
+          {/* Rows */}
+          {rows.map((row: { route: string; time: string; duration: string; price: string }, i: number) => (
+            <div key={i} className={`grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-0 px-5 py-4 ${i % 2 === 0 ? 'bg-white/[0.03]' : 'bg-white/[0.06]'} border-b border-white/5 last:border-b-0`}>
+              <div className="font-m3-body text-white font-semibold text-sm">
+                <span className="md:hidden text-[#E8A84C] text-xs mr-2">{t.schedule.col_route}:</span>{row.route}
+              </div>
+              <div className="font-m3-body text-white/70 text-sm">
+                <span className="md:hidden text-[#E8A84C] text-xs mr-2">{t.schedule.col_time}:</span>{row.time}
+              </div>
+              <div className="font-m3-body text-white/70 text-sm">
+                <span className="md:hidden text-[#E8A84C] text-xs mr-2">{t.schedule.col_duration}:</span>{row.duration}
+              </div>
+              <div className="font-m3-body text-[#E8A84C] font-bold text-sm">
+                <span className="md:hidden text-white/50 text-xs font-normal mr-2">{t.schedule.col_price}:</span>{row.price}
+              </div>
+              <div className="md:text-right">
+                <a href={`/${lang}/trips`} className="inline-block bg-[#D4782C] hover:bg-[#B8621E] text-white text-xs font-semibold px-4 py-1.5 rounded-full transition-colors font-m3-body">
+                  {t.catalog.book}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ═══════════════ FLEET — Interactive Image Accordion ═══════════════ */
 function M3Fleet({ t }: { t: Tr }) {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -604,15 +761,17 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
         <div className="flex flex-row gap-12 md:gap-16">
           <div className="flex flex-col gap-3">
             <h4 className="uppercase text-xs font-semibold text-white/60 tracking-wider font-m3-body">{t.foot.routes}</h4>
-            <a href="#m3-fleet" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.cruises}</a>
-            <a href="#m3-fleet" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.charters}</a>
-            <a href="#m3-fleet" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.speed}</a>
+            <a href={`/${lang}/trips`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.cruises}</a>
+            <a href={`/${lang}/trips`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.charters}</a>
+            <a href={`/${lang}/trips`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.speed}</a>
+            <a href="#m3-schedule" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.nav.schedule}</a>
           </div>
           <div className="flex flex-col gap-3">
             <h4 className="uppercase text-xs font-semibold text-white/60 tracking-wider font-m3-body">{t.foot.company}</h4>
             <a href="#m3-reviews" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.nav.reviews}</a>
             <a href="#m3-faq" className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">FAQ</a>
             <a href={`/${lang}/privacy`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.privacy}</a>
+            <a href={`/${lang}/checkout`} className="text-white/80 text-sm hover:text-sky transition-colors font-m3-body drop-shadow-sm">{t.foot.account}</a>
           </div>
           <div className="hidden md:flex flex-col gap-3">
             <h4 className="uppercase text-xs font-semibold text-white/60 tracking-wider font-m3-body">{t.foot.contact}</h4>
@@ -819,6 +978,54 @@ function getTrans(lang: string) {
       title: ru ? 'Как нас найти' : ky ? 'Бизди кантип табасыз' : 'Find Us',
       sub: ru ? 'Причал в Чолпон-Ате, северный берег озера Иссык-Куль' : ky ? 'Чолпон-Атадагы причал' : 'Pier in Cholpon-Ata, northern shore of Lake Issyk-Kul',
     },
+    booking: {
+      pier: ru ? 'Причал' : ky ? 'Причал' : 'Pier',
+      date: ru ? 'Дата' : ky ? 'Дата' : 'Date',
+      guests: ru ? 'Гости' : ky ? 'Коноктор' : 'Guests',
+      guestLabel: ru ? 'чел.' : ky ? 'адам' : 'pax',
+      search: ru ? 'Найти рейс' : ky ? 'Рейс табуу' : 'Find Trip',
+      piers: {
+        cholpon: ru ? 'Чолпон-Ата' : ky ? 'Чолпон-Ата' : 'Cholpon-Ata',
+        bosteri: ru ? 'Бостери' : ky ? 'Бостери' : 'Bosteri',
+        tamga: ru ? 'Тамга' : ky ? 'Тамга' : 'Tamga',
+      },
+    },
+    trust: {
+      items: [
+        { icon: '🛡️', title: ru ? 'Сертифицированный флот' : ky ? 'Сертификатталган флот' : 'Certified Fleet', desc: ru ? 'Все суда прошли государственную сертификацию' : ky ? 'Бардык кемелер сертификатталган' : 'All vessels state-certified' },
+        { icon: '🔍', title: ru ? 'Ежедневный осмотр' : ky ? 'Күн сайын текшерүү' : 'Daily Inspection', desc: ru ? 'Технический осмотр перед каждым рейсом' : ky ? 'Ар бир рейстен мурун текшерүү' : 'Technical check before every trip' },
+        { icon: '🦺', title: ru ? 'Спасательное оборудование' : ky ? 'Куткаруу жабдыктары' : 'Safety Equipment', desc: ru ? 'Жилеты, круги и аптечка на каждом судне' : ky ? 'Жилеттер, чөгөлөтпөс шакектер' : 'Life jackets, rings & first aid on every vessel' },
+        { icon: '📋', title: ru ? 'Страховка включена' : ky ? 'Камсыздандыруу кирген' : 'Insurance Included', desc: ru ? 'Страхование пассажиров включено в стоимость' : ky ? 'Жүргүнчүлөрдүн камсыздандыруусу кирген' : 'Passenger insurance included in price' },
+      ],
+    },
+    catalog: {
+      badge: ru ? 'Маршруты' : ky ? 'Маршруттар' : 'Routes',
+      title: ru ? 'Маршруты и цены' : ky ? 'Маршруттар жана баалар' : 'Routes & Prices',
+      sub: ru ? 'Выберите идеальное водное приключение на Иссык-Куле' : ky ? 'Ысык-Көлдөгү идеалдуу суу сапарыңызды тандаңыз' : 'Choose your perfect water adventure on Issyk-Kul',
+      book: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
+      items: [
+        { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', price: '1 400 KGS', desc: ru ? 'Незабываемый вечер на теплоходе с видом на горы Тянь-Шаня и закат над озером.' : ky ? 'Тянь-Шань тоолоруна жана көлгө карай күн батышын көрүү.' : 'Unforgettable evening on steamship with Tian Shan mountain sunset views.' },
+        { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: '7 000 KGS', desc: ru ? 'Яхта «Nomad» — VIP-обслуживание, романтика, до 12 гостей.' : ky ? '«Nomad» яхтасы — VIP тейлөө, романтика.' : 'Yacht "Nomad" — VIP service, romance, up to 12 guests.' },
+        { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: '2 000 KGS', desc: ru ? 'Адреналин на скоростных катерах — до 60 км/ч по волнам Иссык-Куля.' : ky ? 'Ылдам катерлерде адреналин — Ысык-Көлдүн толкундарында.' : 'Adrenaline on speedboats — up to 60 km/h on Issyk-Kul waves.' },
+        { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax'), desc: ru ? 'Праздник для детей с аниматорами и развлекательной программой на борту.' : ky ? 'Балдар үчүн аниматорлор жана көңүл ачуу программасы.' : 'Kids celebration with animators and entertainment on board.' },
+      ],
+    },
+    schedule: {
+      badge: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
+      title: ru ? 'Расписание рейсов' : ky ? 'Рейстердин расписаниеси' : 'Trip Schedule',
+      sub: ru ? 'Сезон: 1 июня — 15 сентября, ежедневно' : ky ? 'Сезон: 1 июнь — 15 сентябрь' : 'Season: June 1 — September 15, daily',
+      col_route: ru ? 'Маршрут' : ky ? 'Маршрут' : 'Route',
+      col_time: ru ? 'Время' : ky ? 'Убакыт' : 'Time',
+      col_duration: ru ? 'Длительность' : ky ? 'Узактыгы' : 'Duration',
+      col_price: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
+      rows: [
+        { route: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 400 KGS' },
+        { route: ru ? 'Утренний круиз' : ky ? 'Эртеңки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: '1 200 KGS' },
+        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мүн' : '45 min', price: '2 000 KGS' },
+        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS' },
+        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax') },
+      ],
+    },
     foot: {
       desc: ru ? 'Первая платформа онлайн-бронирования водного транспорта на озере Иссык-Куль.' : 'First online water transport booking platform on Lake Issyk-Kul.',
       routes: ru ? 'Маршруты' : 'Routes',
@@ -829,6 +1036,7 @@ function getTrans(lang: string) {
       privacy: ru ? 'Конфиденциальность' : 'Privacy',
       contact: ru ? 'Контакты' : 'Contacts',
       rights: ru ? 'Все права защищены.' : 'All rights reserved.',
+      account: ru ? 'Личный кабинет' : ky ? 'Жеке кабинет' : 'Account',
     },
   };
 }

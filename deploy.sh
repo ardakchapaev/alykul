@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-SERVER="root@185.170.198.111"
+SERVER="vps"
 PROJECT_DIR="/opt/alykul"
 REPO="https://github.com/ardakchapaev/alykul.git"
 

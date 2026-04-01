@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══ HIDE SCROLLBARS GLOBALLY ═══ */
+html, body, .overflow-auto, .overflow-y-auto, .overflow-x-auto {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+[class*="overflow-auto"]::-webkit-scrollbar,
+.fixed.inset-0::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
 /* ═══ THEME M1: Ocean Classic (default — original) ═══ */
 :root, [data-theme="M1"] {
   --color-navy: #182F48;

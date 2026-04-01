@@ -14,12 +14,15 @@ export default function DeepOceanWrapper({ lang }: { lang: string }) {
   return (
     <div className="fixed inset-0 z-[9999] overflow-auto bg-[#0B1929]">
       <M3Nav lang={lang} t={t} />
-      <M3Hero t={t} />
+      <M3Hero t={t} lang={lang} />
       <ParallaxDivider image="/images/scene7.jpg" />
       <M3About t={t} />
+      <M4TrustBadges t={t} />
       <ParallaxDivider image="/images/hero.jpg" text="Issyk-Kul" />
-      <M3Fleet t={t} />
+      <M4Catalog t={t} lang={lang} />
+      <M4Schedule t={t} lang={lang} />
       <ParallaxDivider image="/images/scene4.jpg" />
+      <M3Fleet t={t} />
       <M3Gallery t={t} />
       <M3Reviews t={t} lang={lang} />
       <ParallaxDivider image="/images/alykul1.jpg" />
@@ -46,8 +49,10 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
   }, []);
 
   const links = [
-    { href: '#m3-reviews', label: t.nav.reviews },
+    { href: '#m4-catalog', label: t.nav.routes },
+    { href: '#m4-schedule', label: t.nav.schedule },
     { href: '#m3-fleet', label: t.nav.fleet },
+    { href: '#m3-reviews', label: t.nav.reviews },
     { href: '#m3-contacts', label: t.nav.contacts },
   ];
   const langLabels: Record<string, string> = { ru: 'RU', en: 'EN', ky: 'KY' };
@@ -72,6 +77,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
           {links.map(l => (
             <a key={l.href} href={l.href} className="text-white/70 text-[13px] font-medium tracking-[1px] hover:text-[#00B4D8] transition-colors">{l.label}</a>
           ))}
+          <a href={`/${lang}/trips`} className="bg-[#00B4D8] text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-[#0096C7] transition-colors">{t.nav.booking}</a>
         </div>
 
         <div className="flex items-center gap-2">
@@ -121,6 +127,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
           {links.map(l => (
             <a key={l.href} href={l.href} className="text-white font-m3-display text-2xl hover:text-[#00B4D8] transition-colors" onClick={() => setOpen(false)}>{l.label}</a>
           ))}
+          <a href={`/${lang}/trips`} className="bg-[#00B4D8] text-white px-6 py-2.5 rounded-full text-lg font-semibold hover:bg-[#0096C7] transition-colors" onClick={() => setOpen(false)}>{t.nav.booking}</a>
           <div className="flex gap-3 mt-6 border-t border-white/10 pt-6">
             {themes.map(th => (
               <button key={th} onClick={() => { setTheme(th); setOpen(false); }}
@@ -134,9 +141,9 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
 }
 
 /* ═══════════════ HERO — Fullscreen video ═══════════════ */
-function M3Hero({ t }: { t: Tr }) {
+function M3Hero({ t, lang }: { t: Tr; lang: string }) {
   return (
-    <section className="relative h-screen min-h-[600px] bg-[#0B1929] overflow-hidden">
+    <section className="relative h-screen min-h-[700px] bg-[#0B1929] overflow-hidden">
       {/* Full-screen local video background */}
       <video
         src="/images/hero-waves.mp4"
@@ -146,7 +153,7 @@ function M3Hero({ t }: { t: Tr }) {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0B1929]/60 via-[#0B1929]/30 to-[#0B1929]/80" />
 
       {/* Hero text — bottom-left */}
-      <div className="absolute bottom-32 md:bottom-28 left-0 right-0 z-10 px-6 md:px-12">
+      <div className="absolute bottom-44 md:bottom-36 left-0 right-0 z-10 px-6 md:px-12">
         <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-wider leading-[1.05] font-m3-display">
           {t.hero.line1}
         </h1>
@@ -161,6 +168,37 @@ function M3Hero({ t }: { t: Tr }) {
         >
           {t.hero.book}
         </a>
+
+        {/* Booking Widget */}
+        <div className="mt-6 bg-white/[0.08] backdrop-blur-xl border border-white/10 rounded-2xl p-4">
+          <div className="flex flex-col md:flex-row items-stretch md:items-end gap-3">
+            <div className="flex-1">
+              <label className="text-white/40 text-xs font-m3-body mb-1 block">{t.booking.pier}</label>
+              <select className="w-full bg-white/[0.06] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white font-m3-body outline-none focus:border-[#00B4D8]/40 appearance-none cursor-pointer">
+                <option value="cholpon">{t.piers.cholpon}</option>
+                <option value="bosteri">{t.piers.bosteri}</option>
+                <option value="karakol">{t.piers.karakol}</option>
+                <option value="tamga">{t.piers.tamga}</option>
+              </select>
+            </div>
+            <div className="flex-1">
+              <label className="text-white/40 text-xs font-m3-body mb-1 block">{t.booking.date}</label>
+              <input type="date" className="w-full bg-white/[0.06] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white font-m3-body outline-none focus:border-[#00B4D8]/40 [color-scheme:dark]" />
+            </div>
+            <div className="flex-1">
+              <label className="text-white/40 text-xs font-m3-body mb-1 block">{t.booking.guests}</label>
+              <select className="w-full bg-white/[0.06] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white font-m3-body outline-none focus:border-[#00B4D8]/40 appearance-none cursor-pointer">
+                <option value="2">{t.booking.guests_2}</option>
+                <option value="4">{t.booking.guests_4}</option>
+                <option value="6">{t.booking.guests_6}</option>
+                <option value="8">{t.booking.guests_8}</option>
+              </select>
+            </div>
+            <a href={`/${lang}/trips`} className="bg-[#00B4D8] hover:bg-[#0096C7] text-white font-semibold px-6 py-2.5 rounded-lg transition-colors font-m3-body text-sm text-center whitespace-nowrap">
+              {t.booking.search}
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* Stats bar — bottom */}
@@ -272,6 +310,162 @@ function M3About({ t }: { t: Tr }) {
             </div>
           </div>
         </ScrollReveal>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ TRUST BADGES ═══════════════ */
+function M4TrustBadges({ t }: { t: Tr }) {
+  const badges = [
+    { icon: '🛡️', text: t.trust.certified },
+    { icon: '🔍', text: t.trust.inspection },
+    { icon: '🦺', text: t.trust.equipment },
+    { icon: '📋', text: t.trust.insurance },
+  ];
+
+  return (
+    <section className="py-4 bg-[#0B1929]">
+      <div className="bg-[#00B4D8]/10 py-6 rounded-2xl mx-4 md:mx-8">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {badges.map(b => (
+              <div key={b.text} className="flex items-center gap-3 justify-center text-center md:text-left md:justify-start">
+                <span className="text-2xl flex-shrink-0">{b.icon}</span>
+                <span className="text-white/80 text-sm font-m3-body font-medium">{b.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ CATALOG ═══════════════ */
+function M4Catalog({ t, lang }: { t: Tr; lang: string }) {
+  const items = [
+    { img: '/images/q02.jpg', name: t.catalog.sunset_cruise, price: '1,400 KGS', category: t.catalog.cruise },
+    { img: '/images/ep03.jpg', name: t.catalog.private_charter, price: '7,000 KGS', category: t.catalog.charter },
+    { img: '/images/scene6.jpg', name: t.catalog.speed_tour, price: '2,000 KGS', category: t.catalog.entertainment },
+    { img: '/images/kids.jpg', name: t.catalog.kids_party, price: '1,000 KGS', category: t.catalog.kids },
+  ];
+
+  return (
+    <section id="m4-catalog" className="py-20 bg-[#0B1929]">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <h2 className="font-bold text-white text-2xl md:text-3xl font-m3-display">{t.catalog.title}</h2>
+            <p className="text-white/40 mt-2 text-sm font-m3-body">{t.catalog.subtitle}</p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map(item => (
+            <div key={item.name} className="bg-white/[0.04] border border-white/[0.06] rounded-2xl overflow-hidden hover:border-[#00B4D8]/30 transition-all group">
+              <div className="relative h-[200px] overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.img} alt={item.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-3 left-3">
+                  <span className="bg-[#00B4D8]/20 text-[#00B4D8] text-[10px] font-semibold px-2.5 py-1 rounded-full border border-[#00B4D8]/30 font-m3-body">{item.category}</span>
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="text-white font-semibold text-base mb-2 font-m3-display">{item.name}</h3>
+                <p className="text-[#00B4D8] font-bold text-lg mb-3 font-m3-display">{t.catalog.from} {item.price}</p>
+                <a href={`/${lang}/trips`} className="block bg-[#00B4D8] hover:bg-[#0096C7] text-white px-4 py-2 rounded-lg text-sm w-full text-center font-semibold transition-colors font-m3-body">
+                  {t.catalog.book}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ SCHEDULE ═══════════════ */
+function M4Schedule({ t, lang }: { t: Tr; lang: string }) {
+  const rows = [
+    { route: t.schedule.r_sunset, vessel: t.schedule.v_alykul, departure: '18:00', duration: t.schedule.dur_2h, price: '1,400 KGS', freq: 'daily' as const },
+    { route: t.schedule.r_morning, vessel: t.schedule.v_alykul, departure: '10:00', duration: t.schedule.dur_1_5h, price: '1,200 KGS', freq: 'daily' as const },
+    { route: t.schedule.r_speed, vessel: t.schedule.v_boat, departure: '12:00, 14:00, 16:00', duration: t.schedule.dur_40m, price: '2,000 KGS', freq: 'daily' as const },
+    { route: t.schedule.r_charter, vessel: 'Nomad', departure: t.schedule.on_request, duration: t.schedule.dur_2_6h, price: t.schedule.from_7000, freq: 'on_request' as const },
+    { route: t.schedule.r_kids, vessel: t.schedule.v_alykul, departure: t.schedule.on_request, duration: t.schedule.dur_2_3h, price: t.schedule.from_1000, freq: 'weekend' as const },
+  ];
+
+  const freqBadge = (f: 'daily' | 'on_request' | 'weekend') => {
+    if (f === 'daily') return <span className="inline-block bg-green-500/20 text-green-400 text-[10px] font-semibold px-2 py-0.5 rounded-full">{t.schedule.daily}</span>;
+    if (f === 'on_request') return <span className="inline-block bg-blue-500/20 text-blue-400 text-[10px] font-semibold px-2 py-0.5 rounded-full">{t.schedule.on_request}</span>;
+    return <span className="inline-block bg-orange-500/20 text-orange-400 text-[10px] font-semibold px-2 py-0.5 rounded-full">{t.schedule.weekend}</span>;
+  };
+
+  return (
+    <section id="m4-schedule" className="py-20 bg-[#0B1929]">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <h2 className="font-bold text-white text-2xl md:text-3xl font-m3-display">{t.schedule.title}</h2>
+            <p className="text-white/40 mt-2 text-sm font-m3-body">{t.schedule.subtitle}</p>
+          </div>
+        </ScrollReveal>
+
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden">
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-[#00B4D8]/20 text-[#00B4D8]">
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider font-m3-body">{t.schedule.route}</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider font-m3-body">{t.schedule.vessel}</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider font-m3-body">{t.schedule.departure}</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider font-m3-body">{t.schedule.duration}</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider font-m3-body">{t.schedule.price}</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider font-m3-body">{t.schedule.frequency}</th>
+                  <th className="px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={i} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
+                    <td className="px-4 py-3.5 text-white text-sm font-semibold font-m3-body">{r.route}</td>
+                    <td className="px-4 py-3.5 text-white/60 text-sm font-m3-body">{r.vessel}</td>
+                    <td className="px-4 py-3.5 text-white/60 text-sm font-m3-body">{r.departure}</td>
+                    <td className="px-4 py-3.5 text-white/60 text-sm font-m3-body">{r.duration}</td>
+                    <td className="px-4 py-3.5 text-[#00B4D8] font-bold text-sm font-m3-body">{r.price}</td>
+                    <td className="px-4 py-3.5">{freqBadge(r.freq)}</td>
+                    <td className="px-4 py-3.5">
+                      <a href={`/${lang}/trips`} className="bg-[#00B4D8] hover:bg-[#0096C7] text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors font-m3-body">{t.schedule.book}</a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="md:hidden divide-y divide-white/[0.06]">
+            {rows.map((r, i) => (
+              <div key={i} className="p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-white font-semibold text-sm font-m3-body">{r.route}</h4>
+                  {freqBadge(r.freq)}
+                </div>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/50 font-m3-body">
+                  <span>{r.vessel}</span>
+                  <span>{r.departure}</span>
+                  <span>{r.duration}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[#00B4D8] font-bold text-sm font-m3-body">{r.price}</span>
+                  <a href={`/${lang}/trips`} className="bg-[#00B4D8] hover:bg-[#0096C7] text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors font-m3-body">{t.schedule.book}</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -599,8 +793,8 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
             {/* Social */}
             <div className="flex gap-4 mt-2">
               {[
-                { href: 'https://instagram.com', label: 'Instagram' },
-                { href: 'https://t.me', label: 'Telegram' },
+                { href: 'https://instagram.com/alykul.kg', label: 'Instagram' },
+                { href: 'https://t.me/alykul', label: 'Telegram' },
                 { href: 'https://wa.me/996555123456', label: 'WhatsApp' },
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
@@ -613,6 +807,7 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
           <div className="flex flex-row gap-12 md:gap-16">
             <div className="flex flex-col gap-3">
               <h4 className="uppercase text-xs font-semibold text-white/30 tracking-wider font-m3-body">{t.foot.routes}</h4>
+              <a href={`/${lang}/trips`} className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.foot.all_routes}</a>
               <a href="#m3-fleet" className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.foot.cruises}</a>
               <a href="#m3-fleet" className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.foot.charters}</a>
               <a href="#m3-fleet" className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.foot.speed}</a>
@@ -620,6 +815,7 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
             <div className="flex flex-col gap-3">
               <h4 className="uppercase text-xs font-semibold text-white/30 tracking-wider font-m3-body">{t.foot.company}</h4>
               <a href="#m3-reviews" className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.nav.reviews}</a>
+              <a href={`/${lang}/account`} className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.foot.account}</a>
               <a href="#m3-faq" className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">FAQ</a>
               <a href={`/${lang}/privacy`} className="text-white/50 text-sm hover:text-[#00B4D8] transition-colors font-m3-body">{t.foot.privacy}</a>
             </div>
@@ -760,6 +956,70 @@ function getTrans(lang: string) {
       vessels: ru ? 'судов' : ky ? 'кеме' : 'vessels',
       routes: ru ? 'маршрутов' : ky ? 'маршрут' : 'routes',
     },
+    booking: {
+      pier: ru ? 'Причал' : ky ? 'Причал' : 'Pier',
+      date: ru ? 'Дата' : ky ? 'Күнү' : 'Date',
+      guests: ru ? 'Гости' : ky ? 'Коноктор' : 'Guests',
+      search: ru ? 'Найти рейс' : ky ? 'Рейс табуу' : 'Find Trip',
+      guests_2: ru ? '2 гостя' : ky ? '2 конок' : '2 guests',
+      guests_4: ru ? '4 гостя' : ky ? '4 конок' : '4 guests',
+      guests_6: ru ? '6 гостей' : ky ? '6 конок' : '6 guests',
+      guests_8: ru ? '8+ гостей' : ky ? '8+ конок' : '8+ guests',
+    },
+    piers: {
+      cholpon: ru ? 'Чолпон-Ата' : ky ? 'Чолпон-Ата' : 'Cholpon-Ata',
+      bosteri: ru ? 'Бостери' : ky ? 'Бостери' : 'Bosteri',
+      karakol: ru ? 'Каракол' : ky ? 'Каракол' : 'Karakol',
+      tamga: ru ? 'Тамга' : ky ? 'Тамга' : 'Tamga',
+    },
+    catalog: {
+      title: ru ? 'Маршруты и цены' : ky ? 'Маршруттар жана баалар' : 'Routes & Prices',
+      subtitle: ru ? 'Выберите идеальное водное приключение' : ky ? 'Идеалдуу суу укмушун тандаңыз' : 'Choose your perfect water adventure',
+      sunset_cruise: ru ? 'Закатный круиз' : ky ? 'Батыш круизи' : 'Sunset Cruise',
+      private_charter: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter',
+      speed_tour: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour',
+      kids_party: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party",
+      cruise: ru ? 'Круиз' : ky ? 'Круиз' : 'Cruise',
+      charter: ru ? 'Чартер' : ky ? 'Чартер' : 'Charter',
+      entertainment: ru ? 'Развлечения' : ky ? 'Көңүл ачуу' : 'Entertainment',
+      kids: ru ? 'Детям' : ky ? 'Балдарга' : 'Kids',
+      book: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
+      from: ru ? 'от' : ky ? 'баштап' : 'from',
+    },
+    schedule: {
+      title: ru ? 'Расписание рейсов' : ky ? 'Рейстердин расписаниеси' : 'Trip Schedule',
+      subtitle: ru ? 'Ежедневные рейсы с июня по сентябрь' : ky ? 'Июндан сентябрга чейин күндөлүк рейстер' : 'Daily trips from June to September',
+      route: ru ? 'Маршрут' : ky ? 'Маршрут' : 'Route',
+      vessel: ru ? 'Судно' : ky ? 'Кеме' : 'Vessel',
+      departure: ru ? 'Отправление' : ky ? 'Жөнөө' : 'Departure',
+      duration: ru ? 'Длительность' : ky ? 'Узактыгы' : 'Duration',
+      price: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
+      frequency: ru ? 'Частота' : ky ? 'Жыштыгы' : 'Frequency',
+      daily: ru ? 'Ежедневно' : ky ? 'Күн сайын' : 'Daily',
+      on_request: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On Request',
+      weekend: ru ? 'Выходные' : ky ? 'Дем алыш' : 'Weekends',
+      book: ru ? 'Брон.' : ky ? 'Брон.' : 'Book',
+      r_sunset: ru ? 'Закатный круиз (Чолпон-Ата)' : ky ? 'Батыш круизи (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)',
+      r_morning: ru ? 'Утренний круиз (Бостери)' : ky ? 'Эртеңки круиз (Бостери)' : 'Morning Cruise (Bosteri)',
+      r_speed: ru ? 'Скоростной тур (Чолпон-Ата)' : ky ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)',
+      r_charter: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter',
+      r_kids: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party",
+      v_alykul: ru ? 'Алыкул' : ky ? 'Алыкул' : 'Alykul',
+      v_boat: ru ? 'Катер' : ky ? 'Катер' : 'Speedboat',
+      dur_2h: ru ? '2 часа' : ky ? '2 саат' : '2 hours',
+      dur_1_5h: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours',
+      dur_40m: ru ? '40 мин' : ky ? '40 мүн' : '40 min',
+      dur_2_6h: ru ? '2-6 часов' : ky ? '2-6 саат' : '2-6 hours',
+      dur_2_3h: ru ? '2-3 часа' : ky ? '2-3 саат' : '2-3 hours',
+      from_7000: ru ? 'от 7,000 KGS' : ky ? '7,000 KGS баштап' : 'from 7,000 KGS',
+      from_1000: ru ? 'от 1,000 KGS/чел' : ky ? '1,000 KGS/адам баштап' : 'from 1,000 KGS/person',
+    },
+    trust: {
+      certified: ru ? 'Сертифицированный флот' : ky ? 'Сертификатталган флот' : 'Certified Fleet',
+      inspection: ru ? 'Ежедневный осмотр' : ky ? 'Күндөлүк текшерүү' : 'Daily Inspection',
+      equipment: ru ? 'Спасательное оборудование' : ky ? 'Куткаруу жабдуулары' : 'Safety Equipment',
+      insurance: ru ? 'Страховка включена' : ky ? 'Камсыздандыруу кирген' : 'Insurance Included',
+    },
     reviews: {
       title: ru ? 'Отзывы гостей' : ky ? 'Конок пикирлери' : 'Guest Reviews',
       badge: ru ? 'Отзывы' : ky ? 'Пикирлер' : 'Testimonials',
@@ -821,10 +1081,12 @@ function getTrans(lang: string) {
     foot: {
       desc: ru ? 'Первая платформа онлайн-бронирования водного транспорта на озере Иссык-Куль.' : 'First online water transport booking platform on Lake Issyk-Kul.',
       routes: ru ? 'Маршруты' : 'Routes',
+      all_routes: ru ? 'Все маршруты' : ky ? 'Бардык маршруттар' : 'All Routes',
       cruises: ru ? 'Круизы' : 'Cruises',
       charters: ru ? 'Чартеры' : 'Charters',
       speed: ru ? 'Скоростные туры' : 'Speed Tours',
       company: ru ? 'Компания' : 'Company',
+      account: ru ? 'Личный кабинет' : ky ? 'Жеке кабинет' : 'My Account',
       privacy: ru ? 'Конфиденциальность' : 'Privacy',
       contact: ru ? 'Контакты' : 'Contacts',
       rights: ru ? 'Все права защищены.' : 'All rights reserved.',
