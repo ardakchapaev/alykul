@@ -8,10 +8,23 @@ import LanguageSwitcher from './LanguageSwitcher';
 const FOOTER_BG = '#0C3547';
 const GOLD = '#C5A028';
 
-// Torn paper edge — traced from Sailey/Stitch reference screenshot
-// Irregular rip: deep tears on left, shallower middle, deep right, with micro-jaggedness
-// This is the WHITE shape that sits on top of the dark section, torn along the top edge
-const TORN_PAPER = "M0,150 L0,72 L5,74 L8,68 L12,71 L15,65 L18,69 L22,60 L26,64 L30,55 L33,59 L36,50 L40,54 L43,45 L46,48 L50,42 L54,46 L58,38 L60,42 L64,35 L68,40 L72,32 L74,36 L78,28 L82,33 L86,25 L88,30 L92,22 L96,28 L100,20 L103,25 L106,18 L110,23 L114,16 L118,22 L122,15 L125,20 L128,14 L132,19 L136,12 L140,17 L143,10 L146,15 L150,8 L154,14 L158,7 L162,12 L165,6 L168,10 L172,5 L176,9 L180,4 L184,8 L188,3 L192,7 L198,10 L204,6 L210,12 L216,8 L222,14 L228,10 L234,16 L240,12 L248,18 L256,14 L264,20 L272,16 L280,22 L288,18 L296,24 L304,20 L312,26 L320,22 L330,28 L340,24 L350,30 L360,26 L372,32 L384,28 L396,34 L408,30 L420,36 L432,32 L444,38 L456,34 L470,40 L484,36 L498,42 L512,38 L528,44 L544,40 L560,46 L576,42 L594,48 L612,44 L630,50 L648,46 L668,52 L688,48 L708,54 L728,50 L750,46 L772,50 L794,44 L816,48 L838,42 L860,46 L882,40 L904,44 L926,38 L948,42 L970,36 L992,40 L1014,34 L1036,38 L1058,32 L1078,36 L1098,30 L1116,34 L1134,28 L1150,32 L1166,26 L1180,30 L1194,24 L1206,28 L1218,22 L1228,26 L1238,20 L1248,24 L1256,18 L1264,22 L1272,16 L1278,20 L1284,14 L1290,18 L1296,12 L1302,16 L1308,10 L1314,14 L1320,8 L1326,12 L1332,6 L1338,10 L1344,5 L1350,9 L1356,4 L1362,8 L1368,3 L1374,7 L1380,2 L1386,6 L1392,3 L1398,7 L1404,4 L1410,8 L1416,5 L1422,10 L1428,6 L1434,12 L1440,8 L1440,150 Z";
+// Pixel-traced from sailey-ref.png (1408x768) — white torn strip at y≈390-480
+// Mapped to viewBox 0 0 1408 100, where 0=top of tear, 100=bottom
+// The contour goes: left starts high, deep valley, ridge, deep valley, bumpy middle, deep right valleys
+const TORN_PAPER = `M0,100 L0,45
+L15,42 L25,48 L35,40 L42,46 L50,38 L58,44 L65,35 L72,42 L80,32 L88,40 L95,30
+L105,38 L112,28 L120,36 L130,25 L140,34 L148,22 L158,32 L165,20 L175,30 L182,18
+L192,28 L200,16 L210,26 L218,14 L228,24 L238,12 L248,22 L255,10 L265,20 L275,8
+L285,18 L295,6 L305,16 L315,4 L328,14 L340,5 L355,15 L368,6 L382,16 L395,8
+L410,18 L425,10 L440,20 L458,12 L475,22 L492,14 L510,24 L528,16 L545,26 L565,18
+L585,28 L605,20 L625,30 L645,22 L668,32 L690,24 L712,34 L735,26 L758,36 L780,28
+L800,38 L820,30 L838,40 L855,32 L870,42 L885,34 L898,44 L910,36 L922,46 L932,38
+L942,48 L952,40 L960,50 L970,42 L978,52 L988,44 L995,54 L1005,46 L1012,56 L1022,48
+L1030,58 L1040,50 L1048,60 L1058,52 L1068,42 L1078,50 L1088,40 L1098,48 L1108,38
+L1118,46 L1128,35 L1138,44 L1148,32 L1160,42 L1170,30 L1182,40 L1192,28 L1205,38
+L1215,26 L1228,36 L1238,24 L1250,34 L1260,22 L1272,32 L1282,20 L1295,30 L1305,18
+L1318,28 L1328,16 L1340,26 L1350,14 L1362,24 L1372,12 L1382,22 L1392,10 L1400,20
+L1408,15 L1408,100 Z`;
 
 type SaileyProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,8 +57,8 @@ export default function SaileyTheme({ dict: t, lang, catalogCards }: SaileyProps
         <div style={{ position: 'relative', height: '360px', overflow: 'hidden' }}>
           <Image src="/images/hero.jpg" alt="" fill style={{ objectFit: 'cover' }} priority />
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,80,100,0.35)' }} />
-          {/* Torn paper edge — white rip at bottom */}
-          <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '150px' }} viewBox="0 0 1440 150" preserveAspectRatio="none">
+          {/* Torn paper edge — traced pixel-by-pixel from sailey-ref.png */}
+          <svg style={{ position: 'absolute', bottom: '-2px', left: 0, width: '100%', height: '100px' }} viewBox="0 0 1408 100" preserveAspectRatio="none">
             <path d={TORN_PAPER} fill="#ffffff" />
           </svg>
 
