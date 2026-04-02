@@ -655,7 +655,10 @@ function AzFooter({ t, lang }: { t: Tr; lang: string }) {
             </h4>
             <div className="space-y-2">
               <a href="#az-about" className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.contact}</a>
-              <a href="#" className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.privacy}</a>
+              <a href={`/${lang}/about`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.about || 'О компании'}</a>
+              <a href={`/${lang}/gifts`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.gifts || 'Подарки'}</a>
+              <a href={`/${lang}/group-booking`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.groups || 'Группы'}</a>
+              <a href={`/${lang}/privacy`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.privacy}</a>
               <a href={`/${lang}/trips`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.trips}</a>
             </div>
           </div>
@@ -819,6 +822,9 @@ function getTrans(lang: string) {
       rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
       trips: ru ? 'Все маршруты' : ky ? 'Бардык маршруттар' : 'All Trips',
       account: ru ? 'Личный кабинет' : ky ? 'Жеке кабинет' : 'My Account',
+      about: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About',
+      gifts: ru ? 'Подарки' : ky ? 'Белектер' : 'Gifts',
+      groups: ru ? 'Группы' : ky ? 'Топтор' : 'Groups',
     },
   };
 }

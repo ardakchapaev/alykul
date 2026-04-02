@@ -893,7 +893,10 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
             <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.company}</h4>
             <ul className="space-y-2">
               <li><a href={`/${lang}/account`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.account}</a></li>
-              <li><a href="#" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
+              <li><a href={`/${lang}/about`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.about || 'О компании'}</a></li>
+              <li><a href={`/${lang}/gifts`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.gifts || 'Подарки'}</a></li>
+              <li><a href={`/${lang}/group-booking`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.groups || 'Группы'}</a></li>
+              <li><a href={`/${lang}/privacy`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
               <li><a href="#m4-contacts" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.contact}</a></li>
             </ul>
           </div>
@@ -1184,6 +1187,9 @@ function getTrans(lang: string) {
       contact: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contacts',
       rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
       address: ru ? 'Чолпон-Ата, причал' : ky ? 'Чолпон-Ата, причал' : 'Cholpon-Ata, pier',
+      about: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About',
+      gifts: ru ? 'Подарки' : ky ? 'Белектер' : 'Gifts',
+      groups: ru ? 'Группы' : ky ? 'Топтор' : 'Groups',
     },
   };
 }

@@ -575,6 +575,9 @@ function M2Footer({ t, lang }: { t: Tr; lang: string }) {
             <div className="flex flex-col gap-2.5">
               <a href={`/${lang}/trips`} className="text-sm hover:text-white transition-colors">{t.nav.booking}</a>
               <a href={`/${lang}/account`} className="text-sm hover:text-white transition-colors">{t.foot.account}</a>
+              <a href={`/${lang}/about`} className="text-sm hover:text-white transition-colors">{t.foot.about || 'О компании'}</a>
+              <a href={`/${lang}/gifts`} className="text-sm hover:text-white transition-colors">{t.foot.gifts || 'Подарки'}</a>
+              <a href={`/${lang}/group-booking`} className="text-sm hover:text-white transition-colors">{t.foot.groups || 'Группы'}</a>
               <a href={`/${lang}/privacy`} className="text-sm hover:text-white transition-colors">{t.foot.privacy}</a>
             </div>
           </div>
@@ -811,6 +814,9 @@ function getTrans(lang: string) {
       privacy: ru ? 'Конфиденциальность' : ky ? 'Купуялуулук' : 'Privacy',
       address: ru ? 'Чолпон-Ата, Иссык-Куль' : ky ? 'Чолпон-Ата, Ысык-Көл' : 'Cholpon-Ata, Issyk-Kul',
       rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
+      about: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About',
+      gifts: ru ? 'Подарки' : ky ? 'Белектер' : 'Gifts',
+      groups: ru ? 'Группы' : ky ? 'Топтор' : 'Groups',
     },
   };
 }

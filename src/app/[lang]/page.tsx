@@ -288,9 +288,11 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.about}</h4>
-            <a href="#about" className="text-muted hover:text-white text-sm transition-colors">{t.nav.about}</a>
+            <a href={`/${params.lang}/about`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.aboutLink || t.nav.about}</a>
             <a href="#fleet" className="text-muted hover:text-white text-sm transition-colors">{t.usp.safety}</a>
             <a href="#reviews" className="text-muted hover:text-white text-sm transition-colors">{t.nav.reviews}</a>
+            <a href={`/${params.lang}/gifts`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.gifts || 'Подарки'}</a>
+            <a href={`/${params.lang}/group-booking`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.groups || 'Группы'}</a>
             <a href={`/${params.lang}/privacy`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.privacy}</a>
           </div>
         </div>

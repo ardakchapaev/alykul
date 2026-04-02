@@ -126,7 +126,10 @@
     "privacy": "Privacy Policy",
     "partners": "Partners",
     "map": "Map",
-    "copyright": "Alykul. All rights reserved. Lake Issyk-Kul, Kyrgyzstan."
+    "copyright": "Alykul. All rights reserved. Lake Issyk-Kul, Kyrgyzstan.",
+    "aboutLink": "About Us",
+    "gifts": "Gifts",
+    "groups": "Groups"
   },
   "whatsapp": {
     "hello": "Hello! I'd like to book:",

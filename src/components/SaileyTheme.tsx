@@ -674,6 +674,10 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
             <a href="#m3-schedule" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.nav.schedule}</a>
             <a href="#m3-fleet" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.nav.fleet}</a>
             <a href="#m3-reviews" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.nav.reviews}</a>
+            <a href={`/${lang}/about`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.about || 'О компании'}</a>
+            <a href={`/${lang}/gifts`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.gifts || 'Подарки'}</a>
+            <a href={`/${lang}/group-booking`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.groups || 'Группы'}</a>
+            <a href={`/${lang}/privacy`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.privacy || 'Конфиденциальность'}</a>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -930,6 +934,10 @@ function getTrans(lang: string) {
       contact: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contact',
       rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
       followUs: ru ? 'Мы в соцсетях' : ky ? 'Соц тармактарда' : 'Follow us',
+      about: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About',
+      gifts: ru ? 'Подарки' : ky ? 'Белектер' : 'Gifts',
+      groups: ru ? 'Группы' : ky ? 'Топтор' : 'Groups',
+      privacy: ru ? 'Конфиденциальность' : ky ? 'Купуялуулук' : 'Privacy',
     },
   };
 }

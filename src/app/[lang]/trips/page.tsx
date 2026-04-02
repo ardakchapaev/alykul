@@ -15,9 +15,9 @@ const categories = [
 ];
 
 const t = {
-  ru: { title: 'Поиск рейсов', date: 'Дата', pier: 'Причал', category: 'Категория', guests: 'Гости', search: 'Найти', seats: 'мест', from: 'от', book: 'Забронировать', noTrips: 'Нет рейсов на выбранную дату', noTripsHint: 'Попробуйте выбрать другую дату или причал', loading: 'Загрузка...', allPiers: 'Все причалы', departure: 'Отправление', home: 'Главная', backHome: '← Главная' },
-  en: { title: 'Search Trips', date: 'Date', pier: 'Pier', category: 'Category', guests: 'Guests', search: 'Search', seats: 'seats', from: 'from', book: 'Book Now', noTrips: 'No trips for selected date', noTripsHint: 'Try selecting a different date or pier', loading: 'Loading...', allPiers: 'All piers', departure: 'Departure', home: 'Home', backHome: '← Home' },
-  ky: { title: 'Рейс издөө', date: 'Күнү', pier: 'Причал', category: 'Категория', guests: 'Конокторо', search: 'Издөө', seats: 'орун', from: 'ден', book: 'Брондоо', noTrips: 'Тандалган күнгө рейс жок', noTripsHint: 'Башка күндү же причалды тандап көрүңүз', loading: 'Жүктөлүүдө...', allPiers: 'Бардык причалдар', departure: 'Жөнөө', home: 'Башкы бет', backHome: '← Башкы бет' },
+  ru: { title: 'Найти рейс', subtitle: 'Выберите дату, маршрут и забронируйте онлайн', date: 'Дата', pier: 'Причал', category: 'Категория', guests: 'Гости', search: 'Найти', seats: 'мест', from: 'от', book: 'Забронировать', noTrips: 'Нет рейсов на выбранную дату', noTripsHint: 'Попробуйте выбрать другую дату или причал', loading: 'Загрузка...', allPiers: 'Все причалы', departure: 'Отправление', home: 'Главная', backHome: '← Главная' },
+  en: { title: 'Find a Trip', subtitle: 'Pick a date, route and book online', date: 'Date', pier: 'Pier', category: 'Category', guests: 'Guests', search: 'Search', seats: 'seats', from: 'from', book: 'Book Now', noTrips: 'No trips for selected date', noTripsHint: 'Try selecting a different date or pier', loading: 'Loading...', allPiers: 'All piers', departure: 'Departure', home: 'Home', backHome: '← Home' },
+  ky: { title: 'Рейс табуу', subtitle: 'Күндү тандап, маршрутту тандап, онлайн брондоңуз', date: 'Күнү', pier: 'Причал', category: 'Категория', guests: 'Конокторо', search: 'Издөө', seats: 'орун', from: 'ден', book: 'Брондоо', noTrips: 'Тандалган күнгө рейс жок', noTripsHint: 'Башка күндү же причалды тандап көрүңүз', loading: 'Жүктөлүүдө...', allPiers: 'Бардык причалдар', departure: 'Жөнөө', home: 'Башкы бет', backHome: '← Башкы бет' },
 };
 
 export default function TripsPage() {
@@ -55,14 +55,15 @@ export default function TripsPage() {
 
   return (
     <div className="min-h-screen bg-sand">
-      {/* Header */}
-      <div className="bg-navy text-white px-6 md:px-14 py-8">
-        <Link href={`/${lang}`} className="text-foam/70 text-sm hover:text-white">&larr; {lang === 'ru' ? 'Главная' : lang === 'ky' ? 'Башкы бет' : 'Home'}</Link>
-        <h1 className="font-heading font-bold text-3xl md:text-4xl uppercase mt-4">{labels.title}</h1>
+      {/* Hero header */}
+      <div className="bg-navy text-white px-6 md:px-14 py-10">
+        <Link href={`/${lang}`} className="text-foam/70 text-sm hover:text-white">&larr; {labels.backHome}</Link>
+        <h1 className="font-heading font-bold text-3xl md:text-4xl uppercase mt-3">{labels.title}</h1>
+        <p className="text-foam/70 mt-2 text-sm">{labels.subtitle}</p>
       </div>
 
       {/* Filters */}
-      <div className="bg-white shadow-sm px-6 md:px-14 py-6 flex flex-wrap gap-4 items-end">
+      <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 -mt-6 mx-4 md:mx-14 relative z-10 mb-8 flex flex-wrap gap-4 items-end">
         <div className="flex-1 min-w-[150px]">
           <label className="block text-sm font-medium text-muted mb-1">{labels.date}</label>
           <input type="date" value={date} onChange={e => setDate(e.target.value)}
@@ -106,12 +107,14 @@ export default function TripsPage() {
           <div className="grid gap-4">
             {trips.map(trip => (
               <Link key={trip.id} href={`/${lang}/trips/${trip.id}`}
-                className="group bg-white rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:border-ocean/20 transition-all duration-300">
-                <div className="flex-1">
-                  <div className="text-xs font-semibold text-ocean uppercase tracking-wider mb-1">{trip.vessel_name}</div>
+                className="group bg-white rounded-2xl overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:border-ocean/20 transition-all duration-300">
+                {/* Colored accent bar */}
+                <div className="h-1.5 md:h-auto md:w-1.5 md:self-stretch bg-gradient-to-r md:bg-gradient-to-b from-ocean to-cyan-400 flex-shrink-0" />
+                <div className="flex-1 px-5 py-5 md:py-5 md:px-3">
+                  <div className="text-xs font-semibold text-ocean uppercase tracking-wider mb-1">⛵ {trip.vessel_name}</div>
                   <h3 className="font-bold text-lg">{trip.route_name}</h3>
                 </div>
-                <div className="flex items-center gap-6 text-sm">
+                <div className="flex items-center gap-6 text-sm px-5 pb-5 md:pb-0 md:pr-5">
                   <div className="text-center">
                     <div className="text-muted text-xs">{labels.departure}</div>
                     <div className="font-bold text-lg">{formatTime(trip.departure_at)}</div>

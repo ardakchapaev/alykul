@@ -186,6 +186,18 @@ export default function TripPage() {
             className="w-full py-3.5 bg-ocean text-white rounded-xl font-bold text-lg hover:bg-ocean-dark transition-colors">
             {user ? labels.book : labels.login_first}
           </button>
+
+          {/* Share */}
+          <button onClick={() => {
+            if (navigator.share) {
+              navigator.share({ title: trip.route[routeNameKey] as string, url: window.location.href }).catch(() => {});
+            } else {
+              navigator.clipboard.writeText(window.location.href);
+              alert(lang === 'ru' ? 'Ссылка скопирована!' : lang === 'ky' ? 'Шилтеме көчүрүлдү!' : 'Link copied!');
+            }
+          }} className="w-full mt-3 py-2.5 border border-gray-200 text-muted rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+            📤 {lang === 'ru' ? 'Поделиться' : lang === 'ky' ? 'Бөлүшүү' : 'Share'}
+          </button>
         </div>
       </div>
     </div>
