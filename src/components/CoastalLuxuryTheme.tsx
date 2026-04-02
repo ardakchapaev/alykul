@@ -1,6 +1,7 @@
 'use client';
 
 import { useTheme, THEMES } from '@/lib/theme-context';
+import { useAuth } from '@/lib/auth-context';
 import { ScrollReveal } from './M3Animations';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
@@ -36,6 +37,7 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
   const [langOpen, setLangOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
 
   useEffect(() => {
     const el = document.querySelector('.fixed.inset-0.overflow-auto');
@@ -129,6 +131,20 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
             )}
           </div>
 
+          {/* Auth */}
+          {user ? (
+            <a href={`/${lang}/account`} className="flex items-center gap-1.5 text-[#0F2B46] text-[11px] font-medium tracking-[1px] uppercase hover:text-[#C9A356] transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+              <span className="hidden sm:inline">{user.name || user.phone.slice(-4)}</span>
+            </a>
+          ) : (
+            <a href={`/${lang}/auth`} className="text-[#0F2B46] text-[11px] font-medium tracking-[1px] uppercase hover:text-[#C9A356] transition-colors">
+              {lang === 'ru' ? 'Войти' : lang === 'ky' ? 'Кирүү' : 'Sign In'}
+            </a>
+          )}
+
           {/* Mobile menu button */}
           <button
             onClick={() => setOpen(!open)}
@@ -154,6 +170,23 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
               {l.label}
             </a>
           ))}
+          {/* Mobile Auth */}
+          {user ? (
+            <a href={`/${lang}/account`} onClick={() => setOpen(false)}
+              className="block py-3 text-[#0F2B46] text-[11px] tracking-[2px] uppercase font-m4-body font-medium hover:text-[#C9A356] transition-colors">
+              <span className="flex items-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                {user.name || user.phone.slice(-4)}
+              </span>
+            </a>
+          ) : (
+            <a href={`/${lang}/auth`} onClick={() => setOpen(false)}
+              className="block py-3 text-[#0F2B46] text-[11px] tracking-[2px] uppercase font-m4-body font-medium hover:text-[#C9A356] transition-colors">
+              {lang === 'ru' ? 'Войти' : lang === 'ky' ? 'Кирүү' : 'Sign In'}
+            </a>
+          )}
         </div>
       )}
     </nav>

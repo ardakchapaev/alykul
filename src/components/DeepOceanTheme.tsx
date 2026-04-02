@@ -1,6 +1,7 @@
 'use client';
 
 import { useTheme, THEMES } from '@/lib/theme-context';
+import { useAuth } from '@/lib/auth-context';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { ScrollReveal } from './M3Animations';
@@ -46,6 +47,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
   const [langOpen, setLangOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
 
   useEffect(() => {
     const container = document.querySelector('[class*="fixed inset-0 z-\\[9999\\]"]');
@@ -104,6 +106,20 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
             className="hidden lg:inline-block bg-[#00897B] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#00796B] transition-colors tracking-wide">
             {t.nav.booking}
           </a>
+
+          {/* Auth */}
+          {user ? (
+            <a href={`/${lang}/account`} className="flex items-center gap-1.5 text-white/70 text-xs font-medium hover:text-white transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+              <span className="hidden sm:inline">{user.name || user.phone.slice(-4)}</span>
+            </a>
+          ) : (
+            <a href={`/${lang}/auth`} className="bg-[#00897B] text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-[#00796B] transition-colors">
+              {lang === 'ru' ? 'Войти' : lang === 'ky' ? 'Кирүү' : 'Sign In'}
+            </a>
+          )}
 
           {/* Lang */}
           <div className="relative">
@@ -168,6 +184,19 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
             onClick={() => setOpen(false)}>
             {t.nav.booking}
           </a>
+          {/* Mobile Auth */}
+          {user ? (
+            <a href={`/${lang}/account`} className="flex items-center gap-2 text-[#0A1628] text-lg hover:text-[#00897B] transition-colors" onClick={() => setOpen(false)}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+              {user.name || user.phone.slice(-4)}
+            </a>
+          ) : (
+            <a href={`/${lang}/auth`} className="bg-[#00897B] text-white px-6 py-2.5 rounded text-lg font-semibold hover:bg-[#00796B] transition-colors" onClick={() => setOpen(false)}>
+              {lang === 'ru' ? 'Войти' : lang === 'ky' ? 'Кирүү' : 'Sign In'}
+            </a>
+          )}
           <div className="flex gap-3 mt-6 border-t border-gray-200 pt-6">
             {themes.map(th => (
               <button key={th} onClick={() => { setTheme(th); setOpen(false); }}
