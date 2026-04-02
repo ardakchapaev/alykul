@@ -72,17 +72,17 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-500 font-m3-body ${
       scrolled
-        ? 'bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5 py-2'
+        ? 'bg-[#0A1628]/95 backdrop-blur-xl shadow-lg shadow-black/20 py-2'
         : 'bg-gradient-to-b from-black/40 to-transparent py-4'
     }`}>
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 group">
           <svg viewBox="0 0 36 36" className="w-8 h-8" fill="none">
-            <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke={scrolled ? '#00897B' : '#ffffff'} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke={scrolled ? '#00897B' : '#ffffff'} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#00897B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
           </svg>
-          <span className={`font-m3-display text-lg font-bold tracking-wide hidden sm:block transition-colors ${scrolled ? 'text-[#0A1628]' : 'text-white'}`}>
+          <span className="font-m3-display text-lg font-bold tracking-wide hidden sm:block text-white">
             АЛЫКУЛ
           </span>
         </a>
@@ -91,7 +91,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
         <div className="hidden lg:flex items-center gap-6">
           {links.map(l => (
             <a key={l.href} href={l.href}
-              className={`text-[13px] font-medium tracking-[1px] uppercase transition-colors relative group ${scrolled ? 'text-[#0A1628]/60 hover:text-[#00897B]' : 'text-white/80 hover:text-white'}`}>
+              className="text-[13px] font-medium tracking-[1px] uppercase transition-colors relative group text-white/80 hover:text-white">
               {l.label}
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00897B] transition-all group-hover:w-full" />
             </a>
@@ -108,15 +108,15 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
-              className={`flex items-center gap-1 text-xs font-semibold transition-colors px-2 py-1.5 ${scrolled ? 'text-[#0A1628]/50 hover:text-[#0A1628]' : 'text-white/70 hover:text-white'}`}>
+              className="flex items-center gap-1 text-xs font-semibold transition-colors px-2 py-1.5 text-white/70 hover:text-white">
               {langLabels[lang] || 'RU'}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
+              <div className="absolute right-0 top-full mt-1 bg-[#0A1628]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
                 {['ru', 'en', 'ky'].map(l => (
                   <a key={l} href={`/${l}`} onClick={() => setLangOpen(false)}
-                    className={`block px-4 py-2 text-xs font-medium ${l === lang ? 'text-[#00897B] bg-[#00897B]/5' : 'text-gray-500 hover:text-[#0A1628] hover:bg-gray-50'}`}>
+                    className={`block px-4 py-2 text-xs font-medium ${l === lang ? 'text-[#00897B] bg-white/5' : 'text-white/60 hover:text-white hover:bg-white/5'}`}>
                     {langLabels[l]}
                   </a>
                 ))}
@@ -127,15 +127,15 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
           {/* Theme */}
           <div className="relative hidden lg:block">
             <button onClick={() => { setThemeOpen(!themeOpen); setLangOpen(false); }}
-              className={`flex items-center gap-1 text-xs font-semibold transition-colors px-2 py-1.5 ${scrolled ? 'text-[#0A1628]/50 hover:text-[#0A1628]' : 'text-white/70 hover:text-white'}`}>
+              className="flex items-center gap-1 text-xs font-semibold transition-colors px-2 py-1.5 text-white/70 hover:text-white">
               {theme}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
             </button>
             {themeOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
+              <div className="absolute right-0 top-full mt-1 bg-[#0A1628]/95 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden shadow-xl min-w-[80px]">
                 {themes.map(th => (
                   <button key={th} onClick={() => { setTheme(th); setThemeOpen(false); }}
-                    className={`block w-full text-left px-4 py-2 text-xs font-medium ${th === theme ? 'text-[#00897B] bg-[#00897B]/5' : 'text-gray-500 hover:text-[#0A1628] hover:bg-gray-50'}`}>
+                    className={`block w-full text-left px-4 py-2 text-xs font-medium ${th === theme ? 'text-[#00897B] bg-white/5' : 'text-white/60 hover:text-white hover:bg-white/5'}`}>
                     {th}
                   </button>
                 ))}
