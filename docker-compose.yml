@@ -60,6 +60,17 @@ services:
     networks:
       - aihub-net
 
+  telegram-bot:
+    build: ./backend/bot
+    container_name: alykul-bot
+    restart: always
+    environment:
+      - TELEGRAM_BOT_TOKEN=8684286671:AAGBcIpXPkJmyZibUrMtGjcDQJnJc3iSlh0
+      - SITE_URL=https://alykul.baimuras.pro
+      - API_URL=https://alykul.baimuras.pro/api/v1
+    networks:
+      - aihub-net
+
 networks:
   aihub-net:
     external: true
