@@ -5,11 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api, type Booking } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import LoyaltyCard from '@/components/LoyaltyCard';
 
 const t = {
-  ru: { title: 'Мой кабинет', bookings: 'Мои бронирования', noBookings: 'Нет бронирований', logout: 'Выйти', home: 'Главная', trips: 'Найти рейс', cancel: 'Отменить', cancelled: 'Отменено', confirmed: 'Подтверждено', pending: 'Ожидание', completed: 'Завершено', phone: 'Телефон', points: 'Баллы лояльности', loading: 'Загрузка...', login: 'Войти' },
-  en: { title: 'My Account', bookings: 'My Bookings', noBookings: 'No bookings', logout: 'Logout', home: 'Home', trips: 'Find Trip', cancel: 'Cancel', cancelled: 'Cancelled', confirmed: 'Confirmed', pending: 'Pending', completed: 'Completed', phone: 'Phone', points: 'Loyalty points', loading: 'Loading...', login: 'Sign In' },
-  ky: { title: 'Менин кабинетим', bookings: 'Менин брондоолорум', noBookings: 'Брондоо жок', logout: 'Чыгуу', home: 'Башкы бет', trips: 'Рейс издөө', cancel: 'Жокко чыгаруу', cancelled: 'Жокко чыгарылды', confirmed: 'Ырасталды', pending: 'Күтүүдө', completed: 'Аяктады', phone: 'Телефон', points: 'Лоялдуулук баллдары', loading: 'Жүктөлүүдө...', login: 'Кирүү' },
+  ru: { title: 'Мой кабинет', bookings: 'Мои бронирования', noBookings: 'Нет бронирований', logout: 'Выйти', home: 'Главная', trips: 'Найти рейс', cancel: 'Отменить', cancelled: 'Отменено', confirmed: 'Подтверждено', pending: 'Ожидание', completed: 'Завершено', phone: 'Телефон', points: 'Баллы лояльности', loading: 'Загрузка...', login: 'Войти', gifts: 'Подарки', group: 'Группы', refund: 'Возврат' },
+  en: { title: 'My Account', bookings: 'My Bookings', noBookings: 'No bookings', logout: 'Logout', home: 'Home', trips: 'Find Trip', cancel: 'Cancel', cancelled: 'Cancelled', confirmed: 'Confirmed', pending: 'Pending', completed: 'Completed', phone: 'Phone', points: 'Loyalty points', loading: 'Loading...', login: 'Sign In', gifts: 'Gifts', group: 'Groups', refund: 'Refund' },
+  ky: { title: 'Менин кабинетим', bookings: 'Менин брондоолорум', noBookings: 'Брондоо жок', logout: 'Чыгуу', home: 'Башкы бет', trips: 'Рейс издөө', cancel: 'Жокко чыгаруу', cancelled: 'Жокко чыгарылды', confirmed: 'Ырасталды', pending: 'Күтүүдө', completed: 'Аяктады', phone: 'Телефон', points: 'Лоялдуулук баллдары', loading: 'Жүктөлүүдө...', login: 'Кирүү', gifts: 'Белектер', group: 'Топтор', refund: 'Кайтаруу' },
 };
 
 const statusColors: Record<string, string> = {
@@ -79,8 +80,39 @@ export default function AccountPage() {
           </div>
         )}
 
+        {/* Loyalty Card */}
+        {user && (
+          <div className="mb-8">
+            <LoyaltyCard
+              points={user.loyalty_points}
+              level={user.loyalty_points >= 15000 ? 'vip' : user.loyalty_points >= 5000 ? 'gold' : 'standard'}
+              name={user.name}
+              phone={user.phone}
+            />
+          </div>
+        )}
+
         {/* Bookings */}
         <h2 className="font-heading font-bold text-2xl uppercase mb-6">{labels.bookings}</h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <Link href={`/${lang}/trips`} className="flex items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-ocean/30 transition-colors">
+            <span className="text-2xl">🚢</span>
+            <span className="text-sm font-medium">{labels.trips}</span>
+          </Link>
+          <Link href={`/${lang}/gifts`} className="flex items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-ocean/30 transition-colors">
+            <span className="text-2xl">🎁</span>
+            <span className="text-sm font-medium">{labels.gifts}</span>
+          </Link>
+          <Link href={`/${lang}/group-booking`} className="flex items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-ocean/30 transition-colors">
+            <span className="text-2xl">👥</span>
+            <span className="text-sm font-medium">{labels.group}</span>
+          </Link>
+          <Link href={`/${lang}/account/refund`} className="flex items-center gap-2 p-4 bg-white rounded-xl border border-gray-100 hover:border-ocean/30 transition-colors">
+            <span className="text-2xl">↩️</span>
+            <span className="text-sm font-medium">{labels.refund}</span>
+          </Link>
+        </div>
 
         {bookings.length === 0 ? (
           <div className="text-center py-12">
@@ -108,6 +140,18 @@ export default function AccountPage() {
                       className="px-3 py-1 border border-red-200 text-red-500 rounded-lg text-sm hover:bg-red-50">
                       {labels.cancel}
                     </button>
+                  )}
+                  {b.qr_token && (
+                    <Link href={`/${lang}/booking-confirmed?id=${b.id}&qr=${b.qr_token}`}
+                      className="px-3 py-1 border border-ocean text-ocean rounded-lg text-sm hover:bg-ocean/5">
+                      QR
+                    </Link>
+                  )}
+                  {['confirmed', 'hold'].includes(b.status) && (
+                    <Link href={`/${lang}/account/refund?booking=${b.id}`}
+                      className="px-3 py-1 border border-gray-200 text-gray-500 rounded-lg text-sm hover:bg-gray-50">
+                      {labels.refund}
+                    </Link>
                   )}
                 </div>
               </div>

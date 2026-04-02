@@ -15,9 +15,9 @@ const categories = [
 ];
 
 const t = {
-  ru: { title: 'Поиск рейсов', date: 'Дата', pier: 'Причал', category: 'Категория', guests: 'Гости', search: 'Найти', seats: 'мест', from: 'от', book: 'Забронировать', noTrips: 'Нет рейсов на выбранную дату', loading: 'Загрузка...', allPiers: 'Все причалы', departure: 'Отправление' },
-  en: { title: 'Search Trips', date: 'Date', pier: 'Pier', category: 'Category', guests: 'Guests', search: 'Search', seats: 'seats', from: 'from', book: 'Book Now', noTrips: 'No trips for selected date', loading: 'Loading...', allPiers: 'All piers', departure: 'Departure' },
-  ky: { title: 'Рейс издөө', date: 'Күнү', pier: 'Причал', category: 'Категория', guests: 'Конокторо', search: 'Издөө', seats: 'орун', from: 'ден', book: 'Брондоо', noTrips: 'Тандалган күнгө рейс жок', loading: 'Жүктөлүүдө...', allPiers: 'Бардык причалдар', departure: 'Жөнөө' },
+  ru: { title: 'Поиск рейсов', date: 'Дата', pier: 'Причал', category: 'Категория', guests: 'Гости', search: 'Найти', seats: 'мест', from: 'от', book: 'Забронировать', noTrips: 'Нет рейсов на выбранную дату', noTripsHint: 'Попробуйте выбрать другую дату или причал', loading: 'Загрузка...', allPiers: 'Все причалы', departure: 'Отправление', home: 'Главная', backHome: '← Главная' },
+  en: { title: 'Search Trips', date: 'Date', pier: 'Pier', category: 'Category', guests: 'Guests', search: 'Search', seats: 'seats', from: 'from', book: 'Book Now', noTrips: 'No trips for selected date', noTripsHint: 'Try selecting a different date or pier', loading: 'Loading...', allPiers: 'All piers', departure: 'Departure', home: 'Home', backHome: '← Home' },
+  ky: { title: 'Рейс издөө', date: 'Күнү', pier: 'Причал', category: 'Категория', guests: 'Конокторо', search: 'Издөө', seats: 'орун', from: 'ден', book: 'Брондоо', noTrips: 'Тандалган күнгө рейс жок', noTripsHint: 'Башка күндү же причалды тандап көрүңүз', loading: 'Жүктөлүүдө...', allPiers: 'Бардык причалдар', departure: 'Жөнөө', home: 'Башкы бет', backHome: '← Башкы бет' },
 };
 
 export default function TripsPage() {
@@ -94,12 +94,19 @@ export default function TripsPage() {
         {loading ? (
           <p className="text-center text-muted py-12">{labels.loading}</p>
         ) : trips.length === 0 ? (
-          <p className="text-center text-muted py-12">{labels.noTrips}</p>
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">⛵</div>
+            <p className="text-muted text-lg mb-2">{labels.noTrips}</p>
+            <p className="text-muted/60 text-sm mb-6">{labels.noTripsHint}</p>
+            <Link href={`/${lang}`} className="inline-block px-6 py-3 bg-ocean text-white rounded-xl font-semibold hover:bg-ocean-dark transition-colors">
+              {labels.backHome}
+            </Link>
+          </div>
         ) : (
           <div className="grid gap-4">
             {trips.map(trip => (
               <Link key={trip.id} href={`/${lang}/trips/${trip.id}`}
-                className="bg-white rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-gray-100 hover:shadow-lg hover:border-ocean/20 transition-all">
+                className="group bg-white rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:border-ocean/20 transition-all duration-300">
                 <div className="flex-1">
                   <div className="text-xs font-semibold text-ocean uppercase tracking-wider mb-1">{trip.vessel_name}</div>
                   <h3 className="font-bold text-lg">{trip.route_name}</h3>

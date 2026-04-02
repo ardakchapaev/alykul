@@ -39,14 +39,29 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const dict = await getDictionary(params.lang);
   return {
+    metadataBase: new URL('https://alykul.baimuras.pro'),
     title: dict.meta.title,
     description: dict.meta.description,
+    keywords: 'Иссык-Куль, круиз, яхта, бронирование, водный туризм, Чолпон-Ата, Бостери, Алыкул',
     openGraph: {
       title: dict.meta.title,
       description: dict.meta.description,
-      images: ['/images/hero.jpg'],
+      images: [{ url: '/images/hero.jpg', width: 1200, height: 630, alt: 'Алыкул — Озеро Иссык-Куль' }],
       locale: params.lang === 'ru' ? 'ru_RU' : params.lang === 'ky' ? 'ky_KG' : 'en_US',
+      type: 'website',
+      siteName: 'Алыкул',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: dict.meta.title,
+      description: dict.meta.description,
+      images: ['/images/hero.jpg'],
+    },
+    alternates: {
+      canonical: `https://alykul.baimuras.pro/${params.lang}`,
+      languages: { ru: '/ru', en: '/en', ky: '/ky' },
+    },
+    robots: { index: true, follow: true },
   };
 }
 

@@ -62,12 +62,17 @@ function AuthInner() {
   };
 
   return (
-    <div className="min-h-screen bg-sand flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-navy via-ocean-dark to-ocean flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-1/4 -right-20 w-96 h-96 rounded-full bg-white/20 blur-3xl" />
+        <div className="absolute bottom-1/4 -left-20 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
+      </div>
+      <div className="w-full max-w-md relative z-10">
         <div className="mb-8 text-center">
-          <Link href={`/${lang}`} className="text-muted text-sm hover:text-ocean">&larr; {labels.back}</Link>
-          <h1 className="font-heading font-bold text-3xl uppercase mt-4">{labels.title}</h1>
-          <p className="text-muted mt-2">{labels.subtitle}</p>
+          <Link href={`/${lang}`} className="text-white/50 text-sm hover:text-white">&larr; {labels.back}</Link>
+          <h1 className="font-heading font-bold text-3xl uppercase mt-4 text-white">{labels.title}</h1>
+          <p className="text-white/70 mt-2">{labels.subtitle}</p>
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
@@ -76,7 +81,8 @@ function AuthInner() {
               <label className="block text-sm font-medium text-muted mb-2">{labels.phone}</label>
               <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
                 placeholder="+996 555 123 456"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-lg focus:border-ocean focus:outline-none mb-4" />
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-lg focus:border-ocean focus:outline-none mb-1" />
+              <p className="text-xs text-muted mt-1 mb-4">{lang === 'ru' ? 'Например: +996 555 123 456' : lang === 'ky' ? 'Мисалы: +996 555 123 456' : 'Example: +996 555 123 456'}</p>
               <button onClick={handleSendOtp} disabled={loading || phone.length < 10}
                 className="w-full py-3.5 bg-ocean text-white rounded-xl font-bold text-lg hover:bg-ocean-dark transition-colors disabled:opacity-50">
                 {loading ? '...' : labels.send}
@@ -93,9 +99,31 @@ function AuthInner() {
               )}
 
               <label className="block text-sm font-medium text-muted mb-2">{labels.code}</label>
-              <input type="text" value={code} onChange={e => setCode(e.target.value)}
-                placeholder="1234" maxLength={4} autoFocus
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-2xl text-center tracking-[0.5em] font-bold focus:border-ocean focus:outline-none mb-4" />
+              <div className="flex gap-3 justify-center mb-4">
+                {[0,1,2,3].map(i => (
+                  <input key={i} type="text" maxLength={1}
+                    value={code[i] || ''}
+                    onChange={e => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      const newCode = code.split('');
+                      newCode[i] = val;
+                      setCode(newCode.join(''));
+                      if (val && i < 3) {
+                        const next = e.target.parentElement?.children[i+1] as HTMLInputElement;
+                        next?.focus();
+                      }
+                    }}
+                    onKeyDown={e => {
+                      if (e.key === 'Backspace' && !code[i] && i > 0) {
+                        const prev = (e.target as HTMLElement).parentElement?.children[i-1] as HTMLInputElement;
+                        prev?.focus();
+                      }
+                    }}
+                    className="w-14 h-16 border-2 border-gray-200 rounded-xl text-2xl text-center font-bold focus:border-ocean focus:outline-none transition-colors"
+                    autoFocus={i === 0}
+                  />
+                ))}
+              </div>
               <button onClick={handleVerify} disabled={loading || code.length < 4}
                 className="w-full py-3.5 bg-ocean text-white rounded-xl font-bold text-lg hover:bg-ocean-dark transition-colors disabled:opacity-50">
                 {loading ? '...' : labels.verify}
