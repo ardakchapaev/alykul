@@ -1,7 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { api } from '@/lib/api';
+
 
 // --- i18n ---
 const t = {
@@ -156,8 +158,28 @@ export default function AdminTrips() {
   const params = useParams();
   const lang = (params?.lang as Lang) || 'ru';
   const dict = t[lang] || t.ru;
-
   const [trips, setTrips] = useState<TripRow[]>(initialTrips);
+
+  useEffect(() => {
+    api.searchTrips({}).then((apiTrips) => {
+      if (apiTrips && apiTrips.length > 0) {
+        setTrips(apiTrips.map((t) => ({
+          id: t.id,
+          route: t.route_name || '',
+          vessel: t.vessel_name || '',
+          date: t.departure_at?.split('T')[0] || '',
+          time: t.departure_at?.split('T')[1]?.substring(0, 5) || '',
+          capacity: t.available_seats,
+          booked: 0,
+          price: t.base_price,
+          status: t.status,
+        })));
+      }
+      // else keep mock data
+    }).catch(() => {
+      // API unavailable, keep mock data
+    }).catch(() => { /* keep mock data */ });
+  }, []);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 

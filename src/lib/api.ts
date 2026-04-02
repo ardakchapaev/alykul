@@ -136,4 +136,47 @@ export const api = {
       method: 'POST',
       headers: authHeaders(token),
     }),
+
+  // Admin: Get all trips
+  getAdminTrips: (token: string) =>
+    fetcher<Trip[]>('/trips/', { headers: authHeaders(token) }),
+
+  // Admin: Get all bookings (all users)
+  getAdminBookings: (token: string) =>
+    fetcher<Booking[]>('/bookings/admin', { headers: authHeaders(token) }),
+
+  // Admin: Get stats
+  getAdminStats: (token: string) =>
+    fetcher<{ total_bookings: number; total_revenue: number; active_trips: number; total_passengers: number }>('/admin/stats', { headers: authHeaders(token) }),
+
+  // Admin: Create trip
+  createTrip: (token: string, data: Record<string, unknown>) =>
+    fetcher<Trip>('/trips/', {
+      method: 'POST',
+      headers: authHeaders(token),
+      body: JSON.stringify(data),
+    }),
+
+  // Admin: Update trip
+  updateTrip: (token: string, id: number, data: Record<string, unknown>) =>
+    fetcher<Trip>(`/trips/${id}`, {
+      method: 'PUT',
+      headers: authHeaders(token),
+      body: JSON.stringify(data),
+    }),
+
+  // Admin: Delete trip
+  deleteTrip: (token: string, id: number) =>
+    fetcher<void>(`/trips/${id}`, {
+      method: 'DELETE',
+      headers: authHeaders(token),
+    }),
+
+  // Admin: Update booking status
+  updateBookingStatus: (token: string, id: number, status: string) =>
+    fetcher<Booking>(`/bookings/${id}/status`, {
+      method: 'PUT',
+      headers: authHeaders(token),
+      body: JSON.stringify({ status }),
+    }),
 };

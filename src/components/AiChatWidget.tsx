@@ -215,9 +215,25 @@ export default function AiChatWidget() {
       setInput('');
       setTyping(true);
 
-      // Simulate AI "thinking" delay
-      setTimeout(() => {
-        const response = getAiResponse(text.trim(), messages);
+      // Try real AI first, fallback to decision tree
+      const tryAiResponse = async (): Promise<{ text: string; quickReplies: string[] }> => {
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: [...messages, { role: 'user', text: text.trim() }] }),
+          });
+          const data = await res.json();
+          if (data.text && !data.fallback) {
+            return { text: data.text, quickReplies: ['Забронировать', 'Узнать цены', 'Другой вопрос'] };
+          }
+        } catch {
+          /* fallback to decision tree */
+        }
+        return getAiResponse(text.trim(), messages);
+      };
+
+      tryAiResponse().then((response) => {
         const aiMsg: Message = {
           id: uid(),
           role: 'ai',
@@ -228,7 +244,7 @@ export default function AiChatWidget() {
         setMessages((prev) => [...prev, aiMsg]);
         setTyping(false);
         if (!open) setUnread((u) => u + 1);
-      }, 600 + Math.random() * 800);
+      });
     },
     [messages, open],
   );

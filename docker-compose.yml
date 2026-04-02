@@ -56,6 +56,7 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=https://alykul.baimuras.pro/api/v1
+      - OPENROUTER_API_KEY=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
     networks:
       - aihub-net
 

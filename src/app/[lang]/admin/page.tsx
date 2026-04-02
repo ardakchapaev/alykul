@@ -1,7 +1,9 @@
 'use client';
 
 import { useAuth } from '@/lib/auth-context';
+import { api } from '@/lib/api';
 import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 // --- i18n ---
@@ -117,22 +119,67 @@ function formatNumber(n: number): string {
 }
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const params = useParams();
   const lang = (params?.lang as Lang) || 'ru';
   const dict = t[lang] || t.ru;
 
+  const [stats, setStats] = useState(mockStats);
+  const [bookings, setBookings] = useState(mockBookings);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    Promise.all([
+      api.getAdminStats(token).catch(() => null),
+      api.getAdminBookings(token).catch(() => null),
+    ]).then(([apiStats, apiBookings]) => {
+      if (apiStats) {
+        setStats({
+          bookings: apiStats.total_bookings,
+          revenue: apiStats.total_revenue,
+          activeTrips: apiStats.active_trips,
+          passengers: apiStats.total_passengers,
+        });
+      }
+      if (apiBookings) {
+        setBookings(apiBookings.map((b) => ({
+          id: b.id,
+          phone: '',
+          trip: '',
+          date: b.created_at,
+          amount: b.total_amount,
+          currency: b.currency,
+          status: b.status,
+          passengers: b.num_passengers,
+        })));
+      }
+      setLoading(false);
+    });
+  }, [token]);
+
   const statCards = [
-    { label: dict.totalBookings, value: formatNumber(mockStats.bookings), icon: ClipboardIcon, color: 'bg-blue-50 text-blue-600' },
-    { label: dict.revenue, value: `${formatNumber(mockStats.revenue)} KGS`, icon: CurrencyIcon, color: 'bg-green-50 text-green-600' },
-    { label: dict.activeTrips, value: String(mockStats.activeTrips), icon: ShipIcon, color: 'bg-indigo-50 text-indigo-600' },
-    { label: dict.totalPassengers, value: formatNumber(mockStats.passengers), icon: UsersIcon, color: 'bg-orange-50 text-orange-600' },
+    { label: dict.totalBookings, value: formatNumber(stats.bookings), icon: ClipboardIcon, color: 'bg-blue-50 text-blue-600' },
+    { label: dict.revenue, value: `${formatNumber(stats.revenue)} KGS`, icon: CurrencyIcon, color: 'bg-green-50 text-green-600' },
+    { label: dict.activeTrips, value: String(stats.activeTrips), icon: ShipIcon, color: 'bg-indigo-50 text-indigo-600' },
+    { label: dict.totalPassengers, value: formatNumber(stats.passengers), icon: UsersIcon, color: 'bg-orange-50 text-orange-600' },
   ];
 
   const statusLabel = (s: string) => {
     const map: Record<string, string> = { confirmed: dict.confirmed, hold: dict.hold, cancelled: dict.cancelled, refunded: dict.refunded };
     return map[s] || s;
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-[#0F2B46] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -192,7 +239,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {mockBookings.map((b, i) => (
+              {bookings.map((b, i) => (
                 <tr key={b.id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}>
                   <td className="px-5 py-3 font-medium text-gray-900">#{b.id}</td>
                   <td className="px-5 py-3">

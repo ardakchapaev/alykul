@@ -73,16 +73,16 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
     <nav className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-500 font-m3-body ${
       scrolled
         ? 'bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5 py-2'
-        : 'bg-white py-3'
+        : 'bg-gradient-to-b from-black/40 to-transparent py-4'
     }`}>
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 group">
           <svg viewBox="0 0 36 36" className="w-8 h-8" fill="none">
-            <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#00897B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#00897B" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke={scrolled ? '#00897B' : '#ffffff'} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke={scrolled ? '#00897B' : '#ffffff'} strokeWidth="1.5" fill="none" strokeLinecap="round" />
           </svg>
-          <span className="text-[#0A1628] font-m3-display text-lg font-bold tracking-wide hidden sm:block">
+          <span className={`font-m3-display text-lg font-bold tracking-wide hidden sm:block transition-colors ${scrolled ? 'text-[#0A1628]' : 'text-white'}`}>
             АЛЫКУЛ
           </span>
         </a>
@@ -91,7 +91,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
         <div className="hidden lg:flex items-center gap-6">
           {links.map(l => (
             <a key={l.href} href={l.href}
-              className="text-[#0A1628]/60 text-[13px] font-medium tracking-[1px] uppercase hover:text-[#00897B] transition-colors relative group">
+              className={`text-[13px] font-medium tracking-[1px] uppercase transition-colors relative group ${scrolled ? 'text-[#0A1628]/60 hover:text-[#00897B]' : 'text-white/80 hover:text-white'}`}>
               {l.label}
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00897B] transition-all group-hover:w-full" />
             </a>
@@ -108,7 +108,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
-              className="flex items-center gap-1 text-[#0A1628]/50 text-xs font-semibold hover:text-[#0A1628] transition-colors px-2 py-1.5">
+              className={`flex items-center gap-1 text-xs font-semibold transition-colors px-2 py-1.5 ${scrolled ? 'text-[#0A1628]/50 hover:text-[#0A1628]' : 'text-white/70 hover:text-white'}`}>
               {langLabels[lang] || 'RU'}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
             </button>
@@ -127,7 +127,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
           {/* Theme */}
           <div className="relative hidden lg:block">
             <button onClick={() => { setThemeOpen(!themeOpen); setLangOpen(false); }}
-              className="flex items-center gap-1 text-[#0A1628]/50 text-xs font-semibold hover:text-[#0A1628] transition-colors px-2 py-1.5">
+              className={`flex items-center gap-1 text-xs font-semibold transition-colors px-2 py-1.5 ${scrolled ? 'text-[#0A1628]/50 hover:text-[#0A1628]' : 'text-white/70 hover:text-white'}`}>
               {theme}
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
             </button>
@@ -852,10 +852,10 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
           <div>
             <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.routes}</h4>
             <ul className="space-y-2">
-              <li><a href={`/${lang}/trips`} className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.all_routes}</a></li>
-              <li><a href={`/${lang}/trips`} className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.cruises}</a></li>
-              <li><a href={`/${lang}/trips`} className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.charters}</a></li>
-              <li><a href={`/${lang}/trips`} className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.speed}</a></li>
+              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.all_routes}</a></li>
+              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.cruises}</a></li>
+              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.charters}</a></li>
+              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.speed}</a></li>
             </ul>
           </div>
 
@@ -863,9 +863,9 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
           <div>
             <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.company}</h4>
             <ul className="space-y-2">
-              <li><a href={`/${lang}/account`} className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.account}</a></li>
-              <li><a href="#" className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
-              <li><a href="#m4-contacts" className="text-white/40 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.contact}</a></li>
+              <li><a href={`/${lang}/account`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.account}</a></li>
+              <li><a href="#" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
+              <li><a href="#m4-contacts" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.contact}</a></li>
             </ul>
           </div>
 
