@@ -221,10 +221,16 @@ export default function AiChatWidget() {
           const res = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages: [...messages, { role: 'user', text: text.trim() }] }),
+            body: JSON.stringify({
+              messages: [...messages, { role: 'user', text: text.trim() }],
+              sessionId: sessionStorage.getItem('alykul-chat-session') || `web_${Date.now()}`,
+            }),
           });
           const data = await res.json();
           if (data.text && !data.fallback) {
+            if (!sessionStorage.getItem('alykul-chat-session')) {
+              sessionStorage.setItem('alykul-chat-session', `web_${Date.now()}`);
+            }
             return { text: data.text, quickReplies: ['Забронировать', 'Узнать цены', 'Другой вопрос'] };
           }
         } catch {

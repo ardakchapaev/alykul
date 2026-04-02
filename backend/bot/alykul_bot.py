@@ -5,6 +5,7 @@ Uses python-telegram-bot v20+ (async).
 
 import os
 import logging
+import httpx
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
@@ -247,7 +248,38 @@ KEYWORD_MAP = {
 }
 
 async def free_text_handler(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
-    msg = update.message.text.lower().strip()
+    """Handle free text — send to unified AI API, fallback to keyword matching."""
+    user = update.effective_user
+    text = update.message.text
+
+    # Try unified AI API first
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.post(
+                f'{API_URL}/ai/chat',
+                json={
+                    'channel': 'telegram',
+                    'channel_user_id': str(user.id),
+                    'message': text,
+                    'customer_name': user.full_name,
+                    'customer_phone': None,  # Telegram doesn't expose phone
+                }
+            )
+            if response.status_code == 200:
+                data = response.json()
+                await update.message.reply_text(
+                    data['response'],
+                    reply_markup=InlineKeyboardMarkup([[
+                        InlineKeyboardButton("🔍 Найти рейс", callback_data="search"),
+                        InlineKeyboardButton("💰 Цены", callback_data="prices"),
+                    ]])
+                )
+                return
+    except Exception as e:
+        logging.error(f"AI API error: {e}")
+
+    # Fallback to keyword matching if API fails
+    msg = text.lower().strip()
     for action, keywords in KEYWORD_MAP.items():
         if any(kw in msg for kw in keywords):
             await _send_section(action, update)

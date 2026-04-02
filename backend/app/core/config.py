@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     OPTIMA_API_URL: str = ""
     OPTIMA_API_KEY: str = ""
 
+    # AI / OpenRouter
+    OPENROUTER_API_KEY: str = "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"
+
     # Frontend
     FRONTEND_URL: str = "https://alykul.baimuras.pro"
 
