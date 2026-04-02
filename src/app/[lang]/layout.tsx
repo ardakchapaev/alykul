@@ -4,6 +4,7 @@ import '../globals.css';
 import { getDictionary, type Locale, locales } from '@/lib/i18n';
 import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/lib/theme-context';
+import PwaInstall from '@/components/PwaInstall';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
@@ -62,6 +63,12 @@ export async function generateMetadata({
       languages: { ru: '/ru', en: '/en', ky: '/ky' },
     },
     robots: { index: true, follow: true },
+    manifest: '/manifest.json',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: 'Алыкул',
+    },
   };
 }
 
@@ -76,6 +83,7 @@ export default function LangLayout({
     <html lang={params.lang}>
       <body className={`${cormorant.variable} ${outfit.variable} ${playfair.variable} ${inter.variable} font-body text-navy bg-sand antialiased`}>
         <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
+        <PwaInstall />
       </body>
     </html>
   );

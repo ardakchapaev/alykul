@@ -1,0 +1,49 @@
+{
+  "name": "Алыкул — Водный туризм на Иссык-Куле",
+  "short_name": "Алыкул",
+  "description": "Бронирование круизов, яхт и водных прогулок на озере Иссык-Куль",
+  "start_url": "/ru",
+  "display": "standalone",
+  "background_color": "#0F2B46",
+  "theme_color": "#246DC9",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "booking", "entertainment"],
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/hero.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Алыкул — Главная страница"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Найти рейс",
+      "short_name": "Рейсы",
+      "url": "/ru/trips",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Мои бронирования",
+      "short_name": "Брони",
+      "url": "/ru/account",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

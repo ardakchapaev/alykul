@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Алыкул — Нет подключения</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0F2B46; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .container { text-align: center; max-width: 400px; }
+    .icon { font-size: 64px; margin-bottom: 24px; }
+    h1 { font-size: 24px; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+    button { background: #246DC9; color: white; border: none; padding: 12px 32px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    button:hover { background: #1a5ab0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🚢</div>
+    <h1>Нет подключения к интернету</h1>
+    <p>Проверьте подключение и попробуйте снова. Ваши сохранённые билеты доступны в личном кабинете.</p>
+    <button onclick="location.reload()">Попробовать снова</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0F2B46"/>
+  <path d="M160 380Q220 280 256 120Q292 280 352 380" stroke="#246DC9" stroke-width="24" fill="none" stroke-linecap="round"/>
+  <path d="M130 400Q190 370 256 385Q322 400 390 370" stroke="#ffffff" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <text x="256" y="460" text-anchor="middle" fill="white" font-family="sans-serif" font-size="48" font-weight="bold">АЛЫКУЛ</text>
+</svg>
