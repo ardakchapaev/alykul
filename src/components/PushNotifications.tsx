@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-// TODO: Generate real VAPID keys with: npx web-push generate-vapid-keys
+// VAPID Public Key (Private: 3q2ChpNqkaKmttcY-3US5mdXKQnmDW1l7-Y-Ltsz88s — keep in backend env)
 const VAPID_PUBLIC_KEY =
-  'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkGs-GDcz8lIILf_UVlXMFRyYLTDLAch7MnLryFJ8';
+  'BAKe4jP-7XybSnJyoS-7q1ceTJGGn9IaiqLccOgmSnVrK_ZD8w9nuUCIlb9Kga5eC9H7ZIuN7JvHy9kHkc7QQZ8';
 
 /** Convert a URL-safe base64 string to a Uint8Array for applicationServerKey */
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
