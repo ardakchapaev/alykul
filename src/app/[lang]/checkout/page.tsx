@@ -37,6 +37,8 @@ function CheckoutInner() {
   const [trip, setTrip] = useState<TripDetail | null>(null);
   const [payMethod, setPayMethod] = useState('mbank');
   const [promo, setPromo] = useState('');
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoStatus, setPromoStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -72,7 +74,28 @@ function CheckoutInner() {
   if (loading) return <div className="min-h-screen flex items-center justify-center text-muted">{labels.loading}</div>;
   if (!trip) return <div className="min-h-screen flex items-center justify-center text-muted">Trip not found</div>;
 
+  const handleApplyPromo = () => {
+    // Client-side validation of known promo codes
+    // TODO: Replace with API call to /promo-codes/validate
+    const codes: Record<string, number> = {
+      'WELCOME10': 10,
+      'SUMMER20': 20,
+      'ALYKUL15': 15,
+      'VIP30': 30,
+      'FIRST50': 50,
+    };
+    const discount = codes[promo.toUpperCase()];
+    if (discount) {
+      setPromoDiscount(discount);
+      setPromoStatus('valid');
+    } else {
+      setPromoDiscount(0);
+      setPromoStatus('invalid');
+    }
+  };
+
   const total = trip.base_price * numPassengers;
+  const discountedTotal = promoDiscount > 0 ? total - (total * promoDiscount / 100) : total;
   const routeName = (trip.route[`name_${lang}` as keyof typeof trip.route] as string) || trip.route.name_ru;
   const formatTime = (iso: string) => new Date(iso).toLocaleTimeString(lang === 'ky' ? 'ru' : lang, { hour: '2-digit', minute: '2-digit' });
   const formatDate = (iso: string) => new Date(iso).toLocaleDateString(lang === 'ky' ? 'ru' : lang, { day: 'numeric', month: 'long' });
@@ -124,19 +147,40 @@ function CheckoutInner() {
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
           <h3 className="font-bold text-lg mb-4">{labels.promo}</h3>
           <div className="flex gap-3">
-            <input type="text" value={promo} onChange={e => setPromo(e.target.value.toUpperCase())}
+            <input type="text" value={promo} onChange={e => { setPromo(e.target.value.toUpperCase()); setPromoStatus('idle'); }}
               placeholder="WELCOME10"
               className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:border-ocean focus:outline-none uppercase tracking-wider" />
-            <button className="px-6 py-3 border border-ocean text-ocean rounded-xl font-semibold hover:bg-ocean/5">
+            <button onClick={handleApplyPromo} className="px-6 py-3 border border-ocean text-ocean rounded-xl font-semibold hover:bg-ocean/5">
               {labels.apply}
             </button>
           </div>
+          {promoStatus === 'valid' && (
+            <p className="mt-3 text-sm text-green-600 font-medium">
+              {lang === 'ru' ? `Скидка ${promoDiscount}% применена!` : lang === 'ky' ? `${promoDiscount}% арзандатуу колдонулду!` : `${promoDiscount}% discount applied!`}
+            </p>
+          )}
+          {promoStatus === 'invalid' && (
+            <p className="mt-3 text-sm text-red-500 font-medium">
+              {lang === 'ru' ? 'Промокод не найден' : lang === 'ky' ? 'Промокод табылган жок' : 'Promo code not found'}
+            </p>
+          )}
         </div>
+
+        {/* Total with discount */}
+        {promoDiscount > 0 && (
+          <div className="bg-green-50 rounded-2xl p-4 border border-green-100 flex items-center justify-between">
+            <span className="text-green-700 font-medium">{lang === 'ru' ? 'Скидка' : lang === 'ky' ? 'Арзандатуу' : 'Discount'} {promoDiscount}%</span>
+            <div className="text-right">
+              <span className="text-muted line-through text-sm mr-2">{total.toLocaleString()} {trip.currency}</span>
+              <span className="text-green-700 font-bold text-xl">{discountedTotal.toLocaleString()} {trip.currency}</span>
+            </div>
+          </div>
+        )}
 
         {/* Pay button */}
         <button onClick={handlePay} disabled={submitting}
           className="w-full py-4 bg-ocean text-white rounded-2xl font-bold text-xl hover:bg-ocean-dark transition-colors disabled:opacity-50">
-          {submitting ? labels.processing : `${labels.pay} ${total.toLocaleString()} ${trip.currency}`}
+          {submitting ? labels.processing : `${labels.pay} ${discountedTotal.toLocaleString()} ${trip.currency}`}
         </button>
       </div>
     </div>

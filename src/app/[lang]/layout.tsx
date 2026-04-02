@@ -5,6 +5,7 @@ import { getDictionary, type Locale, locales } from '@/lib/i18n';
 import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/lib/theme-context';
 import PwaInstall from '@/components/PwaInstall';
+import Analytics from '@/components/Analytics';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
@@ -84,6 +85,7 @@ export default function LangLayout({
       <body className={`${cormorant.variable} ${outfit.variable} ${playfair.variable} ${inter.variable} font-body text-navy bg-sand antialiased`}>
         <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
         <PwaInstall />
+        <Analytics />
       </body>
     </html>
   );
