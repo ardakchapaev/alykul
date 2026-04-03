@@ -667,6 +667,10 @@ function AzFooter({ t, lang }: { t: Tr; lang: string }) {
               <a href={`/${lang}/group-booking`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.groups || 'Группы'}</a>
               <a href={`/${lang}/privacy`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.privacy}</a>
               <a href={`/${lang}/trips`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{t.foot.trips}</a>
+              <a href={`/${lang}/faq`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">FAQ</a>
+              <a href={`/${lang}/contact`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{lang === 'ru' ? 'Контакты' : lang === 'ky' ? 'Байланыштар' : 'Contact'}</a>
+              <a href={`/${lang}/blog`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{lang === 'ru' ? 'Блог' : 'Blog'}</a>
+              <a href={`/${lang}/terms`} className="block font-m4-body text-white/40 text-[13px] font-light hover:text-white/70 transition-colors">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a>
             </div>
           </div>
         </div>

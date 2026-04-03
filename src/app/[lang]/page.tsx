@@ -298,6 +298,10 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             <a href={`/${params.lang}/gifts`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.gifts || 'Подарки'}</a>
             <a href={`/${params.lang}/group-booking`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.groups || 'Группы'}</a>
             <a href={`/${params.lang}/privacy`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.privacy}</a>
+            <a href={`/${params.lang}/faq`} className="text-muted hover:text-white text-sm transition-colors">FAQ</a>
+            <a href={`/${params.lang}/contact`} className="text-muted hover:text-white text-sm transition-colors">{params.lang === 'ru' ? 'Контакты' : params.lang === 'ky' ? 'Байланыштар' : 'Contact'}</a>
+            <a href={`/${params.lang}/blog`} className="text-muted hover:text-white text-sm transition-colors">{params.lang === 'ru' ? 'Блог' : 'Blog'}</a>
+            <a href={`/${params.lang}/terms`} className="text-muted hover:text-white text-sm transition-colors">{params.lang === 'ru' ? 'Условия' : params.lang === 'ky' ? 'Шарттар' : 'Terms'}</a>
           </div>
         </div>
         <div className="border-t border-white/10 pt-6 text-center text-muted text-sm">

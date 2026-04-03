@@ -905,6 +905,10 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
               <li><a href={`/${lang}/group-booking`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.groups || 'Группы'}</a></li>
               <li><a href={`/${lang}/privacy`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
               <li><a href="#m4-contacts" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.contact}</a></li>
+              <li><a href={`/${lang}/faq`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">FAQ</a></li>
+              <li><a href={`/${lang}/contact`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Контакты' : lang === 'ky' ? 'Байланыштар' : 'Contact'}</a></li>
+              <li><a href={`/${lang}/blog`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Блог' : 'Blog'}</a></li>
+              <li><a href={`/${lang}/terms`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a></li>
             </ul>
           </div>
 

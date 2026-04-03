@@ -8,6 +8,7 @@ import { api, type TripDetail } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import SeatMap from '@/components/SeatMap';
 import WeatherWidget from '@/components/WeatherWidget';
+import { SkeletonHero, SkeletonList } from '@/components/Skeleton';
 
 const t = {
   ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...', seats_title: 'Выбор мест' },
@@ -32,7 +33,7 @@ export default function TripPage() {
     api.getTrip(tripId).then(setTrip).catch(console.error).finally(() => setLoading(false));
   }, [tripId]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-muted">{labels.loading}</div>;
+  if (loading) return <div className="min-h-screen bg-sand"><SkeletonHero /><div className="px-6 py-8"><SkeletonList count={2} /></div></div>;
   if (!trip) return <div className="min-h-screen flex items-center justify-center text-muted">Trip not found</div>;
 
   const total = trip.base_price * passengers;

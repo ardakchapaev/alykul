@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { api, type Trip } from '@/lib/api';
+import { SkeletonCard } from '@/components/Skeleton';
 
 const piers = ['Чолпон-Ата', 'Бостери', 'Каракол', 'Тамга'];
 const categories = [
@@ -93,7 +94,9 @@ export default function TripsPage() {
       {/* Results */}
       <div className="px-6 md:px-14 py-8">
         {loading ? (
-          <p className="text-center text-muted py-12">{labels.loading}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
         ) : trips.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">⛵</div>

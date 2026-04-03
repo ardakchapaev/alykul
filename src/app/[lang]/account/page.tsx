@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { api, type Booking } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import LoyaltyCard from '@/components/LoyaltyCard';
+import { SkeletonList } from '@/components/Skeleton';
 
 const t = {
   ru: { title: 'Мой кабинет', bookings: 'Мои бронирования', noBookings: 'Нет бронирований', logout: 'Выйти', home: 'Главная', trips: 'Найти рейс', cancel: 'Отменить', cancelled: 'Отменено', confirmed: 'Подтверждено', pending: 'Ожидание', completed: 'Завершено', phone: 'Телефон', points: 'Баллы лояльности', loading: 'Загрузка...', login: 'Войти', gifts: 'Подарки', group: 'Группы', refund: 'Возврат' },
@@ -55,7 +56,7 @@ export default function AccountPage() {
 
   const statusLabel = (s: string) => labels[s as keyof typeof labels] || s;
 
-  if (authLoading || loading) return <div className="min-h-screen flex items-center justify-center text-muted">{labels.loading}</div>;
+  if (authLoading || loading) return <div className="min-h-screen bg-sand px-6 md:px-14 py-8"><SkeletonList count={3} /></div>;
 
   return (
     <div className="min-h-screen bg-sand">

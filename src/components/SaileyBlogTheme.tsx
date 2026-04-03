@@ -583,6 +583,10 @@ function M2Footer({ t, lang }: { t: Tr; lang: string }) {
               <a href={`/${lang}/gifts`} className="text-sm hover:text-white transition-colors">{t.foot.gifts || 'Подарки'}</a>
               <a href={`/${lang}/group-booking`} className="text-sm hover:text-white transition-colors">{t.foot.groups || 'Группы'}</a>
               <a href={`/${lang}/privacy`} className="text-sm hover:text-white transition-colors">{t.foot.privacy}</a>
+              <a href={`/${lang}/faq`} className="text-sm hover:text-white transition-colors">FAQ</a>
+              <a href={`/${lang}/contact`} className="text-sm hover:text-white transition-colors">{lang === 'ru' ? 'Контакты' : lang === 'ky' ? 'Байланыштар' : 'Contact'}</a>
+              <a href={`/${lang}/blog`} className="text-sm hover:text-white transition-colors">{lang === 'ru' ? 'Блог' : 'Blog'}</a>
+              <a href={`/${lang}/terms`} className="text-sm hover:text-white transition-colors">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a>
             </div>
           </div>
 

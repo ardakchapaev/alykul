@@ -682,6 +682,10 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
             <a href={`/${lang}/gifts`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.gifts || 'Подарки'}</a>
             <a href={`/${lang}/group-booking`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.groups || 'Группы'}</a>
             <a href={`/${lang}/privacy`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{t.foot.privacy || 'Конфиденциальность'}</a>
+            <a href={`/${lang}/faq`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">FAQ</a>
+            <a href={`/${lang}/contact`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Контакты' : lang === 'ky' ? 'Байланыштар' : 'Contact'}</a>
+            <a href={`/${lang}/blog`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Блог' : 'Blog'}</a>
+            <a href={`/${lang}/terms`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a>
           </div>
 
           <div className="flex flex-col gap-3">
