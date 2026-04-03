@@ -8,6 +8,7 @@ import PwaInstall from '@/components/PwaInstall';
 import Analytics from '@/components/Analytics';
 import ScrollToTop from '@/components/ScrollToTop';
 import CookieConsent from '@/components/CookieConsent';
+import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import { OrganizationJsonLd } from '@/components/JsonLd';
 
 const cormorant = Cormorant_Garamond({
@@ -100,6 +101,7 @@ export default function LangLayout({
         <Analytics />
         <ScrollToTop />
         <CookieConsent />
+        <KeyboardShortcuts />
         <OrganizationJsonLd />
       </body>
     </html>

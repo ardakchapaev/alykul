@@ -690,3 +690,30 @@ nav.scrolled, nav[class*="fixed"] {
   transform: scale(1.05);
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
+/* ═══ PRINT STYLES ═══ */
+@media print {
+  nav, footer, .fixed, [class*="z-[10"], button, .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+}

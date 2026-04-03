@@ -10,6 +10,7 @@ import SeatMap from '@/components/SeatMap';
 import WeatherWidget from '@/components/WeatherWidget';
 import { SkeletonHero, SkeletonList } from '@/components/Skeleton';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import ShareButtons from '@/components/ShareButtons';
 
 const t = {
   ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...', seats_title: 'Выбор мест' },
@@ -205,16 +206,9 @@ export default function TripPage() {
           </button>
 
           {/* Share */}
-          <button onClick={() => {
-            if (navigator.share) {
-              navigator.share({ title: trip.route[routeNameKey] as string, url: window.location.href }).catch(() => {});
-            } else {
-              navigator.clipboard.writeText(window.location.href);
-              alert(lang === 'ru' ? 'Ссылка скопирована!' : lang === 'ky' ? 'Шилтеме көчүрүлдү!' : 'Link copied!');
-            }
-          }} className="w-full mt-3 py-2.5 border border-gray-200 text-muted rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-            📤 {lang === 'ru' ? 'Поделиться' : lang === 'ky' ? 'Бөлүшүү' : 'Share'}
-          </button>
+          <div className="mt-3 flex items-center justify-center">
+            <ShareButtons title={(trip.route[routeNameKey] as string) || trip.route.name_ru} />
+          </div>
         </div>
       </div>
     </div>
