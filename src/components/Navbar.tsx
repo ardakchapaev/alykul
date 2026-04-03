@@ -5,6 +5,7 @@ import Link from 'next/link';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
 import { useAuth } from '@/lib/auth-context';
+import CurrencySelector from './CurrencySelector';
 
 type NavDict = {
   routes: string;
@@ -93,6 +94,7 @@ export default function Navbar({ dict, lang }: { dict: NavDict; lang: string }) 
             {lang === 'ru' ? 'Войти' : lang === 'ky' ? 'Кирүү' : 'Sign In'}
           </Link>
         )}
+        <CurrencySelector />
         <ThemeSwitcher />
         <LanguageSwitcher current={lang} />
         <button

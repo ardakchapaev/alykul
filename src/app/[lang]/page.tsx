@@ -11,6 +11,7 @@ import SaileyWrapper from '@/components/SaileyTheme';
 import DeepOceanWrapper from '@/components/DeepOceanTheme';
 import CoastalLuxuryWrapper from '@/components/CoastalLuxuryTheme';
 import AiChatWidget from '@/components/AiChatWidget';
+import WeatherWidget from '@/components/WeatherWidget';
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
   const t = await getDictionary(params.lang);
@@ -62,6 +63,9 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           </h1>
           <p className="text-foam text-lg mb-8 opacity-90">{t.hero.subtitle}</p>
           <HeroBooking dict={t} />
+        </div>
+        <div className="absolute top-4 right-4 z-[3] hidden md:block">
+          <WeatherWidget variant="dark" />
         </div>
         <Navbar dict={t.nav} lang={params.lang} />
         <WaveDivider nextColor="white" withYacht />

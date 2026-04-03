@@ -3,6 +3,7 @@
 import { useTheme, THEMES } from '@/lib/theme-context';
 import { useAuth } from '@/lib/auth-context';
 import { ScrollReveal } from './M3Animations';
+import WeatherWidget from './WeatherWidget';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
@@ -206,6 +207,10 @@ function AzHero({ t }: { t: Tr }) {
       />
       {/* Very subtle dark gradient — just enough for text */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+
+      <div className="absolute top-20 right-4 md:right-8 z-10 hidden lg:block">
+        <WeatherWidget variant="light" />
+      </div>
 
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-24 md:pb-32 px-6">
         <ScrollReveal>

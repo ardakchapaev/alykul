@@ -7,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { api, type TripDetail } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import SeatMap from '@/components/SeatMap';
+import WeatherWidget from '@/components/WeatherWidget';
 
 const t = {
   ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...', seats_title: 'Выбор мест' },
@@ -148,6 +149,12 @@ export default function TripPage() {
               <p>&bull; Возврат 50% за 12-24 часа до отправления</p>
               <p>&bull; Перенос даты бесплатно за 6+ часов</p>
             </div>
+          </div>
+
+          {/* Weather widget */}
+          <div className="bg-white rounded-2xl p-6 border border-gray-100">
+            <h3 className="font-bold text-lg mb-3">{lang === 'ru' ? 'Погода на Иссык-Куле' : 'Weather at Issyk-Kul'}</h3>
+            <WeatherWidget variant="light" />
           </div>
 
           {/* Weather notice */}

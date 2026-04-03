@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { ScrollReveal } from './M3Animations';
+import WeatherWidget from './WeatherWidget';
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    M4 — OceanPlaza WordPress Parallax Theme adaptation for Alykul
@@ -218,6 +219,10 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
       {/* Fullscreen ocean photo — edge to edge, NO padding */}
       <Image src="/images/hero.jpg" alt="Issyk-Kul" fill className="object-cover" priority />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+
+      <div className="absolute top-20 right-4 md:right-8 z-10 hidden lg:block">
+        <WeatherWidget variant="dark" />
+      </div>
 
       {/* Orange CTA text overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-4">
