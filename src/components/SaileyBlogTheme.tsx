@@ -5,6 +5,8 @@ import { useAuth } from '@/lib/auth-context';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { ScrollReveal } from './M3Animations';
+import WeatherWidget from './WeatherWidget';
+import CurrencySelector from './CurrencySelector';
 
 /* ═══════════════ TORN EDGE SVG ═══════════════ */
 const TornEdgeTop = ({ from, to }: { from: string; to: string }) => (
@@ -115,6 +117,7 @@ function M2Nav({ lang, t }: { lang: string; t: Tr }) {
         </div>
 
         <div className="flex items-center gap-2">
+          <CurrencySelector />
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
@@ -209,6 +212,7 @@ function M2Hero({ t }: { t: Tr }) {
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(/images/ocean-texture.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
       <div className="absolute inset-0 bg-gradient-to-b from-[#008B8B]/80 to-[#008B8B]" />
+      <div className="absolute top-20 right-4 z-10 hidden lg:block"><WeatherWidget variant="dark" /></div>
 
       <div className="relative z-10 px-6 max-w-3xl mx-auto">
         <ScrollReveal>

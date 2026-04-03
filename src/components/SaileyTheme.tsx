@@ -5,6 +5,8 @@ import { useAuth } from '@/lib/auth-context';
 import Image from 'next/image';
 import { ReactNode, useState, useEffect } from 'react';
 import { ScrollReveal } from './M3Animations';
+import WeatherWidget from './WeatherWidget';
+import CurrencySelector from './CurrencySelector';
 
 type Props = { lang: string; children: ReactNode };
 
@@ -92,6 +94,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
           {rightLinks.map(l => (
             <a key={l.href} href={l.href} className="text-white/70 text-[11px] font-medium tracking-[2px] uppercase hover:text-white transition-colors">{l.label}</a>
           ))}
+          <CurrencySelector />
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
@@ -195,6 +198,7 @@ function M3Hero({ t, lang }: { t: Tr; lang: string }) {
         <Image src="/images/hero.jpg" alt="Issyk-Kul aerial" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628]/50 via-[#0A1628]/20 to-[#0A1628]/70" />
       </div>
+      <div className="absolute top-20 right-4 md:right-8 z-10 hidden lg:block"><WeatherWidget variant="dark" /></div>
 
       {/* Central elegant title */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center">

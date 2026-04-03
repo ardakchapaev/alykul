@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { ScrollReveal } from './M3Animations';
 import WeatherWidget from './WeatherWidget';
+import CurrencySelector from './CurrencySelector';
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    M4 — OceanPlaza WordPress Parallax Theme adaptation for Alykul
@@ -122,6 +123,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
             </a>
           )}
 
+          <CurrencySelector />
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}

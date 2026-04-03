@@ -4,6 +4,7 @@ import { useTheme, THEMES } from '@/lib/theme-context';
 import { useAuth } from '@/lib/auth-context';
 import { ScrollReveal } from './M3Animations';
 import WeatherWidget from './WeatherWidget';
+import CurrencySelector from './CurrencySelector';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
@@ -84,6 +85,7 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
 
         {/* Right: lang + theme switchers — very subtle */}
         <div className="flex items-center gap-3">
+          <CurrencySelector />
           {/* Language */}
           <div className="relative">
             <button
