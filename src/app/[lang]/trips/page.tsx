@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { api, type Trip } from '@/lib/api';
 import { SkeletonCard } from '@/components/Skeleton';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const piers = ['Чолпон-Ата', 'Бостери', 'Каракол', 'Тамга'];
 const categories = [
@@ -63,8 +64,13 @@ export default function TripsPage() {
         <p className="text-foam/70 mt-2 text-sm">{labels.subtitle}</p>
       </div>
 
+      {/* Breadcrumbs */}
+      <div className="px-6 md:px-14 pt-4">
+        <Breadcrumbs items={[{ label: lang === 'ru' ? 'Рейсы' : lang === 'ky' ? 'Каттамдар' : 'Trips' }]} />
+      </div>
+
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 -mt-6 mx-4 md:mx-14 relative z-10 mb-8 flex flex-wrap gap-4 items-end">
+      <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 -mt-2 mx-4 md:mx-14 relative z-10 mb-8 flex flex-wrap gap-4 items-end">
         <div className="flex-1 min-w-[150px]">
           <label className="block text-sm font-medium text-muted mb-1">{labels.date}</label>
           <input type="date" value={date} onChange={e => setDate(e.target.value)}

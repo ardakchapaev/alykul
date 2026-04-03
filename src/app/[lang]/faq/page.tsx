@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 /* ═══════════════ TRANSLATIONS ═══════════════ */
 const translations = {
@@ -340,6 +341,11 @@ export default function FAQPage() {
           <p className="text-white/50 text-sm md:text-base max-w-lg mx-auto">{t.subtitle}</p>
         </div>
       </section>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-3xl mx-auto px-6 pt-6">
+        <Breadcrumbs items={[{ label: 'FAQ' }]} />
+      </div>
 
       {/* Search + Categories */}
       <section className="max-w-3xl mx-auto px-6 -mt-6">

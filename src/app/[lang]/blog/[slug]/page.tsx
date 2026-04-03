@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 // --- Types ---
 type ContentBlock =
@@ -530,6 +531,14 @@ export default function BlogArticlePage() {
           </div>
         </div>
       </section>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-6xl mx-auto px-4 pt-6">
+        <Breadcrumbs items={[
+          { label: lang === 'ru' ? 'Блог' : lang === 'ky' ? 'Блог' : 'Blog', href: `/${lang}/blog` },
+          { label: title }
+        ]} />
+      </div>
 
       {/* Content + Sidebar */}
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-14 lg:flex lg:gap-10">

@@ -686,6 +686,8 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
             <a href={`/${lang}/contact`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Контакты' : lang === 'ky' ? 'Байланыштар' : 'Contact'}</a>
             <a href={`/${lang}/blog`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Блог' : 'Blog'}</a>
             <a href={`/${lang}/terms`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a>
+            <a href={`/${lang}/partners`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Партнёрам' : lang === 'ky' ? 'Өнөктөштөргө' : 'Partners'}</a>
+            <a href={`/${lang}/careers`} className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">{lang === 'ru' ? 'Карьера' : lang === 'ky' ? 'Карьера' : 'Careers'}</a>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -711,6 +713,12 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d={s.icon} /></svg>
               </a>
             ))}
+            {/* Telegram Bot */}
+            <a href="https://t.me/alykul_bot" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-white/40 hover:text-[#00A896] text-xs font-m3-body transition-colors border border-white/10 hover:border-[#00A896]/30 rounded-full px-3 py-1.5">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.28-.02-.12.03-2.07 1.32-5.84 3.87-.55.38-1.05.56-1.5.55-.49-.01-1.44-.28-2.15-.51-.87-.28-1.56-.44-1.5-.92.03-.25.38-.51 1.05-.78 4.12-1.79 6.87-2.97 8.26-3.54 3.93-1.62 4.75-1.9 5.28-1.91.12 0 .37.03.54.17.14.12.18.28.2.45-.01.06.01.24 0 .37z" /></svg>
+              @alykul_bot
+            </a>
           </div>
         </div>
       </div>

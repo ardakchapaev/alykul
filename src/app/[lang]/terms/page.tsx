@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const t = {
   ru: {
@@ -170,8 +171,10 @@ export default function TermsPage() {
         </div>
       </div>
 
-      {/* Content */}
+      {/* Breadcrumbs + Content */}
       <div className="max-w-3xl mx-auto px-6 py-12">
+        <Breadcrumbs items={[{ label: lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms' }]} />
+
         <div className="space-y-10">
           {labels.sections.map((section, i) => (
             <section key={i}>

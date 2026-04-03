@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const t = {
   ru: {
@@ -174,6 +175,11 @@ export default function AboutPage() {
           <p className="text-foam/80 text-lg md:text-xl">{labels.heroSub}</p>
         </div>
       </section>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-4xl mx-auto px-6 pt-6">
+        <Breadcrumbs items={[{ label: lang === 'ru' ? 'О компании' : lang === 'ky' ? 'Компания жөнүндө' : 'About' }]} />
+      </div>
 
       {/* Timeline / History */}
       <section className="py-20 px-6">

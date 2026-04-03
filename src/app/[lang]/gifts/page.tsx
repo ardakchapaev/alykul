@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const t = {
   ru: {
@@ -167,6 +168,11 @@ export default function GiftsPage() {
         <div className="text-5xl mb-4">🎁</div>
         <h1 className="font-heading font-bold text-3xl md:text-4xl uppercase mb-2">{labels.hero}</h1>
         <p className="text-foam/60 text-sm max-w-md mx-auto">{labels.heroSub}</p>
+      </div>
+
+      {/* Breadcrumbs */}
+      <div className="px-6 md:px-14 pt-4 max-w-4xl mx-auto">
+        <Breadcrumbs items={[{ label: lang === 'ru' ? 'Подарки' : lang === 'ky' ? 'Белектер' : 'Gifts' }]} />
       </div>
 
       <div className="px-6 md:px-14 py-8 max-w-4xl mx-auto space-y-8">

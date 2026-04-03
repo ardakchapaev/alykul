@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 // TODO: Replace with CMS API
 const articles = [
@@ -63,6 +64,11 @@ export default function BlogPage() {
         <h1 className="text-3xl md:text-4xl font-bold mb-3">{t.hero[lang as keyof typeof t.hero] || t.hero.ru}</h1>
         <p className="text-foam/70 max-w-xl mx-auto">{t.subtitle[lang as keyof typeof t.subtitle] || t.subtitle.ru}</p>
       </section>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-6xl mx-auto px-4 pt-6">
+        <Breadcrumbs items={[{ label: lang === 'ru' ? 'Блог' : lang === 'ky' ? 'Блог' : 'Blog' }]} />
+      </div>
 
       {/* Filters */}
       <div className="max-w-6xl mx-auto px-4 py-6">

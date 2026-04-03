@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 /* ═══════════════ TRANSLATIONS ═══════════════ */
 const translations = {
@@ -147,6 +148,11 @@ export default function ContactPage() {
           <p className="text-white/50 text-sm md:text-base max-w-lg mx-auto">{t.subtitle}</p>
         </div>
       </section>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-6xl mx-auto px-6 pt-6">
+        <Breadcrumbs items={[{ label: lang === 'ru' ? 'Контакты' : lang === 'ky' ? 'Байланыштар' : 'Contact' }]} />
+      </div>
 
       {/* Main content */}
       <section className="max-w-6xl mx-auto px-6 py-16">

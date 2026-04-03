@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/auth-context';
 import SeatMap from '@/components/SeatMap';
 import WeatherWidget from '@/components/WeatherWidget';
 import { SkeletonHero, SkeletonList } from '@/components/Skeleton';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const t = {
   ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...', seats_title: 'Выбор мест' },
@@ -72,6 +73,14 @@ export default function TripPage() {
           </h1>
           <p className="text-foam/80 mt-2">{formatDate(trip.departure_at)}</p>
         </div>
+      </div>
+
+      {/* Breadcrumbs */}
+      <div className="px-6 md:px-14 pt-4">
+        <Breadcrumbs items={[
+          { label: lang === 'ru' ? 'Рейсы' : lang === 'ky' ? 'Каттамдар' : 'Trips', href: `/${lang}/trips` },
+          { label: (trip.route[routeNameKey] as string) || trip.route.name_ru }
+        ]} />
       </div>
 
       <div className="px-6 md:px-14 py-8 grid md:grid-cols-3 gap-8">
