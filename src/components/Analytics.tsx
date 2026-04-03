@@ -12,7 +12,7 @@ declare global {
 }
 
 // Google Analytics
-const GA_ID = 'G-XXXXXXXXXX'; // TODO: Replace with real GA4 measurement ID
+const GA_ID = 'G-FL381XVG1L';
 // Yandex Metrika
 const YM_ID = '00000000'; // TODO: Replace with real Yandex Metrika counter ID
 
@@ -38,7 +38,7 @@ export default function Analytics() {
 
   useEffect(() => {
     // Load GA script
-    if (typeof window !== 'undefined' && GA_ID !== 'G-XXXXXXXXXX') {
+    if (typeof window !== 'undefined' && GA_ID) {
       const script = document.createElement('script');
       script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
       script.async = true;
@@ -72,7 +72,7 @@ export default function Analytics() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // GA pageview
-      if (window.gtag && GA_ID !== 'G-XXXXXXXXXX') {
+      if (window.gtag && GA_ID) {
         window.gtag('config', GA_ID, { page_path: pathname });
       }
       // YM pageview
