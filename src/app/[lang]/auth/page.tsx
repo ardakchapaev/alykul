@@ -5,6 +5,9 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import TelegramLogin from '@/components/TelegramLogin';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
 
 const t = {
   ru: { title: 'Вход', subtitle: 'Введите номер телефона для получения кода', phone: 'Номер телефона', send: 'Получить код', code: 'Код из SMS', verify: 'Войти', back: 'Главная', sent: 'Код отправлен на', wrong: 'Неверный код', dev: 'Код для тестирования' },
@@ -137,6 +140,40 @@ function AuthInner() {
           )}
 
           {error && <p className="text-red-500 text-sm mt-3 text-center">{error}</p>}
+
+          {/* Divider */}
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-muted text-sm">{lang === 'ru' ? 'или' : lang === 'ky' ? 'же' : 'or'}</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {/* Telegram Login */}
+          <div className="text-center">
+            <TelegramLogin
+              botName="alykul_bot"
+              lang={lang}
+              onAuth={async (tgUser) => {
+                try {
+                  const res = await fetch(`${API_URL}/auth/telegram`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(tgUser),
+                  });
+                  if (res.ok) {
+                    const data = await res.json();
+                    await login(data.access_token);
+                    router.push(redirect);
+                  }
+                } catch {
+                  setError(lang === 'ru' ? 'Ошибка входа через Telegram' : 'Telegram login error');
+                }
+              }}
+            />
+            <p className="text-xs text-muted mt-2">
+              {lang === 'ru' ? 'Войдите через Telegram — быстро и бесплатно' : lang === 'ky' ? 'Telegram аркылуу кириңиз' : 'Sign in with Telegram — fast and free'}
+            </p>
+          </div>
         </div>
       </div>
     </div>

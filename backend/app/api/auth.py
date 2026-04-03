@@ -53,6 +53,33 @@ async def verify_otp(data: OTPVerify, db: AsyncSession = Depends(get_db)):
     return TokenResponse(access_token=token)
 
 
+@router.post("/telegram", summary="Login via Telegram Widget")
+async def telegram_login(data: dict, db: AsyncSession = Depends(get_db)):
+    """Login via Telegram Widget"""
+    telegram_id = data.get('id')
+    first_name = data.get('first_name', '')
+    # TODO: Verify hash with bot token for security
+
+    # Find or create user
+    stmt = select(User).where(User.phone == f"tg_{telegram_id}")
+    result = await db.execute(stmt)
+    user = result.scalar_one_or_none()
+
+    if not user:
+        user = User(
+            phone=f"tg_{telegram_id}",
+            name=first_name,
+            is_verified=True,
+        )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+
+    # Generate JWT
+    token = create_access_token({"sub": str(user.id)})
+    return {"access_token": token, "token_type": "bearer"}
+
+
 @router.get("/me", response_model=UserResponse, summary="Get current user")
 async def get_me(user: User = Depends(get_current_user)):
     return user

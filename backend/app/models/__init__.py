@@ -5,3 +5,4 @@ from app.models.trip import Trip  # noqa: F401
 from app.models.booking import Booking, Payment, PromoCode, Review  # noqa: F401
 from app.models.conversation import ConversationSession, ConversationMessage  # noqa: F401
 from app.models.forms import FormSubmission  # noqa: F401
+from app.api.analytics import PageView  # noqa: F401

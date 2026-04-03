@@ -6,6 +6,7 @@ import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/lib/theme-context';
 import PwaInstall from '@/components/PwaInstall';
 import Analytics from '@/components/Analytics';
+import PageTracker from '@/components/PageTracker';
 import ScrollToTop from '@/components/ScrollToTop';
 import CookieConsent from '@/components/CookieConsent';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
@@ -100,6 +101,7 @@ export default function LangLayout({
         <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
         <PwaInstall />
         <Analytics />
+        <PageTracker />
         <ScrollToTop />
         <CookieConsent />
         <KeyboardShortcuts />
