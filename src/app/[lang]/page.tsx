@@ -3,7 +3,7 @@ import { getDictionary, type Locale } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import HeroVideo from '@/components/HeroVideo';
 import WaveDivider from '@/components/WaveDivider';
-import HeroBooking from './HeroBooking';
+import HeroBooking, { M1ContactForm } from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
 import SaileyBlogWrapper from '@/components/SaileyBlogTheme';
@@ -255,17 +255,36 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         <WaveDivider nextColor="white" />
       </section>
 
-      {/* MAP */}
-      <div id="map" className="relative pb-28">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
-          className="w-full h-[400px] border-0"
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+      {/* MAP + CONTACT */}
+      <section id="map" className="relative py-16 pb-28">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+          <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-center mb-12">
+            {params.lang === 'ru' ? 'Свяжитесь с нами' : params.lang === 'ky' ? 'Биз менен байланышыңыз' : 'Contact Us'}
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Left: Form + Contacts */}
+            <M1ContactForm dict={{
+              title: params.lang === 'ru' ? 'Свяжитесь с нами' : params.lang === 'ky' ? 'Биз менен байланышыңыз' : 'Contact Us',
+              name: params.lang === 'ru' ? 'Ваше имя' : params.lang === 'ky' ? 'Атыңыз' : 'Your name',
+              phone: params.lang === 'ru' ? 'Телефон' : 'Phone',
+              message: params.lang === 'ru' ? 'Сообщение' : params.lang === 'ky' ? 'Билдирүү' : 'Message',
+              send: params.lang === 'ru' ? 'Отправить' : params.lang === 'ky' ? 'Жөнөтүү' : 'Send',
+              sent: params.lang === 'ru' ? 'Спасибо! Мы свяжемся с вами.' : params.lang === 'ky' ? 'Рахмат! Сиз менен байланышабыз.' : 'Thank you! We will contact you.',
+            }} />
+            {/* Right: Map */}
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186964.5684587!2d76.89!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c5e2e27a3b%3A0x6f2a7c29d3f4d8a1!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
+                className="w-full h-[400px] border-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+        </div>
         <WaveDivider nextColor="navy" withYacht />
-      </div>
+      </section>
 
       {/* FOOTER */}
       <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { openWhatsApp } from '@/components/WhatsAppBooking';
 
 type Dict = {
@@ -66,6 +67,73 @@ export default function HeroBooking({ dict }: { dict: Dict }) {
       <button onClick={handleBook} className="px-8 py-3 bg-ocean text-white rounded-xl font-semibold whitespace-nowrap hover:bg-ocean-dark transition-colors w-full md:w-auto">
         {dict.booking_widget.search}
       </button>
+    </div>
+  );
+}
+
+/* ═══════════════ M1 CONTACT FORM ═══════════════ */
+type ContactDict = {
+  title: string;
+  name: string;
+  phone: string;
+  message: string;
+  send: string;
+  sent: string;
+};
+
+export function M1ContactForm({ dict }: { dict: ContactDict }) {
+  const API_URL = 'https://alykul.baimuras.pro/api/v1';
+  const [contactForm, setContactForm] = useState({ name: '', phone: '', message: '' });
+  const [contactSent, setContactSent] = useState(false);
+
+  const handleContact = async () => {
+    try {
+      await fetch(`${API_URL}/forms/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: contactForm.name, phone: contactForm.phone, message: contactForm.message, subject: 'Landing form', email: '' }),
+      });
+      setContactSent(true);
+    } catch {}
+  };
+
+  return (
+    <div>
+      {contactSent ? (
+        <div className="text-center py-12">
+          <div className="text-4xl mb-4 text-ocean">&#10003;</div>
+          <p className="text-ocean font-semibold text-lg">{dict.sent}</p>
+        </div>
+      ) : (
+        <form className="space-y-4 mb-8" onSubmit={(e) => { e.preventDefault(); handleContact(); }}>
+          <input type="text" placeholder={dict.name} value={contactForm.name}
+            onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+            className="w-full px-4 py-3 border border-gray-200 focus:border-ocean focus:ring-1 focus:ring-ocean rounded-xl outline-none transition-colors" />
+          <input type="tel" placeholder={dict.phone} value={contactForm.phone}
+            onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
+            className="w-full px-4 py-3 border border-gray-200 focus:border-ocean focus:ring-1 focus:ring-ocean rounded-xl outline-none transition-colors" />
+          <textarea placeholder={dict.message} rows={3} value={contactForm.message}
+            onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+            className="w-full px-4 py-3 border border-gray-200 focus:border-ocean focus:ring-1 focus:ring-ocean rounded-xl outline-none transition-colors resize-none" />
+          <button type="submit" className="w-full py-3 bg-ocean hover:bg-ocean-dark text-white rounded-xl font-semibold transition-colors">
+            {dict.send}
+          </button>
+        </form>
+      )}
+      <div className="space-y-3">
+        <a href="tel:+996555123456" className="flex items-center gap-3 text-navy hover:text-ocean transition-colors text-sm">
+          <span>&#128241;</span> +996 555 123 456
+        </a>
+        <a href="mailto:info@alykul.kg" className="flex items-center gap-3 text-navy hover:text-ocean transition-colors text-sm">
+          <span>&#128231;</span> info@alykul.kg
+        </a>
+        <a href="https://wa.me/996555123456" className="flex items-center gap-3 text-navy hover:text-ocean transition-colors text-sm">
+          <span>&#128172;</span> WhatsApp
+        </a>
+        <a href="https://t.me/alykul_bot" className="flex items-center gap-3 text-navy hover:text-ocean transition-colors text-sm">
+          <span>&#129302;</span> Telegram @alykul_bot
+        </a>
+      </div>
     </div>
   );
 }

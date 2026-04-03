@@ -838,29 +838,90 @@ function M4FAQ({ t }: { t: Tr }) {
   );
 }
 
-/* ═══════════════ MAP ═══════════════ */
+/* ═══════════════ MAP + CONTACT ═══════════════ */
 function M4Map({ t }: { t: Tr }) {
+  const API_URL = 'https://alykul.baimuras.pro/api/v1';
+  const [contactForm, setContactForm] = useState({ name: '', phone: '', message: '' });
+  const [contactSent, setContactSent] = useState(false);
+
+  const handleContact = async () => {
+    try {
+      await fetch(`${API_URL}/forms/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: contactForm.name, phone: contactForm.phone, message: contactForm.message, subject: 'Landing form', email: '' }),
+      });
+      setContactSent(true);
+    } catch {}
+  };
+
   return (
     <section id="m4-contacts" className="relative bg-gray-50 py-20 md:py-28"
       style={{ clipPath: 'polygon(0 40px, 100% 0, 100% 100%, 0 100%)' }}>
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8 pt-6">
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 pt-6">
         <ScrollReveal>
           <div className="text-center mb-10">
             <h2 className="font-m3-display text-3xl md:text-4xl font-bold text-[#0A1628] uppercase tracking-wide">
-              {t.map.title}
+              {t.contact.title}
             </h2>
             <p className="text-gray-500 mt-3 font-m3-body">{t.map.sub}</p>
           </div>
         </ScrollReveal>
-        <ScrollReveal>
-          <div className="rounded-lg overflow-hidden shadow-lg h-[350px] md:h-[450px]">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d46247.04285505498!2d77.05!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389ee800b1b25417%3A0x45f7c90f93a5696a!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
-              width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </ScrollReveal>
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Left: Form + Contacts */}
+          <ScrollReveal>
+            <div>
+              {contactSent ? (
+                <div className="text-center py-12">
+                  <div className="text-4xl mb-4 text-[#00897B]">&#10003;</div>
+                  <p className="text-[#00897B] font-semibold text-lg font-m3-body">{t.contact.sent}</p>
+                </div>
+              ) : (
+                <form className="space-y-4 mb-8" onSubmit={(e) => { e.preventDefault(); handleContact(); }}>
+                  <input type="text" placeholder={t.contact.name} value={contactForm.name}
+                    onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full px-4 py-3 border border-gray-200 focus:border-[#00897B] focus:ring-1 focus:ring-[#00897B] rounded-xl outline-none transition-colors font-m3-body bg-white" />
+                  <input type="tel" placeholder={t.contact.phone} value={contactForm.phone}
+                    onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
+                    className="w-full px-4 py-3 border border-gray-200 focus:border-[#00897B] focus:ring-1 focus:ring-[#00897B] rounded-xl outline-none transition-colors font-m3-body bg-white" />
+                  <textarea placeholder={t.contact.message} rows={3} value={contactForm.message}
+                    onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                    className="w-full px-4 py-3 border border-gray-200 focus:border-[#00897B] focus:ring-1 focus:ring-[#00897B] rounded-xl outline-none transition-colors resize-none font-m3-body bg-white" />
+                  <button type="submit" className="w-full py-3 bg-[#00897B] hover:bg-[#00796B] text-white rounded-xl font-semibold transition-colors font-m3-body">
+                    {t.contact.send}
+                  </button>
+                </form>
+              )}
+              <div className="space-y-3">
+                <a href="tel:+996555123456" className="flex items-center gap-3 text-[#0A1628] hover:text-[#00897B] transition-colors text-sm font-m3-body">
+                  <span>&#128241;</span> +996 555 123 456
+                </a>
+                <a href="mailto:info@alykul.kg" className="flex items-center gap-3 text-[#0A1628] hover:text-[#00897B] transition-colors text-sm font-m3-body">
+                  <span>&#128231;</span> info@alykul.kg
+                </a>
+                <a href="https://wa.me/996555123456" className="flex items-center gap-3 text-[#0A1628] hover:text-[#00897B] transition-colors text-sm font-m3-body">
+                  <span>&#128172;</span> WhatsApp
+                </a>
+                <a href="https://t.me/alykul_bot" className="flex items-center gap-3 text-[#0A1628] hover:text-[#00897B] transition-colors text-sm font-m3-body">
+                  <span>&#129302;</span> Telegram @alykul_bot
+                </a>
+                <p className="flex items-center gap-3 text-gray-500 text-sm font-m3-body">
+                  <span>&#128205;</span> {t.map.sub}
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+          {/* Right: Map */}
+          <ScrollReveal>
+            <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200 h-full min-h-[400px]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d46247.04285505498!2d77.05!3d42.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389ee800b1b25417%3A0x45f7c90f93a5696a!2z0KfQvtC70L_QvtC9LdCQ0YLQsA!5e0!3m2!1sru!2skg!4v1"
+                width="100%" height="100%" style={{ border: 0, minHeight: '400px' }} allowFullScreen loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </ScrollReveal>
+        </div>
       </div>
     </section>
   );
@@ -1192,6 +1253,14 @@ function getTrans(lang: string) {
     map: {
       title: ru ? 'КАК НАС НАЙТИ' : ky ? 'БИЗДИ КАНТИП ТАБАСЫЗ' : 'FIND US',
       sub: ru ? 'Причал в Чолпон-Ате, северный берег озера Иссык-Куль' : ky ? 'Чолпон-Атадагы причал, Ысык-Көлдүн түндүк жээги' : 'Pier in Cholpon-Ata, northern shore of Lake Issyk-Kul',
+    },
+    contact: {
+      title: ru ? 'Свяжитесь с нами' : ky ? 'Биз менен байланышыңыз' : 'Contact Us',
+      name: ru ? 'Ваше имя' : ky ? 'Атыңыз' : 'Your name',
+      phone: ru ? 'Телефон' : 'Phone',
+      message: ru ? 'Сообщение' : ky ? 'Билдирүү' : 'Message',
+      send: ru ? 'Отправить' : ky ? 'Жөнөтүү' : 'Send',
+      sent: ru ? 'Спасибо! Мы свяжемся с вами.' : ky ? 'Рахмат! Сиз менен байланышабыз.' : 'Thank you! We will contact you.',
     },
     foot: {
       desc: ru ? 'Первая платформа онлайн-бронирования водного транспорта на озере Иссык-Куль.' : ky ? 'Ысык-Көлдөгү суу транспортун онлайн брондоонун биринчи платформасы.' : 'First online water transport booking platform on Lake Issyk-Kul.',
