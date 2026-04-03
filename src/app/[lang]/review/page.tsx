@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -100,6 +100,10 @@ const t = {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
 
 export default function ReviewPage() {
+  return <Suspense><ReviewInner /></Suspense>;
+}
+
+function ReviewInner() {
   const params = useParams();
   const searchParams = useSearchParams();
   const lang = (params.lang as string) || 'ru';
