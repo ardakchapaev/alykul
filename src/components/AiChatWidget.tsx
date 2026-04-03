@@ -12,7 +12,7 @@ interface Message {
 }
 
 // --- Decision Tree ---
-const INITIAL_QUICK_REPLIES = ['Хочу забронировать', 'Узнать цены', 'Расписание', 'О компании'];
+const INITIAL_QUICK_REPLIES = ['Хочу забронировать \u{1F6A2}', 'Цены в USD \u{1F4B0}', 'Группа 10+ чел \u{1F465}', 'Подарочный сертификат \u{1F381}'];
 
 const PRICES_TEXT =
   'Наши цены на сезон 2026:\n\n' +
@@ -83,15 +83,30 @@ function matchKeyword(input: string): { text: string; quickReplies: string[] } |
 function getAiResponse(userText: string, _history: Message[]): { text: string; quickReplies: string[] } {
   const lower = userText.toLowerCase().trim();
 
-  // Decision tree: booking flow
-  if (['хочу забронировать', 'забронировать'].includes(lower)) {
+  // Decision tree: booking flow (supports emoji variants from quick replies)
+  if (/хочу забронировать|забронировать/.test(lower)) {
     return { text: 'Отлично! Какой тип отдыха вас интересует?', quickReplies: BOOKING_OPTIONS };
   }
   if (BOOKING_DETAILS[userText]) {
     return { text: BOOKING_DETAILS[userText], quickReplies: ['Забронировать', 'Назад к рейсам', 'Связаться с менеджером'] };
   }
-  if (lower === 'узнать цены') {
-    return { text: PRICES_TEXT, quickReplies: ['Забронировать', 'Подробнее о рейсах', 'Связаться с менеджером'] };
+  if (/цен.*usd|usd|узнать цены/.test(lower)) {
+    return {
+      text: PRICES_TEXT + '\n\nВ USD (курс ~87 KGS):\n\u2022 Закатный круиз — от $16\n\u2022 Утренний круиз — от $14\n\u2022 Скоростной тур — от $23\n\u2022 Приватный чартер — от $80\n\u2022 Детский праздник — от $12/чел',
+      quickReplies: ['Забронировать', 'Подробнее о рейсах', 'Связаться с менеджером'],
+    };
+  }
+  if (/групп.*10|группа/.test(lower)) {
+    return {
+      text: 'Групповое бронирование (10+ человек):\n\n\u2022 Скидка 15% от стандартной цены\n\u2022 Персональный менеджер\n\u2022 Индивидуальный маршрут\n\u2022 Кейтеринг на борту\n\nОформите заявку: alykul.baimuras.pro/ru/group-booking\nИли напишите в WhatsApp: +996 555 123 456',
+      quickReplies: ['Забронировать', 'Узнать цены', 'Связаться с менеджером'],
+    };
+  }
+  if (/подароч|сертификат|gift/.test(lower)) {
+    return {
+      text: 'Подарочные сертификаты Алыкул:\n\n\u2022 Закатный круиз — 1,400 KGS ($16)\n\u2022 VIP-чартер на яхте — 7,000 KGS ($80)\n\u2022 Произвольная сумма\n\nКрасивое оформление + доставка.\nОформить: alykul.baimuras.pro/ru/gifts',
+      quickReplies: ['Забронировать', 'Другой вопрос'],
+    };
   }
   if (lower === 'расписание') {
     return { text: SCHEDULE_TEXT, quickReplies: ['Забронировать', 'Другой вопрос'] };
@@ -167,7 +182,7 @@ export default function AiChatWidget() {
       const greeting: Message = {
         id: uid(),
         role: 'ai',
-        text: 'Здравствуйте! \ud83d\udc4b \u042f \u0430\u0441\u0441\u0438\u0441\u0442\u0435\u043d\u0442 \u0410\u043b\u044b\u043a\u0443\u043b. \u0427\u0435\u043c \u043c\u043e\u0433\u0443 \u043f\u043e\u043c\u043e\u0447\u044c?',
+        text: 'Здравствуйте! \ud83d\udc4b Я менеджер Алыкул.\n\nПланируете водную прогулку на Иссык-Куле? Расскажите:\n\u2022 Когда хотите приехать?\n\u2022 Сколько вас будет?\n\nПодберу идеальный вариант! \u{1F6A2}',
         quickReplies: INITIAL_QUICK_REPLIES,
         timestamp: Date.now(),
       };

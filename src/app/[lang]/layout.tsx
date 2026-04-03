@@ -12,6 +12,8 @@ import CookieConsent from '@/components/CookieConsent';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import ScrollProgress from '@/components/ScrollProgress';
 import { OrganizationJsonLd } from '@/components/JsonLd';
+import WhatsAppFloat from '@/components/WhatsAppFloat';
+import BookingBanner from '@/components/BookingBanner';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
@@ -107,6 +109,8 @@ export default function LangLayout({
         <KeyboardShortcuts />
         <ScrollProgress />
         <OrganizationJsonLd />
+        <WhatsAppFloat />
+        <BookingBanner />
       </body>
     </html>
   );
