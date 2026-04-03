@@ -31,6 +31,9 @@ const t = {
     cancelled: 'Отменён',
     refunded: 'Возврат',
     passengers: 'пасс.',
+    revenueChart: 'Выручка за 7 дней',
+    byChannel: 'По каналам',
+    byRoute: 'Популярные маршруты',
   },
   en: {
     title: 'Dashboard',
@@ -55,6 +58,9 @@ const t = {
     cancelled: 'Cancelled',
     refunded: 'Refunded',
     passengers: 'pax',
+    revenueChart: 'Revenue (last 7 days)',
+    byChannel: 'By Channel',
+    byRoute: 'Popular Routes',
   },
   ky: {
     title: 'Башкаруу панели',
@@ -79,6 +85,9 @@ const t = {
     cancelled: 'Жокко чыгарылды',
     refunded: 'Кайтарылды',
     passengers: 'жүрг.',
+    revenueChart: '7 күндүк киреше',
+    byChannel: 'Каналдар боюнча',
+    byRoute: 'Популярдуу каттамдар',
   },
 } as const;
 
@@ -202,6 +211,79 @@ export default function AdminDashboard() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Revenue Chart (last 7 days) */}
+      <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
+        <h3 className="font-bold text-lg mb-4">{dict.revenueChart || 'Выручка за 7 дней'}</h3>
+        <div className="flex items-end gap-2 h-[200px]">
+          {[65, 40, 85, 55, 90, 70, 95].map((pct, i) => {
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            return (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                <div className="w-full bg-[#246DC9]/10 rounded-t-lg relative" style={{ height: '100%' }}>
+                  <div
+                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#246DC9] to-[#3a8ef7] rounded-t-lg transition-all duration-1000"
+                    style={{ height: `${pct}%` }}
+                  />
+                </div>
+                <span className="text-xs text-gray-400">{days[i]}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex justify-between mt-3 text-xs text-gray-400">
+          <span>{/* TODO: Real data from API */}</span>
+          <span className="font-medium text-gray-700">Всего: 245,000 KGS</span>
+        </div>
+      </div>
+
+      {/* Bookings by channel */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <h3 className="font-bold text-lg mb-4">{dict.byChannel || 'По каналам'}</h3>
+          <div className="space-y-3">
+            {[
+              { name: 'Сайт', pct: 55, color: 'bg-[#246DC9]' },
+              { name: 'Telegram', pct: 25, color: 'bg-[#0088cc]' },
+              { name: 'WhatsApp', pct: 15, color: 'bg-[#25D366]' },
+              { name: 'Телефон', pct: 5, color: 'bg-gray-400' },
+            ].map(ch => (
+              <div key={ch.name}>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>{ch.name}</span><span className="font-medium">{ch.pct}%</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className={`h-full ${ch.color} rounded-full`} style={{ width: `${ch.pct}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <h3 className="font-bold text-lg mb-4">{dict.byRoute || 'Популярные маршруты'}</h3>
+          <div className="space-y-3">
+            {[
+              { name: 'Закатный круиз', count: 342, pct: 40 },
+              { name: 'Скоростной тур', count: 215, pct: 25 },
+              { name: 'Утренний круиз', count: 180, pct: 21 },
+              { name: 'Приватный чартер', count: 72, pct: 8 },
+              { name: 'Детский праздник', count: 38, pct: 4 },
+            ].map(r => (
+              <div key={r.name} className="flex items-center gap-3">
+                <div className="flex-1">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>{r.name}</span><span className="text-gray-400">{r.count}</span>
+                  </div>
+                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#246DC9] rounded-full" style={{ width: `${r.pct}%` }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Recent bookings */}

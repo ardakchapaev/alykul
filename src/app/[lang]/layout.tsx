@@ -6,6 +6,9 @@ import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/lib/theme-context';
 import PwaInstall from '@/components/PwaInstall';
 import Analytics from '@/components/Analytics';
+import ScrollToTop from '@/components/ScrollToTop';
+import CookieConsent from '@/components/CookieConsent';
+import { OrganizationJsonLd } from '@/components/JsonLd';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
@@ -95,6 +98,9 @@ export default function LangLayout({
         <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
         <PwaInstall />
         <Analytics />
+        <ScrollToTop />
+        <CookieConsent />
+        <OrganizationJsonLd />
       </body>
     </html>
   );
