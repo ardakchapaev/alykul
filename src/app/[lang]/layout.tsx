@@ -9,6 +9,7 @@ import Analytics from '@/components/Analytics';
 import ScrollToTop from '@/components/ScrollToTop';
 import CookieConsent from '@/components/CookieConsent';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
+import ScrollProgress from '@/components/ScrollProgress';
 import { OrganizationJsonLd } from '@/components/JsonLd';
 
 const cormorant = Cormorant_Garamond({
@@ -102,6 +103,7 @@ export default function LangLayout({
         <ScrollToTop />
         <CookieConsent />
         <KeyboardShortcuts />
+        <ScrollProgress />
         <OrganizationJsonLd />
       </body>
     </html>

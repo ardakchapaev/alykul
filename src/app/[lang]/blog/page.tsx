@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import Newsletter from '@/components/Newsletter';
 
 // TODO: Replace with CMS API
 const articles = [
@@ -135,6 +136,11 @@ export default function BlogPage() {
             {lang === 'en' ? 'No articles in this category yet' : lang === 'ky' ? 'Бул категорияда макала жок' : 'В этой категории пока нет статей'}
           </p>
         )}
+
+        {/* Newsletter */}
+        <div className="mt-12">
+          <Newsletter variant="default" lang={lang} />
+        </div>
       </div>
     </div>
   );
