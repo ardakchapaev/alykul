@@ -10,6 +10,7 @@ import SaileyBlogWrapper from '@/components/SaileyBlogTheme';
 import SaileyWrapper from '@/components/SaileyTheme';
 import DeepOceanWrapper from '@/components/DeepOceanTheme';
 import CoastalLuxuryWrapper from '@/components/CoastalLuxuryTheme';
+import ClassicWrapper from '@/components/ClassicTheme';
 import AiChatWidget from '@/components/AiChatWidget';
 import WeatherWidget from '@/components/WeatherWidget';
 
@@ -49,6 +50,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       <DeepOceanWrapper lang={params.lang} />
       {/* M5: Coastal Luxury — full overlay */}
       <CoastalLuxuryWrapper lang={params.lang} />
+      {/* M6: Classic — full overlay */}
+      <ClassicWrapper lang={params.lang} />
 
       {/* HERO (M1/M2) */}
       <section className="relative h-screen flex items-center overflow-hidden" id="hero">

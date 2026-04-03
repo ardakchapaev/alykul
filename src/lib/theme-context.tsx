@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export const THEMES = ['M1', 'M2', 'M3', 'M4', 'M5'] as const;
+export const THEMES = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'] as const;
 export type ThemeId = (typeof THEMES)[number];
 
 type ThemeContextType = {

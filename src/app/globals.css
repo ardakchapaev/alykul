@@ -114,6 +114,25 @@ body::-webkit-scrollbar,
   --heading-style: italic;
 }
 
+/* ═══ THEME M6: Classic (Montserrat + Open Sans, YouTube hero) ═══ */
+[data-theme="M6"] {
+  --color-navy: #0A1628;
+  --color-ocean: #246DC9;
+  --color-ocean-dark: #1a5ab0;
+  --color-teal: #3a8ef7;
+  --color-foam: #E8F0FE;
+  --color-sand: #FAFAF8;
+  --color-muted: #6B7280;
+  --color-accent: #246DC9;
+  --color-hero-overlay: linear-gradient(135deg, rgba(10,22,40,0.75) 0%, rgba(24,47,72,0.5) 40%, rgba(36,109,201,0.2) 100%);
+  --nav-bg: rgba(10,22,40,0.98);
+  --nav-bg-scrolled: rgba(10,22,40,0.98);
+  --card-radius: 16px;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --section-padding: 64px;
+  --heading-style: italic;
+}
+
 html {
   scroll-behavior: smooth;
 }
