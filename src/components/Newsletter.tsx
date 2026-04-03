@@ -13,20 +13,34 @@ const t = {
 
 export default function Newsletter({ variant = 'default', lang = 'ru' }: { variant?: 'default' | 'compact' | 'dark'; lang?: string }) {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error' | 'loading'>('idle');
 
   const l = (obj: Record<string, string>) => obj[lang] || obj.ru;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes('@') || !email.includes('.')) {
       setStatus('error');
       return;
     }
-    // TODO: POST /api/v1/newsletter
-    setStatus('success');
-    setEmail('');
-    setTimeout(() => setStatus('idle'), 5000);
+    setStatus('loading');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1'}/forms/newsletter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setStatus('success');
+        setEmail('');
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
 
   if (variant === 'compact') {

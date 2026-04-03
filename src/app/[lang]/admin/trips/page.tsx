@@ -125,20 +125,12 @@ const routes = [
 
 const vessels = ['Алыкул', 'Иссык-Куль', 'Нарын'];
 
-// TODO: Replace with API call
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
+
+// Type reference only
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const initialTrips = [
   { id: 1, route: 'Закатный круиз (Чолпон-Ата)', vessel: 'Алыкул', date: '2026-07-15', time: '18:00', capacity: 200, booked: 145, price: 1400, status: 'active' },
-  { id: 2, route: 'Утренний бриз (Бостери)', vessel: 'Иссык-Куль', date: '2026-07-15', time: '07:00', capacity: 150, booked: 98, price: 1200, status: 'active' },
-  { id: 3, route: 'Приватный чартер', vessel: 'Нарын', date: '2026-07-16', time: '10:00', capacity: 20, booked: 20, price: 7000, status: 'full' },
-  { id: 4, route: 'Дневная прогулка (Чолпон-Ата)', vessel: 'Алыкул', date: '2026-07-16', time: '12:00', capacity: 200, booked: 67, price: 900, status: 'active' },
-  { id: 5, route: 'Рыбалка на озере', vessel: 'Нарын', date: '2026-07-17', time: '05:00', capacity: 20, booked: 15, price: 3500, status: 'active' },
-  { id: 6, route: 'Закатный круиз (Чолпон-Ата)', vessel: 'Иссык-Куль', date: '2026-07-17', time: '18:00', capacity: 150, booked: 150, price: 1400, status: 'full' },
-  { id: 7, route: 'Тамга — Каджи-Сай', vessel: 'Алыкул', date: '2026-07-18', time: '09:00', capacity: 200, booked: 34, price: 1800, status: 'active' },
-  { id: 8, route: 'Утренний бриз (Бостери)', vessel: 'Иссык-Куль', date: '2026-07-18', time: '07:00', capacity: 150, booked: 0, price: 1200, status: 'draft' },
-  { id: 9, route: 'Приватный чартер', vessel: 'Нарын', date: '2026-07-19', time: '14:00', capacity: 20, booked: 8, price: 7000, status: 'active' },
-  { id: 10, route: 'Закатный круиз (Чолпон-Ата)', vessel: 'Алыкул', date: '2026-07-19', time: '18:00', capacity: 200, booked: 200, price: 1400, status: 'full' },
-  { id: 11, route: 'Дневная прогулка (Чолпон-Ата)', vessel: 'Иссык-Куль', date: '2026-07-20', time: '12:00', capacity: 150, booked: 112, price: 900, status: 'active' },
-  { id: 12, route: 'Рыбалка на озере', vessel: 'Нарын', date: '2026-07-20', time: '05:00', capacity: 20, booked: 20, price: 3500, status: 'completed' },
 ];
 
 type TripRow = typeof initialTrips[number];
@@ -158,7 +150,8 @@ export default function AdminTrips() {
   const params = useParams();
   const lang = (params?.lang as Lang) || 'ru';
   const dict = t[lang] || t.ru;
-  const [trips, setTrips] = useState<TripRow[]>(initialTrips);
+  const [trips, setTrips] = useState<TripRow[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api.searchTrips({}).then((apiTrips) => {
@@ -175,10 +168,10 @@ export default function AdminTrips() {
           status: t.status,
         })));
       }
-      // else keep mock data
+      // If API returns empty — state stays as empty array
     }).catch(() => {
-      // API unavailable, keep mock data
-    }).catch(() => { /* keep mock data */ });
+      // API unavailable — keep empty array
+    }).finally(() => setLoading(false));
   }, []);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -219,22 +212,58 @@ export default function AdminTrips() {
     setShowForm(true);
   };
 
-  const handleSave = () => {
-    // TODO: Replace with API call
-    if (editingId !== null) {
-      setTrips(prev => prev.map(t => t.id === editingId ? { ...t, ...form, booked: t.booked } : t));
-    } else {
-      const newId = Math.max(...trips.map(t => t.id)) + 1;
-      setTrips(prev => [...prev, { id: newId, ...form, booked: 0 }]);
+  const handleSave = async () => {
+    try {
+      if (editingId !== null) {
+        const res = await fetch(`${API_URL}/trips/${editingId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
+        });
+        if (res.ok) {
+          setTrips(prev => prev.map(t => t.id === editingId ? { ...t, ...form, booked: t.booked } : t));
+        }
+      } else {
+        const res = await fetch(`${API_URL}/trips/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
+        });
+        if (res.ok) {
+          const created = await res.json();
+          setTrips(prev => [...prev, { id: created.id || (Math.max(0, ...prev.map(t => t.id)) + 1), ...form, booked: 0 }]);
+        }
+      }
+    } catch {
+      // Fallback: update locally
+      if (editingId !== null) {
+        setTrips(prev => prev.map(t => t.id === editingId ? { ...t, ...form, booked: t.booked } : t));
+      }
     }
     setShowForm(false);
     setEditingId(null);
   };
 
-  const handleDelete = (id: number) => {
-    // TODO: Replace with API call
+  const handleDelete = async (id: number) => {
+    // Optimistic delete
+    const backup = trips;
     setTrips(prev => prev.filter(t => t.id !== id));
+    try {
+      const res = await fetch(`${API_URL}/trips/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+    } catch {
+      // Revert on failure
+      setTrips(backup);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-[#0F2B46] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -459,7 +488,7 @@ export default function AdminTrips() {
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={11} className="px-4 py-8 text-center text-gray-400 text-sm">
-                    No trips found
+                    {lang === 'en' ? 'No data' : lang === 'ky' ? 'Маалымат жок' : 'Нет данных'}
                   </td>
                 </tr>
               )}

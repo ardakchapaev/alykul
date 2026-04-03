@@ -117,14 +117,33 @@ export default function CareersPage() {
 
   const [applyingFor, setApplyingFor] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '', phone: '', email: '', message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: POST /api/v1/careers
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1'}/forms/careers`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          position: applyingFor,
+          message: formData.message,
+        }),
+      });
+      if (res.ok) setSubmitted(true);
+      else throw new Error('Failed');
+    } catch {
+      alert(lang === 'ru' ? 'Ошибка отправки. Попробуйте позже.' : lang === 'ky' ? 'Жөнөтүү катасы. Кийинчерээк аракет кылыңыз.' : 'Submit error. Try later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputClass = 'w-full border border-[#0F2B46]/10 rounded-lg px-4 py-3 text-sm text-[#0F2B46] outline-none focus:border-[#00897B]/40 transition-colors';
@@ -252,8 +271,14 @@ export default function CareersPage() {
                     className={`${inputClass} resize-none`} />
                 </div>
                 <div className="flex gap-3">
-                  <button type="submit"
-                    className="flex-1 bg-[#00897B] text-white py-3 rounded-lg text-sm font-semibold hover:bg-[#00796B] transition-colors">
+                  <button type="submit" disabled={loading}
+                    className="flex-1 bg-[#00897B] text-white py-3 rounded-lg text-sm font-semibold hover:bg-[#00796B] transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                    {loading && (
+                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                    )}
                     {t.submit}
                   </button>
                   <button type="button" onClick={() => setApplyingFor(null)}

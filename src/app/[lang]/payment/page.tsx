@@ -1,8 +1,10 @@
 'use client';
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
 
 const t = {
   ru: {
@@ -70,8 +72,30 @@ function PaymentInner() {
   const amountParam = searchParams.get('amount') || '2800';
   const currency = searchParams.get('currency') || 'KGS';
 
-  // TODO: Replace with API call to fetch trip name from booking
-  const tripName = lang === 'en' ? 'Sunset Cruise' : lang === 'ky' ? 'Кечки сейилдөө' : 'Закатный круиз';
+  const [tripName, setTripName] = useState('');
+  const tripNameFetched = useRef(false);
+
+  useEffect(() => {
+    if (tripNameFetched.current) return;
+    tripNameFetched.current = true;
+    fetch(`${API_URL}/bookings/${bookingId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('API error');
+        return res.json();
+      })
+      .then((data) => {
+        const nameI18n = data.trip_name_i18n;
+        if (nameI18n && nameI18n[lang]) {
+          setTripName(nameI18n[lang]);
+        } else {
+          setTripName(data.trip_name || data.route_name || '');
+        }
+      })
+      .catch(() => {
+        // Fallback — empty, will show booking ID instead
+        setTripName('');
+      });
+  }, [bookingId, lang]);
 
   const [phone, setPhone] = useState('+996 ');
   const [cardNumber, setCardNumber] = useState('');
@@ -92,7 +116,7 @@ function PaymentInner() {
 
   const handleMobilePayment = useCallback(async () => {
     setSubmitting(true);
-    // TODO: Replace with real Mbank/Optima/O!Деньги API call
+    // Simulated payment — awaiting Freedom Pay integration
     await new Promise(resolve => setTimeout(resolve, 2000));
     setSuccess(true);
     setTimeout(() => router.push(`/${lang}/booking-confirmed?id=${bookingId}&qr=mock-token`), 1500);
@@ -108,7 +132,7 @@ function PaymentInner() {
     if (Object.keys(errors).length > 0) return;
 
     setSubmitting(true);
-    // TODO: Replace with real payment gateway redirect
+    // Simulated payment — awaiting Freedom Pay integration
     await new Promise(resolve => setTimeout(resolve, 2000));
     setSuccess(true);
     setTimeout(() => router.push(`/${lang}/booking-confirmed?id=${bookingId}&qr=mock-token`), 1500);
@@ -160,11 +184,14 @@ function PaymentInner() {
         <div className="bg-white rounded-2xl p-6 border border-gray-100">
           <h3 className="font-bold text-lg mb-3">{labels.summary}</h3>
           <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-muted">{labels.trip}</span><span className="font-semibold">{tripName}</span></div>
+            <div className="flex justify-between"><span className="text-muted">{labels.trip}</span><span className="font-semibold">{tripName || `#${bookingId}`}</span></div>
             <div className="flex justify-between"><span className="text-muted">{labels.method}</span><span className="font-semibold">{labels.methods[methodParam as keyof typeof labels.methods] || methodParam}</span></div>
             <div className="border-t border-gray-100 pt-2 mt-2 flex justify-between">
               <span className="text-muted">{labels.amount}</span>
-              <span className="font-bold text-xl text-ocean">{Number(amountParam).toLocaleString()} {currency}</span>
+              <div className="text-right">
+                <span className="font-bold text-xl text-ocean">{Number(amountParam).toLocaleString()} {currency}</span>
+                <span className="block text-[10px] text-gray-400 mt-0.5">{lang === 'en' ? 'Demo mode' : lang === 'ky' ? 'Демо-режим' : 'Демо-режим'}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -233,7 +260,7 @@ function PaymentInner() {
           <div className="bg-white rounded-2xl p-6 border border-gray-100 text-center space-y-4">
             <h3 className="font-bold text-lg">{labels.qrTitle}</h3>
             <div className="bg-gray-50 rounded-xl p-6 inline-block">
-              {/* TODO: Replace with real QR payment generation */}
+              {/* QR generation — demo mode, awaiting Freedom Pay integration */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`alykul-pay:${bookingId}:${amountParam}:${currency}`)}`}
                 alt="Payment QR" width={250} height={250} className="mx-auto rounded-lg" />

@@ -93,28 +93,8 @@ const t = {
 
 type Lang = keyof typeof t;
 
-// --- Mock data ---
-// TODO: Replace with API call
-const mockStats = {
-  bookings: 847,
-  revenue: 1_245_600,
-  activeTrips: 12,
-  passengers: 2_341,
-};
-
-// TODO: Replace with API call
-const mockBookings = [
-  { id: 1001, phone: '+996 555 100 001', trip: 'Закатный круиз', date: '2026-07-15 18:00', amount: 2800, currency: 'KGS', status: 'confirmed', passengers: 2 },
-  { id: 1002, phone: '+996 555 200 002', trip: 'Приватный чартер', date: '2026-07-16 10:00', amount: 7000, currency: 'KGS', status: 'hold', passengers: 1 },
-  { id: 1003, phone: '+996 700 300 003', trip: 'Утренний бриз', date: '2026-07-16 07:00', amount: 1400, currency: 'KGS', status: 'confirmed', passengers: 4 },
-  { id: 1004, phone: '+996 555 400 004', trip: 'Закатный круиз', date: '2026-07-17 18:00', amount: 2800, currency: 'KGS', status: 'cancelled', passengers: 2 },
-  { id: 1005, phone: '+996 700 500 005', trip: 'Дневная прогулка', date: '2026-07-17 12:00', amount: 1800, currency: 'KGS', status: 'confirmed', passengers: 3 },
-  { id: 1006, phone: '+996 555 600 006', trip: 'Приватный чартер', date: '2026-07-18 14:00', amount: 7000, currency: 'KGS', status: 'refunded', passengers: 1 },
-  { id: 1007, phone: '+996 700 700 007', trip: 'Рыбалка на озере', date: '2026-07-18 05:00', amount: 3500, currency: 'KGS', status: 'confirmed', passengers: 2 },
-  { id: 1008, phone: '+996 555 800 008', trip: 'Утренний бриз', date: '2026-07-19 07:00', amount: 1400, currency: 'KGS', status: 'hold', passengers: 5 },
-  { id: 1009, phone: '+996 700 900 009', trip: 'Закатный круиз', date: '2026-07-19 18:00', amount: 2800, currency: 'KGS', status: 'confirmed', passengers: 2 },
-  { id: 1010, phone: '+996 555 000 010', trip: 'Дневная прогулка', date: '2026-07-20 12:00', amount: 1800, currency: 'KGS', status: 'confirmed', passengers: 1 },
-];
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
 
 const statusColors: Record<string, string> = {
   confirmed: 'bg-green-100 text-green-700',
@@ -133,8 +113,8 @@ export default function AdminDashboard() {
   const lang = (params?.lang as Lang) || 'ru';
   const dict = t[lang] || t.ru;
 
-  const [stats, setStats] = useState(mockStats);
-  const [bookings, setBookings] = useState(mockBookings);
+  const [stats, setStats] = useState({ bookings: 0, revenue: 0, activeTrips: 0, passengers: 0 });
+  const [bookings, setBookings] = useState<Array<{ id: number; phone: string; trip: string; date: string; amount: number; currency: string; status: string; passengers: number }>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -148,13 +128,13 @@ export default function AdminDashboard() {
     ]).then(([apiStats, apiBookings]) => {
       if (apiStats) {
         setStats({
-          bookings: apiStats.total_bookings,
-          revenue: apiStats.total_revenue,
-          activeTrips: apiStats.active_trips,
-          passengers: apiStats.total_passengers,
+          bookings: apiStats.total_bookings ?? 0,
+          revenue: apiStats.total_revenue ?? 0,
+          activeTrips: apiStats.active_trips ?? 0,
+          passengers: apiStats.total_passengers ?? 0,
         });
       }
-      if (apiBookings) {
+      if (apiBookings && apiBookings.length > 0) {
         setBookings(apiBookings.map((b) => ({
           id: b.id,
           phone: '',
@@ -166,6 +146,7 @@ export default function AdminDashboard() {
           passengers: b.num_passengers,
         })));
       }
+      // If API returns null/empty, state stays at initial zeros/empty array
       setLoading(false);
     });
   }, [token]);
@@ -321,7 +302,13 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {bookings.map((b, i) => (
+              {bookings.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-5 py-8 text-center text-gray-400 text-sm">
+                    {lang === 'en' ? 'No data' : lang === 'ky' ? 'Маалымат жок' : 'Нет данных'}
+                  </td>
+                </tr>
+              ) : bookings.map((b, i) => (
                 <tr key={b.id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}>
                   <td className="px-5 py-3 font-medium text-gray-900">#{b.id}</td>
                   <td className="px-5 py-3">

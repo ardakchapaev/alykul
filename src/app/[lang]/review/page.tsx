@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -97,13 +97,7 @@ const t = {
   },
 };
 
-// Mock trip data by booking ID
-const mockTrips: Record<string, { route: string; date: string; vessel: string }> = {
-  '1001': { route: 'Закатный круиз (Чолпон-Ата)', date: '2026-07-15', vessel: 'Алыкул' },
-  '1002': { route: 'VIP-чартер (Бостери)', date: '2026-07-16', vessel: 'Nomad' },
-  '1003': { route: 'Скоростной тур (Чолпон-Ата)', date: '2026-07-17', vessel: 'Катер #3' },
-};
-const defaultTrip = { route: 'Закатный круиз (Чолпон-Ата)', date: '2026-07-15', vessel: 'Алыкул' };
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
 
 export default function ReviewPage() {
   const params = useParams();
@@ -111,8 +105,19 @@ export default function ReviewPage() {
   const lang = (params.lang as string) || 'ru';
   const labels = t[lang as keyof typeof t] || t.ru;
 
-  const bookingId = searchParams.get('booking') || '1001';
-  const trip = mockTrips[bookingId] || defaultTrip;
+  const bookingId = searchParams.get('booking') || '';
+  const [booking, setBooking] = useState<{ route: string; date: string; vessel: string } | null>(null);
+
+  useEffect(() => {
+    if (bookingId) {
+      fetch(`${API_URL}/bookings/${bookingId}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => { if (data) setBooking(data); })
+        .catch(() => {});
+    }
+  }, [bookingId]);
+
+  const trip = booking || { route: '—', date: '—', vessel: '—' };
 
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -133,10 +138,25 @@ export default function ReviewPage() {
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setSubmitting(true);
-    // TODO: Submit to POST /reviews/ API
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setSubmitted(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1'}/forms/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          booking_id: bookingId,
+          rating,
+          text: review,
+          recommend,
+          tags: selectedTags,
+        }),
+      });
+      if (res.ok) setSubmitted(true);
+      else throw new Error('Failed');
+    } catch {
+      alert(lang === 'ru' ? 'Ошибка отправки. Попробуйте позже.' : lang === 'ky' ? 'Жөнөтүү катасы. Кийинчерээк аракет кылыңыз.' : 'Submit error. Try later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // Success state

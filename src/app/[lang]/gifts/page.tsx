@@ -90,10 +90,27 @@ export default function GiftsPage() {
 
   const handlePurchase = async () => {
     setSubmitting(true);
-    // TODO: Replace with real certificate API
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setSuccess(true);
-    setSubmitting(false);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1'}/forms/certificates`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          certificate_type: template.id,
+          amount: finalAmount,
+          from_name: senderName,
+          to_name: recipientName,
+          recipient_phone: recipientContact,
+          recipient_email: recipientContact,
+          message: personalMessage,
+        }),
+      });
+      if (res.ok) setSuccess(true);
+      else throw new Error('Failed');
+    } catch {
+      alert(lang === 'ru' ? 'Ошибка отправки. Попробуйте позже.' : lang === 'ky' ? 'Жөнөтүү катасы. Кийинчерээк аракет кылыңыз.' : 'Submit error. Try later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleDownload = () => {

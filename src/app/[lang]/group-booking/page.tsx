@@ -80,10 +80,30 @@ export default function GroupBookingPage() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    // TODO: Submit to CRM API
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setSuccess(true);
-    setSubmitting(false);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1'}/forms/group-booking`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company: org,
+          contact_name: contact,
+          phone,
+          email,
+          event_type: eventType,
+          preferred_date: date,
+          guests,
+          vessel,
+          budget,
+          message: requests,
+        }),
+      });
+      if (res.ok) setSuccess(true);
+      else throw new Error('Failed');
+    } catch {
+      alert(lang === 'ru' ? 'Ошибка отправки. Попробуйте позже.' : lang === 'ky' ? 'Жөнөтүү катасы. Кийинчерээк аракет кылыңыз.' : 'Submit error. Try later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const resetForm = () => {

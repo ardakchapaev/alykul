@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine, Base
 import app.models  # noqa: F401 — register all models with Base.metadata
-from app.api import auth, vessels, trips, bookings, ai, whatsapp
+from app.api import auth, vessels, trips, bookings, ai, whatsapp, forms
 
 
 @asynccontextmanager
@@ -40,6 +40,7 @@ app.include_router(trips.router, prefix=settings.API_PREFIX)
 app.include_router(bookings.router, prefix=settings.API_PREFIX)
 app.include_router(ai.router, prefix=settings.API_PREFIX)
 app.include_router(whatsapp.router, prefix=settings.API_PREFIX)
+app.include_router(forms.router, prefix=settings.API_PREFIX)
 
 
 @app.get("/health")

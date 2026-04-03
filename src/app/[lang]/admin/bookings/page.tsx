@@ -1,7 +1,8 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/lib/auth-context';
 
 // --- i18n ---
 const t = {
@@ -161,7 +162,9 @@ interface BookingRow {
   createdAt: string;
 }
 
-// TODO: Replace with API call
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const initialBookings: BookingRow[] = [
   { id: 1001, phone: '+996 555 100 001', trip: 'Закатный круиз', date: '2026-07-15 18:00', passengers: 2, amount: 2800, currency: 'KGS', payment: 'card', status: 'confirmed', qrToken: 'ALK-1001-XZ7', createdAt: '2026-07-10 14:23' },
   { id: 1002, phone: '+996 555 200 002', trip: 'Приватный чартер', date: '2026-07-16 10:00', passengers: 1, amount: 7000, currency: 'KGS', payment: 'transfer', status: 'hold', qrToken: 'ALK-1002-AB3', createdAt: '2026-07-10 15:01' },
@@ -202,11 +205,49 @@ export default function AdminBookings() {
   const params = useParams();
   const lang = (params?.lang as Lang) || 'ru';
   const dict = t[lang] || t.ru;
+  const { token } = useAuth();
 
-  const [bookings, setBookings] = useState<BookingRow[]>(initialBookings);
+  const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    fetch(`${API_URL}/bookings/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('API error');
+        return res.json();
+      })
+      .then((data: Record<string, unknown>[]) => {
+        setBookings(
+          data.map((b) => ({
+            id: b.id as number,
+            phone: (b.phone as string) || '',
+            trip: (b.trip_name as string) || '',
+            date: (b.departure_date as string) || (b.created_at as string) || '',
+            passengers: (b.num_passengers as number) || 0,
+            amount: (b.total_amount as number) || 0,
+            currency: (b.currency as string) || 'KGS',
+            payment: (b.payment_method as string) || '',
+            status: (b.status as string) || '',
+            qrToken: (b.qr_token as string) || '',
+            createdAt: (b.created_at as string) || '',
+          }))
+        );
+      })
+      .catch(() => {
+        // API error — keep empty array
+        setBookings([]);
+      })
+      .finally(() => setLoading(false));
+  }, [token]);
 
   const statusLabel = (s: string) => {
     const map: Record<string, string> = {
@@ -254,10 +295,32 @@ export default function AdminBookings() {
     refunded: bookings.filter(b => b.status === 'refunded').length,
   };
 
-  const changeStatus = (id: number, newStatus: string) => {
-    // TODO: Replace with API call
+  const changeStatus = async (id: number, newStatus: string) => {
+    // Optimistic update
     setBookings(prev => prev.map(b => b.id === id ? { ...b, status: newStatus } : b));
+    try {
+      const res = await fetch(`${API_URL}/bookings/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) throw new Error('Failed to update status');
+    } catch {
+      // Revert on failure — reload from API
+      setBookings(prev => prev.map(b => b.id === id ? { ...b, status: b.status } : b));
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-[#0F2B46] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -447,7 +510,7 @@ export default function AdminBookings() {
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={10} className="px-4 py-8 text-center text-gray-400 text-sm">
-                    No bookings found
+                    {lang === 'en' ? 'No data' : lang === 'ky' ? 'Маалымат жок' : 'Нет данных'}
                   </td>
                 </tr>
               )}

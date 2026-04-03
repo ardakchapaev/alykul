@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
 
 // --- i18n ---
 const t = {
@@ -78,7 +81,7 @@ const channelColors: Record<string, string> = {
   whatsapp: 'bg-green-100 text-green-700',
 };
 
-// TODO: Fetch from GET /api/v1/ai/sessions/
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockConversations: Conversation[] = [
   {
     id: 1, channel: 'website', customerName: 'Айбек Турсунов', customerPhone: '+996 555 112 233',
@@ -245,12 +248,53 @@ export default function AdminConversationsPage() {
   const params = useParams();
   const lang = (params?.lang as Lang) || 'ru';
   const dict = t[lang] || t.ru;
+  const { token } = useAuth();
 
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<ChannelType>('all');
   const [search, setSearch] = useState('');
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const filtered = mockConversations.filter((c) => {
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const res = await fetch(`${API_URL}/ai/sessions/all`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setConversations(
+            data.map((c: Record<string, unknown>, idx: number) => ({
+              id: (c.id as number) || idx + 1,
+              channel: (c.channel as 'website' | 'telegram' | 'whatsapp') || 'website',
+              customerName: (c.customer_name as string) || null,
+              customerPhone: (c.customer_phone as string) || '',
+              lastMessage: (c.last_message as string) || '',
+              messageCount: (c.message_count as number) || 0,
+              lastActive: (c.last_active as string) || (c.updated_at as string) || '',
+              messages: Array.isArray(c.messages)
+                ? (c.messages as Record<string, unknown>[]).map((m) => ({
+                    role: (m.role as 'user' | 'assistant') || 'user',
+                    content: (m.content as string) || '',
+                    time: (m.time as string) || '',
+                  }))
+                : [],
+            }))
+          );
+        }
+      } catch {
+        // API error — keep empty array
+        setConversations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchConversations();
+  }, [token]);
+
+  const filtered = conversations.filter((c) => {
     if (filter !== 'all' && c.channel !== filter) return false;
     if (search) {
       const q = search.toLowerCase();
@@ -268,6 +312,14 @@ export default function AdminConversationsPage() {
     { key: 'telegram', label: dict.telegram },
     { key: 'whatsapp', label: dict.whatsapp },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-[#0F2B46] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
