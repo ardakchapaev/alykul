@@ -65,15 +65,15 @@ export default function TripPage() {
   return (
     <div className="min-h-screen bg-sand">
       {/* Hero */}
-      <div className="relative h-[300px] md:h-[400px]">
+      <div className="relative h-[350px] md:h-[450px]">
         <Image src={trip.route.image || trip.vessel.images?.[0] || '/images/hero.jpg'} alt={trip.route[routeNameKey] as string || ''} fill className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-14 pb-8">
-          <Link href={`/${lang}/trips`} className="text-foam/70 text-sm hover:text-white">&larr; {labels.back}</Link>
-          <h1 className="font-heading font-bold text-3xl md:text-5xl text-white uppercase mt-2">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 px-6 md:px-14 pb-10">
+          <Link href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-white transition-colors">&larr; {labels.back}</Link>
+          <h1 className="font-heading italic font-bold text-3xl md:text-5xl text-white uppercase mt-3 tracking-tight">
             {trip.route[routeNameKey] as string || trip.route.name_ru}
           </h1>
-          <p className="text-foam/80 mt-2">{formatDate(trip.departure_at)}</p>
+          <p className="text-white/70 mt-2 text-lg">{formatDate(trip.departure_at)}</p>
         </div>
       </div>
 
@@ -90,21 +90,41 @@ export default function TripPage() {
         <div className="md:col-span-2 space-y-6">
           <div className="bg-white rounded-2xl p-6 border border-gray-100">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <div className="text-xs text-muted uppercase">{labels.departure}</div>
-                <div className="font-bold text-2xl text-ocean">{formatTime(trip.departure_at)}</div>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-ocean/10 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-ocean" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <div className="text-xs text-muted uppercase">{labels.departure}</div>
+                  <div className="font-bold text-2xl text-ocean">{formatTime(trip.departure_at)}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-xs text-muted uppercase">{labels.duration}</div>
-                <div className="font-bold text-2xl">{trip.route.duration_minutes} {labels.min}</div>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-ocean/10 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-ocean" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <div>
+                  <div className="text-xs text-muted uppercase">{labels.duration}</div>
+                  <div className="font-bold text-2xl">{trip.route.duration_minutes} {labels.min}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-xs text-muted uppercase">{labels.seats}</div>
-                <div className="font-bold text-2xl">{trip.available_seats} / {trip.capacity}</div>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-ocean/10 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-ocean" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                </div>
+                <div>
+                  <div className="text-xs text-muted uppercase">{labels.seats}</div>
+                  <div className="font-bold text-2xl">{trip.available_seats} / {trip.capacity}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-xs text-muted uppercase">{labels.pier}</div>
-                <div className="font-bold text-lg">{trip.route.departure_pier}</div>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-ocean/10 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-ocean" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <div className="text-xs text-muted uppercase">{labels.pier}</div>
+                  <div className="font-bold text-lg">{trip.route.departure_pier}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -143,11 +163,14 @@ export default function TripPage() {
 
           {/* Route details */}
           <div className="bg-white rounded-2xl p-6 border border-gray-100">
-            <h3 className="font-bold text-lg mb-3">Что включено</h3>
+            <h3 className="font-bold text-lg mb-4">Что включено</h3>
             <div className="grid grid-cols-2 gap-3">
               {['Спасательные жилеты', 'Страховка', 'Экскурсия от капитана', 'Фото на борту'].map(item => (
-                <div key={item} className="flex items-center gap-2 text-sm">
-                  <span className="text-green-500">&#10003;</span> {item}
+                <div key={item} className="flex items-center gap-3 text-sm">
+                  <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3.5 h-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  {item}
                 </div>
               ))}
             </div>
@@ -155,16 +178,25 @@ export default function TripPage() {
 
           {/* Cancellation policy */}
           <div className="bg-white rounded-2xl p-6 border border-gray-100">
-            <h3 className="font-bold text-lg mb-3">Условия отмены</h3>
-            <div className="space-y-2 text-sm text-muted">
-              <p>&bull; Бесплатная отмена за 24 часа до отправления</p>
-              <p>&bull; Возврат 50% за 12-24 часа до отправления</p>
-              <p>&bull; Перенос даты бесплатно за 6+ часов</p>
+            <h3 className="font-bold text-lg mb-4">Условия отмены</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0" />
+                <span className="text-muted">Бесплатная отмена за <span className="font-semibold text-green-700">24+ часа</span> до отправления</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 flex-shrink-0" />
+                <span className="text-muted">Возврат 50% за <span className="font-semibold text-amber-700">12-24 часа</span> до отправления</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
+                <span className="text-muted">Перенос даты бесплатно за <span className="font-semibold text-red-700">менее 12 часов</span></span>
+              </div>
             </div>
           </div>
 
           {/* Weather widget */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl p-6 border border-gray-100 border-l-4 border-l-[#00897B]">
             <h3 className="font-bold text-lg mb-3">{lang === 'ru' ? 'Погода на Иссык-Куле' : 'Weather at Issyk-Kul'}</h3>
             <WeatherWidget variant="light" lang={lang} />
           </div>
@@ -180,38 +212,43 @@ export default function TripPage() {
         </div>
 
         {/* Booking card */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 h-fit sticky top-8">
-          <div className="text-center mb-6">
-            <div className="text-muted text-sm">{labels.price}</div>
-            <div className="font-heading font-bold text-4xl text-ocean">{trip.base_price.toLocaleString()} {trip.currency}</div>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-muted mb-2">{labels.passengers}</label>
-            <div className="flex items-center gap-3">
-              <button onClick={() => setPassengers(Math.max(1, passengers - 1))}
-                className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-xl hover:bg-gray-50">−</button>
-              <span className="text-2xl font-bold w-12 text-center">{passengers}</span>
-              <button onClick={() => setPassengers(Math.min(trip.available_seats, passengers + 1))}
-                className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-xl hover:bg-gray-50">+</button>
+        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 h-fit sticky top-8 shadow-lg shadow-black/5">
+          <div className="h-1 bg-gradient-to-r from-[#00897B] to-[#26A69A]" />
+          <div className="p-6">
+            <div className="text-center mb-6">
+              <div className="text-muted text-sm mb-1">{labels.price}</div>
+              <div className="font-heading font-bold text-5xl text-ocean">{trip.base_price.toLocaleString()}</div>
+              <div className="text-muted text-sm mt-1">{trip.currency}</div>
             </div>
-          </div>
 
-          <div className="border-t border-gray-100 pt-4 mb-6">
-            <div className="flex justify-between text-lg">
-              <span className="font-medium">{labels.total}</span>
-              <span className="font-bold text-ocean">{total.toLocaleString()} {trip.currency}</span>
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-muted mb-3">{labels.passengers}</label>
+              <div className="flex items-center gap-3 bg-[#F4F8FB] rounded-xl p-2 justify-center">
+                <button onClick={() => setPassengers(Math.max(1, passengers - 1))}
+                  className="w-12 h-12 rounded-xl border border-gray-200 bg-white flex items-center justify-center text-xl font-medium hover:bg-gray-50 hover:border-[#00897B]/30 transition-all">−</button>
+                <span className="text-3xl font-bold w-16 text-center">{passengers}</span>
+                <button onClick={() => setPassengers(Math.min(trip.available_seats, passengers + 1))}
+                  className="w-12 h-12 rounded-xl border border-gray-200 bg-white flex items-center justify-center text-xl font-medium hover:bg-gray-50 hover:border-[#00897B]/30 transition-all">+</button>
+              </div>
             </div>
-          </div>
 
-          <button onClick={handleBook}
-            className="w-full py-3.5 bg-ocean text-white rounded-xl font-bold text-lg hover:bg-ocean-dark transition-colors">
-            {user ? labels.book : labels.login_first}
-          </button>
+            <div className="border-t border-gray-100 pt-4 mb-6">
+              <div className="flex justify-between items-center text-lg">
+                <span className="font-medium">{labels.total}</span>
+                <span className="font-bold text-2xl text-ocean">{total.toLocaleString()} {trip.currency}</span>
+              </div>
+            </div>
 
-          {/* Share */}
-          <div className="mt-3 flex items-center justify-center">
-            <ShareButtons title={(trip.route[routeNameKey] as string) || trip.route.name_ru} />
+            <button onClick={handleBook}
+              className="w-full py-4 bg-gradient-to-r from-[#00897B] to-[#26A69A] text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-[#00897B]/25 hover:-translate-y-0.5 transition-all duration-300">
+              {user ? labels.book : labels.login_first}
+            </button>
+
+            {/* Share */}
+            <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-center gap-2 text-sm text-muted">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              <ShareButtons title={(trip.route[routeNameKey] as string) || trip.route.name_ru} />
+            </div>
           </div>
         </div>
       </div>

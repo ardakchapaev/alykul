@@ -12,7 +12,7 @@ type Props = { lang: string; children: ReactNode };
 
 export default function SaileyWrapper({ lang }: Props) {
   const { theme } = useTheme();
-  if (theme !== 'M3') return null;
+  if (theme !== 'V1') return null;
 
   const t = getTrans(lang);
 

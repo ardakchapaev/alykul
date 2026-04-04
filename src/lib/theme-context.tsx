@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export const THEMES = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'] as const;
+export const THEMES = ['V1', 'V2'] as const;
 export type ThemeId = (typeof THEMES)[number];
 
 type ThemeContextType = {
@@ -10,10 +10,10 @@ type ThemeContextType = {
   setTheme: (t: ThemeId) => void;
 };
 
-const ThemeContext = createContext<ThemeContextType>({ theme: 'M1', setTheme: () => {} });
+const ThemeContext = createContext<ThemeContextType>({ theme: 'V1', setTheme: () => {} });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>('M1');
+  const [theme, setThemeState] = useState<ThemeId>('V1');
 
   useEffect(() => {
     const saved = localStorage.getItem('alykul-theme') as ThemeId | null;

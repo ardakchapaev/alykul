@@ -8,8 +8,8 @@ import { useTheme } from '@/lib/theme-context';
  * Place inside each section with position:relative.
  */
 export default function WaveDivider({ nextColor = 'white', withYacht = false }: { nextColor?: string; withYacht?: boolean }) {
-  const { theme } = useTheme();
-  if (theme !== 'M2') return null;
+  useTheme();
+  // WaveDivider renders for M1 base layer (hidden under V1/V2 overlays)
 
   const cm: Record<string, string> = {
     white: '#ffffff', sand: '#F9FBFD', navy: '#182F48', foam: '#D6EEF5', stone: '#F4F8FB', blue: '#1E88C7',

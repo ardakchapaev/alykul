@@ -6,11 +6,8 @@ import WaveDivider from '@/components/WaveDivider';
 import HeroBooking, { M1ContactForm } from './HeroBooking';
 import { BookButton } from '@/components/WhatsAppBooking';
 import { IconBooking, IconFleet, IconExperience, IconSafety, IconMultilang, IconPrices } from '@/components/Icons';
-import SaileyBlogWrapper from '@/components/SaileyBlogTheme';
 import SaileyWrapper from '@/components/SaileyTheme';
 import DeepOceanWrapper from '@/components/DeepOceanTheme';
-import CoastalLuxuryWrapper from '@/components/CoastalLuxuryTheme';
-import ClassicWrapper from '@/components/ClassicTheme';
 import AiChatWidget from '@/components/AiChatWidget';
 import WeatherWidget from '@/components/WeatherWidget';
 import TravelInfo from '@/components/TravelInfo';
@@ -43,16 +40,10 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
   return (
     <>
-      {/* M2: Sailey Blog — full overlay */}
-      <SaileyBlogWrapper lang={params.lang} />
-      {/* M3: Sailey theme — full overlay (original) */}
+      {/* V1: Grand Regatta + Pirate Lines */}
       <SaileyWrapper lang={params.lang}>{null}</SaileyWrapper>
-      {/* M4: Deep Ocean — full overlay */}
+      {/* V2: Deep Ocean (OceanPlaza) */}
       <DeepOceanWrapper lang={params.lang} />
-      {/* M5: Coastal Luxury — full overlay */}
-      <CoastalLuxuryWrapper lang={params.lang} />
-      {/* M6: Classic — full overlay */}
-      <ClassicWrapper lang={params.lang} />
 
       {/* HERO (M1/M2) */}
       <section className="relative h-screen flex items-center overflow-hidden" id="hero">
@@ -71,7 +62,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         <div className="absolute top-4 right-4 z-[3] hidden xl:block">
           <WeatherWidget variant="dark" lang={params.lang} />
         </div>
-        <Navbar dict={t.nav} lang={params.lang} />
+        <Navbar />
         <WaveDivider nextColor="white" withYacht />
       </section>
 

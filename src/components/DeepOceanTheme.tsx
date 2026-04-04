@@ -16,7 +16,7 @@ import CurrencySelector from './CurrencySelector';
 
 export default function DeepOceanWrapper({ lang }: { lang: string }) {
   const { theme } = useTheme();
-  if (theme !== 'M4') return null;
+  if (theme !== 'V2') return null;
 
   const t = getTrans(lang);
 
