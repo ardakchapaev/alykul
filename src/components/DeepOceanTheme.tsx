@@ -629,13 +629,7 @@ function M4Reviews({ t }: { t: Tr }) {
           {reviews.map((r, i) => (
             <ScrollReveal key={i}>
               <div className="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow text-left">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: 5 }).map((_, si) => (
-                    <svg key={si} className={`w-5 h-5 ${si < r.stars ? 'text-[#FFB300]' : 'text-gray-200'}`} fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                  ))}
-                </div>
+                <div className="text-[#FFB300] text-lg mb-4">{'★'.repeat(r.stars)}{'☆'.repeat(5 - r.stars)}</div>
                 <p className="text-gray-600 font-m3-body text-sm leading-relaxed italic">
                   &ldquo;{r.text}&rdquo;
                 </p>

@@ -76,7 +76,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* STATS */}
-      <div className="relative bg-white px-6 md:px-14 py-12 pb-28">
+      <div className="relative bg-white px-6 md:px-14 py-12 pb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { value: '5+', label: t.stats.years },
@@ -94,7 +94,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* USP */}
-      <section className="relative bg-navy text-foam px-6 md:px-14 py-16 pb-28">
+      <section className="relative bg-navy text-foam px-6 md:px-14 py-16 pb-16">
         <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-white mb-3">{t.usp.title}</h2>
         <p className="text-muted mb-12">{t.usp.subtitle}</p>
         <div className="grid md:grid-cols-3 gap-8">
@@ -121,7 +121,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* GALLERY */}
-      <div className="relative bg-navy overflow-hidden py-4 pb-28">
+      <div className="relative bg-navy overflow-hidden py-4 pb-12">
         <div className="flex gap-1 w-max">
           {galleryImages.map(img => (
             <Image key={img} src={`/images/${img}`} alt="" width={300} height={200} className="h-[200px] w-auto object-cover brightness-90 hover:brightness-110 transition-all" />
@@ -131,7 +131,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </div>
 
       {/* ROUTES CATALOG */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="routes">
+      <section className="relative px-6 md:px-14 py-16 pb-16" id="routes">
         <div className="flex justify-between items-start mb-8">
           <div>
             <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.routes_section.title}</span>
@@ -155,7 +155,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* SCHEDULE */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="schedule">
+      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-16" id="schedule">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.schedule_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.schedule_section.badge}</span>
@@ -195,7 +195,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* FLEET */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="fleet">
+      <section className="relative px-6 md:px-14 py-16 pb-16" id="fleet">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.fleet_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.fleet_section.badge}</span>
@@ -225,7 +225,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* ABOUT */}
-      <section className="relative px-6 md:px-14 py-16 pb-28" id="about">
+      <section className="relative px-6 md:px-14 py-16 pb-16" id="about">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase mb-6">{t.about_section.title}</h2>
@@ -245,7 +245,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       )}
 
       {/* REVIEWS */}
-      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="reviews">
+      <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-16" id="reviews">
         <div className="mb-8">
           <span className="font-heading font-bold text-3xl md:text-[42px] uppercase">{t.reviews_section.title}</span>
           <span className="ml-3 px-4 py-1.5 rounded-full bg-ocean text-white text-xs font-semibold uppercase">{t.reviews_section.badge}</span>
@@ -267,7 +267,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </section>
 
       {/* MAP + CONTACT */}
-      <section id="map" className="relative py-16 pb-28">
+      <section id="map" className="relative py-16 pb-16">
         <div className="max-w-[1280px] mx-auto px-6 md:px-10">
           <h2 className="font-heading font-bold text-3xl md:text-[42px] uppercase text-center mb-12">
             {params.lang === 'ru' ? 'Свяжитесь с нами' : params.lang === 'ky' ? 'Биз менен байланышыңыз' : 'Contact Us'}

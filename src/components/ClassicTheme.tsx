@@ -194,7 +194,7 @@ function M6Hero({ t, lang }: { t: Tr; lang: string }) {
   return (
     <section className="relative h-screen flex items-center overflow-hidden" id="m6-hero">
       {/* YouTube Video Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ backgroundImage: 'url(/images/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <iframe
           src="https://www.youtube.com/embed/ALq1avfUkmQ?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ALq1avfUkmQ&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&enablejsapi=1"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[56.25vw] min-h-full min-w-[177.78vh]"

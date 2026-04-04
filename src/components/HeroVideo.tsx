@@ -97,7 +97,7 @@ export default function HeroVideo() {
   }, [ready]);
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" style={{ backgroundImage: 'url(/images/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div
         id="yt-player"
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
