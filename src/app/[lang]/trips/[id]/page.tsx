@@ -11,6 +11,7 @@ import WeatherWidget from '@/components/WeatherWidget';
 import { SkeletonHero, SkeletonList } from '@/components/Skeleton';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ShareButtons from '@/components/ShareButtons';
+import TravelInfo from '@/components/TravelInfo';
 
 const t = {
   ru: { back: 'Назад к рейсам', departure: 'Отправление', duration: 'Длительность', min: 'мин', seats: 'Свободных мест', price: 'Цена за место', passengers: 'Количество гостей', total: 'Итого', book: 'Забронировать', login_first: 'Войдите чтобы забронировать', vessel: 'Судно', route: 'Маршрут', pier: 'Причал', loading: 'Загрузка...', seats_title: 'Выбор мест' },
@@ -167,6 +168,9 @@ export default function TripPage() {
             <h3 className="font-bold text-lg mb-3">{lang === 'ru' ? 'Погода на Иссык-Куле' : 'Weather at Issyk-Kul'}</h3>
             <WeatherWidget variant="light" />
           </div>
+
+          {/* Travel Info — for international tourists */}
+          {lang !== 'ru' && <TravelInfo lang={lang} />}
 
           {/* Weather notice */}
           <div className="bg-amber-50 rounded-2xl p-6 border border-amber-200">

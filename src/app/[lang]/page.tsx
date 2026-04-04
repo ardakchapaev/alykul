@@ -13,23 +13,24 @@ import CoastalLuxuryWrapper from '@/components/CoastalLuxuryTheme';
 import ClassicWrapper from '@/components/ClassicTheme';
 import AiChatWidget from '@/components/AiChatWidget';
 import WeatherWidget from '@/components/WeatherWidget';
+import TravelInfo from '@/components/TravelInfo';
 
 export default async function Home({ params }: { params: { lang: Locale } }) {
   const t = await getDictionary(params.lang);
 
   const scheduleData = [
-    { route: params.lang === 'ru' ? 'Закатный круиз (Чолпон-Ата)' : params.lang === 'ky' ? 'Кечки круиз (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)', vessel: t.fleet_section.alykul, departure: '18:00', duration: params.lang === 'ru' ? '2 часа' : params.lang === 'ky' ? '2 саат' : '2 hours', price: '1 400 KGS', freq: t.schedule_section.daily, freqClass: 'bg-green-100 text-green-800' },
-    { route: params.lang === 'ru' ? 'Утренний круиз (Бостери)' : params.lang === 'ky' ? 'Эртеңки круиз (Бостери)' : 'Morning Cruise (Bosteri)', vessel: t.fleet_section.alykul, departure: '10:00', duration: params.lang === 'ru' ? '1.5 часа' : params.lang === 'ky' ? '1.5 саат' : '1.5 hours', price: '1 200 KGS', freq: t.schedule_section.daily, freqClass: 'bg-green-100 text-green-800' },
-    { route: params.lang === 'ru' ? 'Скоростной тур (Чолпон-Ата)' : params.lang === 'ky' ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)', vessel: params.lang === 'ru' ? 'Скоростной катер' : params.lang === 'ky' ? 'Ылдам катер' : 'Speedboat', departure: '12:00, 14:00, 16:00', duration: params.lang === 'ru' ? '40 мин' : params.lang === 'ky' ? '40 мүн' : '40 min', price: '2 000 KGS', freq: t.schedule_section.daily, freqClass: 'bg-green-100 text-green-800' },
-    { route: t.catalog.private_charter, vessel: t.fleet_section.nomad, departure: t.schedule_section.on_request, duration: params.lang === 'ru' ? '2–6 часов' : params.lang === 'ky' ? '2–6 саат' : '2–6 hours', price: params.lang === 'ru' ? 'от 7 000 KGS' : params.lang === 'ky' ? '7 000 KGS ден' : 'from 7 000 KGS', freq: t.schedule_section.on_request, freqClass: 'bg-blue-100 text-blue-800' },
-    { route: t.catalog.kids_party, vessel: t.fleet_section.alykul, departure: t.schedule_section.on_request, duration: params.lang === 'ru' ? '2–3 часа' : params.lang === 'ky' ? '2–3 саат' : '2–3 hours', price: params.lang === 'ru' ? 'от 1 000 KGS/чел' : params.lang === 'ky' ? '1 000 KGS/адам' : 'from 1 000 KGS/pax', freq: t.schedule_section.weekend, freqClass: 'bg-orange-100 text-orange-800' },
+    { route: params.lang === 'ru' ? 'Закатный круиз (Чолпон-Ата)' : params.lang === 'ky' ? 'Кечки круиз (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)', vessel: t.fleet_section.alykul, departure: '18:00', duration: params.lang === 'ru' ? '2 часа' : params.lang === 'ky' ? '2 саат' : '2 hours', price: params.lang === 'en' ? '$16 (1,400 KGS)' : params.lang === 'ky' ? '1 400 KGS (~$16)' : '1 400 KGS (~$16)', freq: t.schedule_section.daily, freqClass: 'bg-green-100 text-green-800' },
+    { route: params.lang === 'ru' ? 'Утренний круиз (Бостери)' : params.lang === 'ky' ? 'Эртеңки круиз (Бостери)' : 'Morning Cruise (Bosteri)', vessel: t.fleet_section.alykul, departure: '10:00', duration: params.lang === 'ru' ? '1.5 часа' : params.lang === 'ky' ? '1.5 саат' : '1.5 hours', price: params.lang === 'en' ? '$14 (1,200 KGS)' : params.lang === 'ky' ? '1 200 KGS (~$14)' : '1 200 KGS (~$14)', freq: t.schedule_section.daily, freqClass: 'bg-green-100 text-green-800' },
+    { route: params.lang === 'ru' ? 'Скоростной тур (Чолпон-Ата)' : params.lang === 'ky' ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)', vessel: params.lang === 'ru' ? 'Скоростной катер' : params.lang === 'ky' ? 'Ылдам катер' : 'Speedboat', departure: '12:00, 14:00, 16:00', duration: params.lang === 'ru' ? '40 мин' : params.lang === 'ky' ? '40 мүн' : '40 min', price: params.lang === 'en' ? '$23 (2,000 KGS)' : params.lang === 'ky' ? '2 000 KGS (~$23)' : '2 000 KGS (~$23)', freq: t.schedule_section.daily, freqClass: 'bg-green-100 text-green-800' },
+    { route: t.catalog.private_charter, vessel: t.fleet_section.nomad, departure: t.schedule_section.on_request, duration: params.lang === 'ru' ? '2–6 часов' : params.lang === 'ky' ? '2–6 саат' : '2–6 hours', price: params.lang === 'ru' ? 'от 7 000 KGS (~$80)' : params.lang === 'ky' ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)', freq: t.schedule_section.on_request, freqClass: 'bg-blue-100 text-blue-800' },
+    { route: t.catalog.kids_party, vessel: t.fleet_section.alykul, departure: t.schedule_section.on_request, duration: params.lang === 'ru' ? '2–3 часа' : params.lang === 'ky' ? '2–3 саат' : '2–3 hours', price: params.lang === 'ru' ? 'от 1 000 KGS/чел (~$12)' : params.lang === 'ky' ? '1 000 KGS/адам (~$12)' : 'from $12/person (1,000 KGS)', freq: t.schedule_section.weekend, freqClass: 'bg-orange-100 text-orange-800' },
   ];
 
   const catalogCards = [
-    { img: '/images/q02.jpg', alt: t.catalog.sunset_cruise, category: t.catalog.cruise, name: t.catalog.sunset_cruise, price: params.lang === 'ru' ? 'от 1 400 KGS' : params.lang === 'ky' ? '1 400 KGS ден' : 'from 1 400 KGS' },
-    { img: '/images/ep03.jpg', alt: t.catalog.private_charter, category: t.catalog.charter, name: t.catalog.private_charter, price: params.lang === 'ru' ? 'от 7 000 KGS' : params.lang === 'ky' ? '7 000 KGS ден' : 'from 7 000 KGS' },
-    { img: '/images/scene6.jpg', alt: t.catalog.speed_tour, category: t.catalog.entertainment, name: t.catalog.speed_tour, price: params.lang === 'ru' ? 'от 2 000 KGS' : params.lang === 'ky' ? '2 000 KGS ден' : 'from 2 000 KGS' },
-    { img: '/images/kids.jpg', alt: t.catalog.kids_party, category: t.catalog.kids, name: t.catalog.kids_party, price: params.lang === 'ru' ? 'от 1 000 KGS' : params.lang === 'ky' ? '1 000 KGS ден' : 'from 1 000 KGS' },
+    { img: '/images/q02.jpg', alt: t.catalog.sunset_cruise, category: t.catalog.cruise, name: t.catalog.sunset_cruise, price: params.lang === 'ru' ? 'от 1 400 KGS (~$16)' : params.lang === 'ky' ? '1 400 KGS (~$16) ден' : 'from $16 (1,400 KGS)' },
+    { img: '/images/ep03.jpg', alt: t.catalog.private_charter, category: t.catalog.charter, name: t.catalog.private_charter, price: params.lang === 'ru' ? 'от 7 000 KGS (~$80)' : params.lang === 'ky' ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)' },
+    { img: '/images/scene6.jpg', alt: t.catalog.speed_tour, category: t.catalog.entertainment, name: t.catalog.speed_tour, price: params.lang === 'ru' ? 'от 2 000 KGS (~$23)' : params.lang === 'ky' ? '2 000 KGS (~$23) ден' : 'from $23 (2,000 KGS)' },
+    { img: '/images/kids.jpg', alt: t.catalog.kids_party, category: t.catalog.kids, name: t.catalog.kids_party, price: params.lang === 'ru' ? 'от 1 000 KGS (~$12)' : params.lang === 'ky' ? '1 000 KGS (~$12) ден' : 'from $12 (1,000 KGS)' },
   ];
 
   const reviews = [
@@ -236,6 +237,13 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
         <WaveDivider nextColor="stone" withYacht />
       </section>
 
+      {/* TRAVEL INFO — for international tourists (EN/KY only) */}
+      {params.lang !== 'ru' && (
+        <div className="px-6 md:px-14 max-w-[1280px] mx-auto">
+          <TravelInfo lang={params.lang} />
+        </div>
+      )}
+
       {/* REVIEWS */}
       <section className="relative bg-[#F4F8FB] px-6 md:px-14 py-16 pb-28" id="reviews">
         <div className="mb-8">
@@ -291,7 +299,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
 
       {/* FOOTER */}
       <footer className="bg-navy text-foam px-6 md:px-14 py-14" id="contacts">
-        <div className="grid md:grid-cols-4 gap-10 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.contacts}</h4>
             <a href="tel:+996555123456" className="text-muted hover:text-white text-sm transition-colors">+996 555 123 456</a>

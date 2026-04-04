@@ -1,27 +1,27 @@
 {
   "meta": {
-    "title": "Alykul — Water Tourism on Issyk-Kul | Cruises, Charters, Adventures",
-    "description": "The first online booking platform for water transport on Lake Issyk-Kul. Cruises, private charters, speed tours and kids parties."
+    "title": "Alykul — Water Adventures on Lake Issyk-Kul | Cruises, Charters & Tours",
+    "description": "Book unforgettable water experiences on Central Asia's largest alpine lake. Sunset cruises, private yacht charters, speed tours and kids parties — all online in 2 minutes."
   },
   "nav": {
-    "routes": "Routes",
-    "schedule": "Schedule",
-    "fleet": "Fleet",
-    "booking": "Booking",
-    "about": "About",
-    "reviews": "Reviews",
-    "contacts": "Contacts"
+    "routes": "Cruises & Tours",
+    "schedule": "Departure Times",
+    "fleet": "Our Fleet",
+    "booking": "Book Now",
+    "about": "About Us",
+    "reviews": "Guest Reviews",
+    "contacts": "Contact"
   },
   "hero": {
     "brand": "Alykul — Lake Issyk-Kul",
     "title_1": "DISCOVER",
     "title_2": "ISSYK-KUL",
-    "subtitle": "Book your water adventure on the largest alpine lake in Central Asia. Cholpon-Ata, Bosteri and the entire coastline.",
-    "scroll": "Scroll down"
+    "subtitle": "Book an unforgettable water adventure on Central Asia's largest alpine lake. Cholpon-Ata, Bosteri, and beyond.",
+    "scroll": "Explore more"
   },
   "booking_widget": {
-    "pier": "Pier",
-    "date": "Date",
+    "pier": "Departure Pier",
+    "date": "Pick a Date",
     "guests": "Guests",
     "search": "Book Now",
     "guests_2": "2 guests",
@@ -38,33 +38,33 @@
   "stats": {
     "years": "years on the lake",
     "guests": "happy guests",
-    "vessels": "vessels in fleet",
-    "routes": "routes"
+    "vessels": "vessels in our fleet",
+    "routes": "unique routes"
   },
   "usp": {
-    "title": "Why Alykul?",
-    "subtitle": "The first water tourism platform on Issyk-Kul — Cholpon-Ata, Bosteri and the entire coastline",
-    "online": "Online Booking",
-    "online_desc": "Choose a route, date and pay online in 2 minutes",
+    "title": "Why Choose Alykul?",
+    "subtitle": "The first and only online water tourism platform on Issyk-Kul — serving Cholpon-Ata, Bosteri, and the entire northern shore",
+    "online": "Instant Online Booking",
+    "online_desc": "Choose your cruise, pick a date, and book in under 2 minutes",
     "fleet": "Certified Fleet",
-    "fleet_desc": "Every vessel is certified and inspected daily",
-    "experience": "Experience",
-    "experience_desc": "Over 5 years of organizing water tours on Issyk-Kul",
-    "safety": "Safety",
-    "safety_desc": "Safety equipment, trained captains, insurance",
-    "multilang": "Multilingual",
-    "multilang_desc": "Platform in Russian, Kyrgyz and English",
-    "prices": "Best Prices",
-    "prices_desc": "Direct booking without middleman markups"
+    "fleet_desc": "Every vessel is state-certified and inspected before each departure",
+    "experience": "5+ Years of Experience",
+    "experience_desc": "Trusted by 12,000+ guests for memorable water adventures on Issyk-Kul",
+    "safety": "Your Safety First",
+    "safety_desc": "Life vests, trained captains, passenger insurance included on every trip",
+    "multilang": "Multilingual Support",
+    "multilang_desc": "Full platform available in Russian, Kyrgyz, and English",
+    "prices": "Best Price Guarantee",
+    "prices_desc": "Book directly — no middleman markups, no hidden fees"
   },
   "routes_section": {
-    "title": "Routes",
+    "title": "Cruises & Tours",
     "badge": "Season 2026",
     "all": "All",
     "cruises": "Cruises",
-    "charters": "Charters",
-    "entertainment": "Entertainment",
-    "kids": "Kids",
+    "charters": "Private Charters",
+    "entertainment": "Adventure",
+    "kids": "Family & Kids",
     "book": "Book Now"
   },
   "catalog": {
@@ -74,13 +74,13 @@
     "kids_party": "Kids Party",
     "cruise": "Cruise",
     "charter": "Charter",
-    "entertainment": "Entertainment",
-    "kids": "Kids"
+    "entertainment": "Adventure",
+    "kids": "Family"
   },
   "schedule_section": {
-    "title": "Schedule",
+    "title": "Departure Times",
     "badge": "Season 2026",
-    "subtitle": "Trips run from June 1 to September 15. Booking is open.",
+    "subtitle": "Daily departures from June 1 through September 15. Online booking is now open.",
     "route": "Route",
     "vessel": "Vessel",
     "departure": "Departure",
@@ -90,53 +90,53 @@
     "daily": "Daily",
     "weekend": "Weekends",
     "on_request": "On request",
-    "sat_sun": "Sat-Sun"
+    "sat_sun": "Sat–Sun"
   },
   "fleet_section": {
     "title": "Our Fleet",
     "badge": "8 vessels",
-    "subtitle": "Certified vessels with daily inspection — from steamships to speedboats",
-    "alykul": "Steamship «Alykul»",
-    "alykul_desc": "Fleet flagship. Cruises, corporate events, weddings, kids parties.",
-    "nomad": "Yacht «Nomad»",
-    "nomad_desc": "Private charters, romantic trips, VIP service.",
+    "subtitle": "State-certified vessels with daily inspections — from our flagship steamship to high-speed boats",
+    "alykul": "Steamship \"Alykul\"",
+    "alykul_desc": "Our flagship vessel. Perfect for sunset cruises, corporate events, weddings, and kids parties.",
+    "nomad": "Yacht \"Nomad\"",
+    "nomad_desc": "Exclusive private charters, romantic getaways, and VIP experiences.",
     "speedboats": "Speedboats",
-    "speedboats_desc": "Adrenaline tours, water skiing, wakeboarding, fishing.",
+    "speedboats_desc": "Adrenaline-packed tours, water skiing, wakeboarding, and fishing excursions.",
     "up_to": "up to",
-    "pax": "pax",
+    "pax": "guests",
     "decks": "decks",
     "banquet": "banquet hall",
-    "sailing": "sailing",
+    "sailing": "sailing yacht",
     "kmh": "km/h"
   },
   "about_section": {
     "title": "About Us",
-    "text_1": "Alykul is the first digital booking operator for water transport on Lake Issyk-Kul. Based in Cholpon-Ata and Bosteri, we combine a certified fleet, experienced captains and modern technology to give every guest unforgettable impressions on the largest alpine lake in Central Asia.",
-    "text_2": "Our flagship — the steamship «Alykul», accommodating up to 200 guests with a banquet hall, two decks and entertainment for the whole family."
+    "text_1": "Alykul is the first online booking platform for water tourism on Lake Issyk-Kul — the world's second-largest alpine lake, nestled at 1,607 meters in the Tian Shan mountains. Based in Cholpon-Ata and Bosteri, we combine a certified fleet of 8 vessels, experienced captains, and seamless technology to deliver unforgettable experiences on the water.",
+    "text_2": "Our flagship — the steamship \"Alykul\" — accommodates up to 200 guests with a full banquet hall, two panoramic decks, and entertainment for the entire family."
   },
   "reviews_section": {
-    "title": "Reviews",
-    "badge": "12K+ guests"
+    "title": "Guest Reviews",
+    "badge": "12K+ happy guests"
   },
   "footer": {
-    "contacts": "Contacts",
-    "routes": "Routes",
-    "navigation": "Navigation",
-    "about": "About",
+    "contacts": "Contact Us",
+    "routes": "Our Routes",
+    "navigation": "Quick Links",
+    "about": "Company",
     "privacy": "Privacy Policy",
     "partners": "Partners",
-    "map": "Map",
+    "map": "Location Map",
     "copyright": "Alykul. All rights reserved. Lake Issyk-Kul, Kyrgyzstan.",
     "aboutLink": "About Us",
-    "gifts": "Gifts",
-    "groups": "Groups"
+    "gifts": "Gift Cards",
+    "groups": "Group Bookings"
   },
   "whatsapp": {
-    "hello": "Hello! I'd like to book:",
-    "pier": "Pier",
+    "hello": "Hi! I'd like to book:",
+    "pier": "Departure pier",
     "date": "Date",
     "guests": "Guests",
-    "confirm": "Waiting for confirmation!",
+    "confirm": "Looking forward to your confirmation!",
     "ask_dates": "What dates are available?"
   }
 }

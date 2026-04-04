@@ -612,7 +612,7 @@ function M2Footer({ t, lang }: { t: Tr; lang: string }) {
   return (
     <footer id="m2-contacts" className="bg-[#1a3a4a] text-white/70 pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto px-6 md:px-10">
-        <div className="grid md:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
           {/* Logo + description */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
@@ -812,10 +812,10 @@ function getTrans(lang: string) {
       title: ru ? 'Маршруты и цены' : ky ? 'Маршруттар жана баалар' : 'Routes & Prices',
       book: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
       items: [
-        { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', price: ru ? 'от 1 400 KGS' : ky ? '1 400 KGS ден' : 'from 1,400 KGS', desc: ru ? 'Вечерний круиз с видом на закат' : ky ? 'Күн батышка карай кечки круиз' : 'Evening cruise with sunset views' },
-        { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS', desc: ru ? 'Яхта «Nomad» — VIP-обслуживание' : ky ? '«Nomad» яхтасы — VIP тейлөө' : 'Yacht Nomad — VIP service' },
-        { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: ru ? 'от 2 000 KGS' : ky ? '2 000 KGS ден' : 'from 2,000 KGS', desc: ru ? 'Адреналин на скоростных катерах' : ky ? 'Ылдам катерлерде адреналин' : 'Adrenaline on speedboats' },
-        { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", price: ru ? 'от 1 000 KGS/чел' : ky ? '1 000 KGS/адам' : 'from 1,000 KGS/pax', desc: ru ? 'Праздник с аниматорами на борту' : ky ? 'Борттогу аниматорлор менен майрам' : 'Party with animators on board' },
+        { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', price: ru ? 'от 1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16) ден' : 'from $16 (1,400 KGS)', desc: ru ? 'Вечерний круиз с видом на закат' : ky ? 'Күн батышка карай кечки круиз' : 'Evening cruise with sunset views' },
+        { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: ru ? 'от 7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)', desc: ru ? 'Яхта «Nomad» — VIP-обслуживание' : ky ? '«Nomad» яхтасы — VIP тейлөө' : 'Yacht Nomad — VIP service' },
+        { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: ru ? 'от 2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23) ден' : 'from $23 (2,000 KGS)', desc: ru ? 'Адреналин на скоростных катерах' : ky ? 'Ылдам катерлерде адреналин' : 'Adrenaline on speedboats' },
+        { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", price: ru ? 'от 1 000 KGS/чел (~$12)' : ky ? '1 000 KGS/адам (~$12)' : 'from $12/person (1,000 KGS)', desc: ru ? 'Праздник с аниматорами на борту' : ky ? 'Борттогу аниматорлор менен майрам' : 'Party with animators on board' },
       ],
     },
     schedule: {
@@ -827,11 +827,11 @@ function getTrans(lang: string) {
       col_duration: ru ? 'Длительность' : ky ? 'Узактыгы' : 'Duration',
       col_price: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
       rows: [
-        { route: ru ? 'Закатный круиз (Чолпон-Ата)' : ky ? 'Күн батыш круизи (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 400 KGS' },
-        { route: ru ? 'Утренний круиз (Бостери)' : ky ? 'Эртеңки круиз (Бостери)' : 'Morning Cruise (Bosteri)', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: '1 200 KGS' },
-        { route: ru ? 'Скоростной тур (Чолпон-Ата)' : ky ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мүн' : '45 min', price: '2 000 KGS' },
-        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS' },
-        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax') },
+        { route: ru ? 'Закатный круиз (Чолпон-Ата)' : ky ? 'Күн батыш круизи (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: ru ? '1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16)' : '$16 (1,400 KGS)' },
+        { route: ru ? 'Утренний круиз (Бостери)' : ky ? 'Эртеңки круиз (Бостери)' : 'Morning Cruise (Bosteri)', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: ru ? '1 200 KGS (~$14)' : ky ? '1 200 KGS (~$14)' : '$14 (1,200 KGS)' },
+        { route: ru ? 'Скоростной тур (Чолпон-Ата)' : ky ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мүн' : '45 min', price: ru ? '2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23)' : '$23 (2,000 KGS)' },
+        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)' },
+        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: ru ? '1 000 KGS/чел (~$12)' : ky ? '1 000 KGS/адам (~$12)' : '$12/person (1,000 KGS)' },
       ],
     },
     booking: {

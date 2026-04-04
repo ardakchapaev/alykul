@@ -164,9 +164,9 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
 
           {/* Burger */}
           <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2" onClick={() => setOpen(!open)} aria-label="Menu">
-            <span className={`h-[2px] w-full bg-[#0A1628] transition-all ${open ? 'rotate-45 translate-y-[7px]' : ''}`} />
-            <span className={`h-[2px] w-full bg-[#0A1628] transition-opacity ${open ? 'opacity-0' : ''}`} />
-            <span className={`h-[2px] w-full bg-[#0A1628] transition-all ${open ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+            <span className={`h-[2px] w-full bg-white transition-all ${open ? 'rotate-45 translate-y-[7px]' : ''}`} />
+            <span className={`h-[2px] w-full bg-white transition-opacity ${open ? 'opacity-0' : ''}`} />
+            <span className={`h-[2px] w-full bg-white transition-all ${open ? '-rotate-45 -translate-y-[7px]' : ''}`} />
           </button>
         </div>
       </div>
@@ -468,25 +468,26 @@ function M4Fleet({ t }: { t: Tr }) {
 
 /* ═══════════════ PRICING TABLE — 4 cards (OceanPlaza "OUR PRICE") ═══════════════ */
 function M4Pricing({ t, lang }: { t: Tr; lang: string }) {
+  const en = lang === 'en';
   const plans = [
     {
-      name: t.pricing.p1name, price: '1,400', unit: 'KGS',
+      name: t.pricing.p1name, price: en ? '$16' : '1,400', unit: en ? '(1,400 KGS)' : 'KGS (~$16)',
       color: 'bg-[#26A69A]',
       features: [t.pricing.p1f1, t.pricing.p1f2, t.pricing.p1f3, t.pricing.p1f4, t.pricing.p1f5],
     },
     {
-      name: t.pricing.p2name, price: '1,200', unit: 'KGS',
+      name: t.pricing.p2name, price: en ? '$14' : '1,200', unit: en ? '(1,200 KGS)' : 'KGS (~$14)',
       color: 'bg-[#00897B]',
       features: [t.pricing.p2f1, t.pricing.p2f2, t.pricing.p2f3, t.pricing.p2f4, t.pricing.p2f5],
     },
     {
-      name: t.pricing.p3name, price: '2,000', unit: 'KGS',
+      name: t.pricing.p3name, price: en ? '$23' : '2,000', unit: en ? '(2,000 KGS)' : 'KGS (~$23)',
       color: 'bg-[#00796B]',
       features: [t.pricing.p3f1, t.pricing.p3f2, t.pricing.p3f3, t.pricing.p3f4, t.pricing.p3f5],
       popular: true,
     },
     {
-      name: t.pricing.p4name, price: t.pricing.p4price, unit: '',
+      name: t.pricing.p4name, price: t.pricing.p4price, unit: en ? '(~$80)' : '(~$80)',
       color: 'bg-[#004D40]',
       features: [t.pricing.p4f1, t.pricing.p4f2, t.pricing.p4f3, t.pricing.p4f4, t.pricing.p4f5],
     },
@@ -554,10 +555,12 @@ function M4Pricing({ t, lang }: { t: Tr; lang: string }) {
 
 /* ═══════════════ POPULAR ROUTES — Product cards (OceanPlaza "BEST SELLING ITEMS") ═══════════════ */
 function M4PopularRoutes({ t, lang }: { t: Tr; lang: string }) {
+  const en = lang === 'en';
+  const ky = lang === 'ky';
   const routes = [
-    { img: '/images/scene8.jpg',  title: t.popular.r1, price: '1,400 KGS', tag: t.popular.tagCruise },
-    { img: '/images/scene9.jpg',  title: t.popular.r2, price: '1,200 KGS', tag: t.popular.tagMorning },
-    { img: '/images/scene10.jpg', title: t.popular.r3, price: '2,000 KGS', tag: t.popular.tagSpeed },
+    { img: '/images/scene8.jpg',  title: t.popular.r1, price: en ? '$16 (1,400 KGS)' : ky ? '1,400 KGS (~$16)' : '1,400 KGS (~$16)', tag: t.popular.tagCruise },
+    { img: '/images/scene9.jpg',  title: t.popular.r2, price: en ? '$14 (1,200 KGS)' : ky ? '1,200 KGS (~$14)' : '1,200 KGS (~$14)', tag: t.popular.tagMorning },
+    { img: '/images/scene10.jpg', title: t.popular.r3, price: en ? '$23 (2,000 KGS)' : ky ? '2,000 KGS (~$23)' : '2,000 KGS (~$23)', tag: t.popular.tagSpeed },
     { img: '/images/scene11.jpg', title: t.popular.r4, price: t.popular.r4price, tag: t.popular.tagVIP },
   ];
 
@@ -653,10 +656,11 @@ function M4Reviews({ t }: { t: Tr }) {
 
 /* ═══════════════ SCHEDULE TABLE — Trip timetable (OceanPlaza style) ═══════════════ */
 function M4Schedule({ t, lang }: { t: Tr; lang: string }) {
+  const en = lang === 'en';
   const rows = [
-    { route: t.schedule.r_sunset, vessel: t.schedule.v_alykul, depart: '18:00', dur: t.schedule.dur_2h, price: '1,400 KGS', freq: t.schedule.daily },
-    { route: t.schedule.r_morning, vessel: t.schedule.v_alykul, depart: '09:00', dur: t.schedule.dur_1_5h, price: '1,200 KGS', freq: t.schedule.daily },
-    { route: t.schedule.r_speed, vessel: t.schedule.v_boat, depart: '12:00', dur: t.schedule.dur_40m, price: '2,000 KGS', freq: t.schedule.daily },
+    { route: t.schedule.r_sunset, vessel: t.schedule.v_alykul, depart: '18:00', dur: t.schedule.dur_2h, price: en ? '$16 (1,400 KGS)' : '1,400 KGS (~$16)', freq: t.schedule.daily },
+    { route: t.schedule.r_morning, vessel: t.schedule.v_alykul, depart: '09:00', dur: t.schedule.dur_1_5h, price: en ? '$14 (1,200 KGS)' : '1,200 KGS (~$14)', freq: t.schedule.daily },
+    { route: t.schedule.r_speed, vessel: t.schedule.v_boat, depart: '12:00', dur: t.schedule.dur_40m, price: en ? '$23 (2,000 KGS)' : '2,000 KGS (~$23)', freq: t.schedule.daily },
     { route: t.schedule.r_charter, vessel: t.schedule.v_yacht, depart: '—', dur: t.schedule.dur_2_6h, price: t.schedule.from_7000, freq: t.schedule.on_request },
     { route: t.schedule.r_kids, vessel: t.schedule.v_alykul, depart: '11:00', dur: t.schedule.dur_2_3h, price: t.schedule.from_1000, freq: t.schedule.weekend },
   ];
@@ -932,7 +936,7 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
   return (
     <footer className="bg-[#0A1628] text-white py-14">
       <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -1166,7 +1170,7 @@ function getTrans(lang: string) {
       p3f4: ru ? 'GoPro видео' : ky ? 'GoPro видео' : 'GoPro video',
       p3f5: ru ? 'Спасжилеты' : ky ? 'Куткаруу жилеттери' : 'Life jackets',
       p4name: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter',
-      p4price: ru ? 'от 7,000' : ky ? '7,000\u0442\u0430\u043d' : 'from 7,000',
+      p4price: ru ? 'от 7,000' : ky ? '7,000\u0442\u0430\u043d' : 'from $80',
       p4f1: ru ? '2-6 часов' : ky ? '2-6 саат' : '2-6 hours',
       p4f2: ru ? 'Яхта «Nomad»' : ky ? '«Nomad» яхтасы' : 'Yacht "Nomad"',
       p4f3: ru ? 'VIP-обслуживание' : ky ? 'VIP-тейлөө' : 'VIP service',
@@ -1185,7 +1189,7 @@ function getTrans(lang: string) {
       r2: ru ? 'Утренний круиз' : ky ? 'Эртеңки круиз' : 'Morning Cruise',
       r3: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour',
       r4: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter',
-      r4price: ru ? 'от 7,000 KGS' : ky ? '7,000 KGS баштап' : 'from 7,000 KGS',
+      r4price: ru ? 'от 7,000 KGS (~$80)' : ky ? '7,000 KGS (~$80) баштап' : 'from $80 (7,000 KGS)',
     },
     reviews: {
       badge: ru ? 'Отзывы' : ky ? 'Пикирлер' : 'Testimonials',
@@ -1225,8 +1229,8 @@ function getTrans(lang: string) {
       dur_40m: ru ? '40 мин' : ky ? '40 мүн' : '40 min',
       dur_2_6h: ru ? '2-6 часов' : ky ? '2-6 саат' : '2-6 hours',
       dur_2_3h: ru ? '2-3 часа' : ky ? '2-3 саат' : '2-3 hours',
-      from_7000: ru ? 'от 7,000 KGS' : ky ? '7,000 KGS баштап' : 'from 7,000 KGS',
-      from_1000: ru ? 'от 1,000 KGS/чел' : ky ? '1,000 KGS/адам баштап' : 'from 1,000 KGS/person',
+      from_7000: ru ? 'от 7,000 KGS (~$80)' : ky ? '7,000 KGS (~$80) баштап' : 'from $80 (7,000 KGS)',
+      from_1000: ru ? 'от 1,000 KGS/чел (~$12)' : ky ? '1,000 KGS/адам (~$12) баштап' : 'from $12/person (1,000 KGS)',
     },
     faq: {
       title: ru ? 'ЧАСТЫЕ ВОПРОСЫ' : ky ? 'КӨП БЕРИЛҮҮЧҮ СУРООЛОР' : 'FREQUENTLY ASKED QUESTIONS',

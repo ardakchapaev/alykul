@@ -230,6 +230,13 @@ function M3Hero({ t, lang }: { t: Tr; lang: string }) {
         <span className="text-white/50 text-[10px] tracking-[3px] uppercase font-m3-body">{t.hero.season}</span>
       </div>
 
+      {/* Mobile booking CTA */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 md:hidden">
+        <a href={`/${lang}/trips`} className="bg-[#00A896] hover:bg-[#008F80] text-white font-semibold px-8 py-3 rounded-lg transition-colors font-m3-body text-sm whitespace-nowrap">
+          {t.booking.search}
+        </a>
+      </div>
+
       {/* Booking widget overlay at very bottom */}
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 w-full max-w-3xl px-4 hidden md:block">
         <div className="bg-white/[0.08] backdrop-blur-xl border border-white/10 rounded-xl p-4">
@@ -289,12 +296,20 @@ function M3DiagonalStrips({ t }: { t: Tr }) {
             </ScrollReveal>
           </div>
 
-          {/* Right: diagonal strips */}
-          <div className="lg:w-[60%] flex gap-3 md:gap-4 h-[400px] md:h-[500px]" style={{ transform: 'rotate(-3deg)' }}>
+          {/* Desktop: diagonal strips */}
+          <div className="hidden md:flex lg:w-[60%] gap-3 md:gap-4 h-[400px] md:h-[500px]" style={{ transform: 'rotate(-3deg)' }}>
             {images.map((img, i) => (
               <div key={i} className="flex-1 overflow-hidden rounded-lg relative group" style={{ clipPath: 'polygon(5% 0, 100% 3%, 95% 100%, 0 97%)' }}>
                 <Image src={img} alt={`Activity ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-[#0A1628]/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </div>
+          {/* Mobile: 2-column grid instead of thin strips */}
+          <div className="md:hidden w-full grid grid-cols-2 gap-3">
+            {images.slice(0, 4).map((img, i) => (
+              <div key={i} className="relative aspect-[4/3] rounded-lg overflow-hidden">
+                <Image src={img} alt={`Activity ${i + 1}`} fill className="object-cover" />
               </div>
             ))}
           </div>
@@ -384,10 +399,10 @@ function M3Catalog({ t, lang }: { t: Tr; lang: string }) {
         </ScrollReveal>
 
         {/* Tab bar */}
-        <div className="flex justify-center gap-2 mb-12 flex-wrap">
+        <div className="flex justify-start md:justify-center gap-2 mb-12 overflow-x-auto pb-2 scrollbar-hide md:flex-wrap">
           {tabs.map((tab: string, i: number) => (
             <button key={i} onClick={() => setActiveTab(i)}
-              className={`px-6 py-2.5 text-[11px] tracking-[2px] uppercase font-m3-body font-semibold transition-all ${
+              className={`px-6 py-2.5 text-[11px] tracking-[2px] uppercase font-m3-body font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
                 activeTab === i
                   ? 'bg-[#0A1628] text-white'
                   : 'bg-white text-[#0A1628]/60 border border-[#0A1628]/10 hover:border-[#0A1628]/30'
@@ -866,11 +881,11 @@ function M3AiChat() {
 
 function getAiReply(q: string): string {
   const ql = q.toLowerCase();
-  if (ql.includes('цен') || ql.includes('стоим') || ql.includes('price')) return 'Sunset cruise from 1,400 KGS, speed tour from 2,000 KGS, private charter from 7,000 KGS. See the Routes section!';
+  if (ql.includes('цен') || ql.includes('стоим') || ql.includes('price')) return 'Sunset cruise from $16 (1,400 KGS), speed tour from $23 (2,000 KGS), private charter from $80 (7,000 KGS). See the Routes section!';
   if (ql.includes('брон') || ql.includes('book')) return 'Click "Book Now" on any route to be redirected to WhatsApp for confirmation.';
   if (ql.includes('расписан') || ql.includes('schedule') || ql.includes('время')) return 'Season: June 1 - September 15. Sunset cruise 18:00, morning 10:00, speed tours 12:00, 14:00, 16:00.';
   if (ql.includes('флот') || ql.includes('яхт') || ql.includes('fleet') || ql.includes('судн')) return 'We have 8 vessels: steamship Alykul (up to 200 pax), yacht Nomad (up to 12 pax VIP), speedboats (up to 60 km/h).';
-  if (ql.includes('дет') || ql.includes('kids') || ql.includes('ребён')) return 'Kids parties on the steamship from 1,000 KGS/person. Animators, food, safety. Available on weekends.';
+  if (ql.includes('дет') || ql.includes('kids') || ql.includes('ребён')) return 'Kids parties on the steamship from $12/person (1,000 KGS). Animators, food, safety. Available on weekends.';
   if (ql.includes('безопас') || ql.includes('safety')) return 'All vessels have life jackets. Captains are certified. Insurance included.';
   return 'Thank you for your question! Contact us via WhatsApp: +996 555 123 456 or choose a route on the website.';
 }
@@ -926,31 +941,31 @@ function getTrans(lang: string) {
       tabItems: [
         /* Cruises */
         [
-          { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise', price: '1 400 KGS' },
-          { img: '/images/scene7.jpg', title: ru ? 'Утренний круиз' : ky ? 'Эртенки круиз' : 'Morning Cruise', price: '1 200 KGS' },
-          { img: '/images/alykul1.jpg', title: ru ? 'Дневной круиз' : ky ? 'Кундузгу круиз' : 'Day Cruise', price: '1 600 KGS' },
-          { img: '/images/cruise.jpg', title: ru ? 'Ночной круиз' : ky ? 'Тунку круиз' : 'Night Cruise', price: '2 500 KGS' },
+          { img: '/images/q02.jpg', title: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise', price: ru ? '1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16)' : '$16 (1,400 KGS)' },
+          { img: '/images/scene7.jpg', title: ru ? 'Утренний круиз' : ky ? 'Эртенки круиз' : 'Morning Cruise', price: ru ? '1 200 KGS (~$14)' : ky ? '1 200 KGS (~$14)' : '$14 (1,200 KGS)' },
+          { img: '/images/alykul1.jpg', title: ru ? 'Дневной круиз' : ky ? 'Кундузгу круиз' : 'Day Cruise', price: ru ? '1 600 KGS (~$18)' : ky ? '1 600 KGS (~$18)' : '$18 (1,600 KGS)' },
+          { img: '/images/cruise.jpg', title: ru ? 'Ночной круиз' : ky ? 'Тунку круиз' : 'Night Cruise', price: ru ? '2 500 KGS (~$29)' : ky ? '2 500 KGS (~$29)' : '$29 (2,500 KGS)' },
         ],
         /* Charters */
         [
-          { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: '7 000 KGS' },
-          { img: '/images/scene11.jpg', title: ru ? 'Романтик-чартер' : ky ? 'Романтик чартер' : 'Romantic Charter', price: '9 000 KGS' },
-          { img: '/images/scene12.jpg', title: ru ? 'Корпоративный' : ky ? 'Корпоративдик' : 'Corporate', price: '15 000 KGS' },
-          { img: '/images/alykul2.jpg', title: ru ? 'Свадебный' : ky ? 'Той' : 'Wedding', price: '25 000 KGS' },
+          { img: '/images/ep03.jpg', title: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: ru ? '7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80)' : '$80 (7,000 KGS)' },
+          { img: '/images/scene11.jpg', title: ru ? 'Романтик-чартер' : ky ? 'Романтик чартер' : 'Romantic Charter', price: ru ? '9 000 KGS (~$103)' : ky ? '9 000 KGS (~$103)' : '$103 (9,000 KGS)' },
+          { img: '/images/scene12.jpg', title: ru ? 'Корпоративный' : ky ? 'Корпоративдик' : 'Corporate', price: ru ? '15 000 KGS (~$172)' : ky ? '15 000 KGS (~$172)' : '$172 (15,000 KGS)' },
+          { img: '/images/alykul2.jpg', title: ru ? 'Свадебный' : ky ? 'Той' : 'Wedding', price: ru ? '25 000 KGS (~$287)' : ky ? '25 000 KGS (~$287)' : '$287 (25,000 KGS)' },
         ],
         /* Speed */
         [
-          { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: '2 000 KGS' },
-          { img: '/images/scene3.jpg', title: ru ? 'Вейкборд' : ky ? 'Вейкборд' : 'Wakeboard', price: '2 500 KGS' },
-          { img: '/images/scene5.jpg', title: ru ? 'Водные лыжи' : ky ? 'Суу лыжалары' : 'Water Skiing', price: '2 500 KGS' },
-          { img: '/images/scene9.jpg', title: ru ? 'Рыбалка' : ky ? 'Балык уулоо' : 'Fishing', price: '3 000 KGS' },
+          { img: '/images/scene6.jpg', title: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: ru ? '2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23)' : '$23 (2,000 KGS)' },
+          { img: '/images/scene3.jpg', title: ru ? 'Вейкборд' : ky ? 'Вейкборд' : 'Wakeboard', price: ru ? '2 500 KGS (~$29)' : ky ? '2 500 KGS (~$29)' : '$29 (2,500 KGS)' },
+          { img: '/images/scene5.jpg', title: ru ? 'Водные лыжи' : ky ? 'Суу лыжалары' : 'Water Skiing', price: ru ? '2 500 KGS (~$29)' : ky ? '2 500 KGS (~$29)' : '$29 (2,500 KGS)' },
+          { img: '/images/scene9.jpg', title: ru ? 'Рыбалка' : ky ? 'Балык уулоо' : 'Fishing', price: ru ? '3 000 KGS (~$34)' : ky ? '3 000 KGS (~$34)' : '$34 (3,000 KGS)' },
         ],
         /* Kids */
         [
-          { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', price: '1 000 KGS' },
-          { img: '/images/scene1.jpg', title: ru ? 'Школьная экскурсия' : ky ? 'Мектеп экскурсиясы' : 'School Trip', price: '800 KGS' },
-          { img: '/images/scene4.jpg', title: ru ? 'Семейный круиз' : ky ? 'Уй-булолук круиз' : 'Family Cruise', price: '1 200 KGS' },
-          { img: '/images/scene8.jpg', title: ru ? 'День рождения' : ky ? 'Туулган кун' : 'Birthday', price: '1 500 KGS' },
+          { img: '/images/kids.jpg', title: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', price: ru ? '1 000 KGS (~$12)' : ky ? '1 000 KGS (~$12)' : '$12 (1,000 KGS)' },
+          { img: '/images/scene1.jpg', title: ru ? 'Школьная экскурсия' : ky ? 'Мектеп экскурсиясы' : 'School Trip', price: ru ? '800 KGS (~$9)' : ky ? '800 KGS (~$9)' : '$9 (800 KGS)' },
+          { img: '/images/scene4.jpg', title: ru ? 'Семейный круиз' : ky ? 'Уй-булолук круиз' : 'Family Cruise', price: ru ? '1 200 KGS (~$14)' : ky ? '1 200 KGS (~$14)' : '$14 (1,200 KGS)' },
+          { img: '/images/scene8.jpg', title: ru ? 'День рождения' : ky ? 'Туулган кун' : 'Birthday', price: ru ? '1 500 KGS (~$17)' : ky ? '1 500 KGS (~$17)' : '$17 (1,500 KGS)' },
         ],
       ],
     },
@@ -963,11 +978,11 @@ function getTrans(lang: string) {
       col_duration: ru ? 'Длительность' : ky ? 'Узактыгы' : 'Duration',
       col_price: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
       rows: [
-        { route: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 400 KGS' },
-        { route: ru ? 'Утренний круиз' : ky ? 'Эртенки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: '1 200 KGS' },
-        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мун' : '45 min', price: '2 000 KGS' },
-        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS' },
-        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 000 KGS/' + (ru ? 'чел' : ky ? 'адам' : 'pax') },
+        { route: ru ? 'Закатный круиз' : ky ? 'Кун батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: ru ? '1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16)' : '$16 (1,400 KGS)' },
+        { route: ru ? 'Утренний круиз' : ky ? 'Эртенки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: ru ? '1 200 KGS (~$14)' : ky ? '1 200 KGS (~$14)' : '$14 (1,200 KGS)' },
+        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мун' : '45 min', price: ru ? '2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23)' : '$23 (2,000 KGS)' },
+        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '3-6 часов' : ky ? '3-6 саат' : '3-6 hours', price: ru ? 'от 7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)' },
+        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Сб-Вс 11:00' : ky ? 'Иш-Жек 11:00' : 'Sat-Sun 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: ru ? '1 000 KGS/чел (~$12)' : ky ? '1 000 KGS/адам (~$12)' : '$12/person (1,000 KGS)' },
       ],
     },
     reviews: {

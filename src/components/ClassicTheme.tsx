@@ -775,10 +775,10 @@ function getTrans(lang: string) {
       title: ru ? 'Маршруты' : ky ? 'Каттамдар' : 'Routes',
       badge: ru ? 'Сезон 2026' : ky ? 'Сезон 2026' : 'Season 2026',
       items: [
-        { img: '/images/q02.jpg', category: ru ? 'Круиз' : ky ? 'Круиз' : 'Cruise', name: ru ? 'Закатный круиз' : ky ? 'Кечки круиз' : 'Sunset Cruise', price: ru ? 'от 1 400 KGS' : ky ? '1 400 KGS ден' : 'from 1 400 KGS' },
-        { img: '/images/ep03.jpg', category: ru ? 'Чартер' : ky ? 'Чартер' : 'Charter', name: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7 000 KGS' },
-        { img: '/images/scene6.jpg', category: ru ? 'Развлечения' : ky ? 'Коноул' : 'Entertainment', name: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: ru ? 'от 2 000 KGS' : ky ? '2 000 KGS ден' : 'from 2 000 KGS' },
-        { img: '/images/kids.jpg', category: ru ? 'Детям' : ky ? 'Балдарга' : 'Kids', name: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', price: ru ? 'от 1 000 KGS' : ky ? '1 000 KGS ден' : 'from 1 000 KGS' },
+        { img: '/images/q02.jpg', category: ru ? 'Круиз' : ky ? 'Круиз' : 'Cruise', name: ru ? 'Закатный круиз' : ky ? 'Кечки круиз' : 'Sunset Cruise', price: ru ? 'от 1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16) ден' : 'from $16 (1,400 KGS)' },
+        { img: '/images/ep03.jpg', category: ru ? 'Чартер' : ky ? 'Чартер' : 'Charter', name: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', price: ru ? 'от 7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)' },
+        { img: '/images/scene6.jpg', category: ru ? 'Развлечения' : ky ? 'Коноул' : 'Entertainment', name: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', price: ru ? 'от 2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23) ден' : 'from $23 (2,000 KGS)' },
+        { img: '/images/kids.jpg', category: ru ? 'Детям' : ky ? 'Балдарга' : 'Kids', name: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', price: ru ? 'от 1 000 KGS (~$12)' : ky ? '1 000 KGS (~$12) ден' : 'from $12 (1,000 KGS)' },
       ],
     },
     schedule: {
@@ -798,11 +798,11 @@ function getTrans(lang: string) {
         frequency: ru ? 'Частота' : ky ? 'Жыштыгы' : 'Frequency',
       },
       rows: [
-        { route: ru ? 'Закатный круиз (Чолпон-Ата)' : ky ? 'Кечки круиз (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)', vessel: ru ? 'Алыкул' : 'Alykul', departure: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: '1 400 KGS', freq: ru ? 'Ежедневно' : ky ? 'Кундолук' : 'Daily', freqClass: 'bg-green-100 text-green-800' },
-        { route: ru ? 'Утренний круиз (Бостери)' : ky ? 'Эртенки круиз (Бостери)' : 'Morning Cruise (Bosteri)', vessel: ru ? 'Алыкул' : 'Alykul', departure: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: '1 200 KGS', freq: ru ? 'Ежедневно' : ky ? 'Кундолук' : 'Daily', freqClass: 'bg-green-100 text-green-800' },
-        { route: ru ? 'Скоростной тур (Чолпон-Ата)' : ky ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)', vessel: ru ? 'Скоростной катер' : ky ? 'Ылдам катер' : 'Speedboat', departure: '12:00, 14:00, 16:00', duration: ru ? '40 мин' : ky ? '40 мун' : '40 min', price: '2 000 KGS', freq: ru ? 'Ежедневно' : ky ? 'Кундолук' : 'Daily', freqClass: 'bg-green-100 text-green-800' },
-        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', vessel: ru ? 'Nomad' : 'Nomad', departure: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '2-6 часов' : ky ? '2-6 саат' : '2-6 hours', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7 000 KGS', freq: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', freqClass: 'bg-blue-100 text-blue-800' },
-        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', vessel: ru ? 'Алыкул' : 'Alykul', departure: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '2-3 часа' : ky ? '2-3 саат' : '2-3 hours', price: ru ? 'от 1 000 KGS/чел' : ky ? '1 000 KGS/адам' : 'from 1 000 KGS/pax', freq: ru ? 'Выходные' : ky ? 'Дем алыш кундору' : 'Weekends', freqClass: 'bg-orange-100 text-orange-800' },
+        { route: ru ? 'Закатный круиз (Чолпон-Ата)' : ky ? 'Кечки круиз (Чолпон-Ата)' : 'Sunset Cruise (Cholpon-Ata)', vessel: ru ? 'Алыкул' : 'Alykul', departure: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', price: ru ? '1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16)' : '$16 (1,400 KGS)', freq: ru ? 'Ежедневно' : ky ? 'Кундолук' : 'Daily', freqClass: 'bg-green-100 text-green-800' },
+        { route: ru ? 'Утренний круиз (Бостери)' : ky ? 'Эртенки круиз (Бостери)' : 'Morning Cruise (Bosteri)', vessel: ru ? 'Алыкул' : 'Alykul', departure: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', price: ru ? '1 200 KGS (~$14)' : ky ? '1 200 KGS (~$14)' : '$14 (1,200 KGS)', freq: ru ? 'Ежедневно' : ky ? 'Кундолук' : 'Daily', freqClass: 'bg-green-100 text-green-800' },
+        { route: ru ? 'Скоростной тур (Чолпон-Ата)' : ky ? 'Ылдам тур (Чолпон-Ата)' : 'Speed Tour (Cholpon-Ata)', vessel: ru ? 'Скоростной катер' : ky ? 'Ылдам катер' : 'Speedboat', departure: '12:00, 14:00, 16:00', duration: ru ? '40 мин' : ky ? '40 мун' : '40 min', price: ru ? '2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23)' : '$23 (2,000 KGS)', freq: ru ? 'Ежедневно' : ky ? 'Кундолук' : 'Daily', freqClass: 'bg-green-100 text-green-800' },
+        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', vessel: ru ? 'Nomad' : 'Nomad', departure: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '2-6 часов' : ky ? '2-6 саат' : '2-6 hours', price: ru ? 'от 7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)', freq: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', freqClass: 'bg-blue-100 text-blue-800' },
+        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : 'Kids Party', vessel: ru ? 'Алыкул' : 'Alykul', departure: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '2-3 часа' : ky ? '2-3 саат' : '2-3 hours', price: ru ? 'от 1 000 KGS/чел (~$12)' : ky ? '1 000 KGS/адам (~$12)' : 'from $12/person (1,000 KGS)', freq: ru ? 'Выходные' : ky ? 'Дем алыш кундору' : 'Weekends', freqClass: 'bg-orange-100 text-orange-800' },
       ],
     },
     fleet: {

@@ -173,6 +173,14 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
               {l.label}
             </a>
           ))}
+          {/* Mobile Booking */}
+          <a
+            href={`/${lang}/trips`}
+            onClick={() => setOpen(false)}
+            className="block py-3 text-[#C9A356] text-[11px] tracking-[2px] uppercase font-m4-body font-medium border-t border-[#0F2B46]/5 mt-4 pt-4"
+          >
+            {lang === 'ru' ? 'Забронировать' : lang === 'ky' ? 'Брондоо' : 'Book Now'}
+          </a>
           {/* Mobile Auth */}
           {user ? (
             <a href={`/${lang}/account`} onClick={() => setOpen(false)}
@@ -402,7 +410,7 @@ function AzCatalog({ t, lang }: { t: Tr; lang: string }) {
                   </span>
                   <a
                     href={`/${lang}/trips`}
-                    className="text-[#C9A356] font-m4-body text-[11px] tracking-[2px] uppercase font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden sm:block"
+                    className="text-[#C9A356] font-m4-body text-[11px] tracking-[2px] uppercase font-light sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500"
                   >
                     {t.catalog.bookBtn}
                   </a>
@@ -850,10 +858,10 @@ function getTrans(lang: string) {
       title: ru ? 'Маршруты и цены' : ky ? 'Маршруттар жана баалар' : 'Routes & Prices',
       bookBtn: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
       items: [
-        { img: '/images/q02.jpg', name: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', category: ru ? 'Круиз' : ky ? 'Круиз' : 'Cruise', price: ru ? 'от 1 400 KGS' : ky ? '1 400 KGS ден' : 'from 1,400 KGS' },
-        { img: '/images/ep03.jpg', name: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', category: 'VIP', price: ru ? 'от 7 000 KGS' : ky ? '7 000 KGS ден' : 'from 7,000 KGS' },
-        { img: '/images/scene6.jpg', name: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', category: ru ? 'Адреналин' : ky ? 'Адреналин' : 'Adrenaline', price: ru ? 'от 2 000 KGS' : ky ? '2 000 KGS ден' : 'from 2,000 KGS' },
-        { img: '/images/kids.jpg', name: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", category: ru ? 'Семейный' : ky ? 'Үй-бүлөлүк' : 'Family', price: ru ? 'от 1 000 KGS/чел' : ky ? '1 000 KGS/адам' : 'from 1,000 KGS/person' },
+        { img: '/images/q02.jpg', name: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', category: ru ? 'Круиз' : ky ? 'Круиз' : 'Cruise', price: ru ? 'от 1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16) ден' : 'from $16 (1,400 KGS)' },
+        { img: '/images/ep03.jpg', name: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', category: 'VIP', price: ru ? 'от 7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80) ден' : 'from $80 (7,000 KGS)' },
+        { img: '/images/scene6.jpg', name: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', category: ru ? 'Адреналин' : ky ? 'Адреналин' : 'Adrenaline', price: ru ? 'от 2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23) ден' : 'from $23 (2,000 KGS)' },
+        { img: '/images/kids.jpg', name: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", category: ru ? 'Семейный' : ky ? 'Үй-бүлөлүк' : 'Family', price: ru ? 'от 1 000 KGS/чел (~$12)' : ky ? '1 000 KGS/адам (~$12)' : 'from $12/person (1,000 KGS)' },
       ],
     },
     schedule: {
@@ -865,11 +873,11 @@ function getTrans(lang: string) {
       colPrice: ru ? 'Цена' : ky ? 'Баасы' : 'Price',
       bookBtn: ru ? 'Бронь' : ky ? 'Брондоо' : 'Book',
       rows: [
-        { route: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', freq: ru ? 'Ежедневно' : ky ? 'Күн сайын' : 'Daily', price: '1 400 KGS' },
-        { route: ru ? 'Утренний круиз' : ky ? 'Эртеңки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', freq: ru ? 'Ежедневно' : ky ? 'Күн сайын' : 'Daily', price: '1 200 KGS' },
-        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мүн' : '45 min', freq: ru ? '3 раза/день' : ky ? '3 жолу/күн' : '3x/day', price: '2 000 KGS' },
-        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '2-4 часа' : ky ? '2-4 саат' : '2-4 hours', freq: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', price: '7 000 KGS' },
-        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Выходные 11:00' : ky ? 'Дем алыш 11:00' : 'Weekends 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', freq: ru ? 'Выходные' : ky ? 'Дем алыш' : 'Weekends', price: '1 000 KGS/чел' },
+        { route: ru ? 'Закатный круиз' : ky ? 'Күн батыш круизи' : 'Sunset Cruise', time: '18:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', freq: ru ? 'Ежедневно' : ky ? 'Күн сайын' : 'Daily', price: ru ? '1 400 KGS (~$16)' : ky ? '1 400 KGS (~$16)' : '$16 (1,400 KGS)' },
+        { route: ru ? 'Утренний круиз' : ky ? 'Эртеңки круиз' : 'Morning Cruise', time: '10:00', duration: ru ? '1.5 часа' : ky ? '1.5 саат' : '1.5 hours', freq: ru ? 'Ежедневно' : ky ? 'Күн сайын' : 'Daily', price: ru ? '1 200 KGS (~$14)' : ky ? '1 200 KGS (~$14)' : '$14 (1,200 KGS)' },
+        { route: ru ? 'Скоростной тур' : ky ? 'Ылдам тур' : 'Speed Tour', time: '12:00, 14:00, 16:00', duration: ru ? '45 мин' : ky ? '45 мүн' : '45 min', freq: ru ? '3 раза/день' : ky ? '3 жолу/күн' : '3x/day', price: ru ? '2 000 KGS (~$23)' : ky ? '2 000 KGS (~$23)' : '$23 (2,000 KGS)' },
+        { route: ru ? 'Приватный чартер' : ky ? 'Жеке чартер' : 'Private Charter', time: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', duration: ru ? '2-4 часа' : ky ? '2-4 саат' : '2-4 hours', freq: ru ? 'По запросу' : ky ? 'Суроо боюнча' : 'On request', price: ru ? '7 000 KGS (~$80)' : ky ? '7 000 KGS (~$80)' : '$80 (7,000 KGS)' },
+        { route: ru ? 'Детский праздник' : ky ? 'Балдар майрамы' : "Kids' Party", time: ru ? 'Выходные 11:00' : ky ? 'Дем алыш 11:00' : 'Weekends 11:00', duration: ru ? '2 часа' : ky ? '2 саат' : '2 hours', freq: ru ? 'Выходные' : ky ? 'Дем алыш' : 'Weekends', price: ru ? '1 000 KGS/чел (~$12)' : ky ? '1 000 KGS/адам (~$12)' : '$12/person (1,000 KGS)' },
       ],
     },
     reviewsList: [
