@@ -84,7 +84,7 @@ export default function AccountPage() {
         <div className="relative z-10 px-6 md:px-14 pt-6 h-full flex flex-col justify-between pb-6">
           <Link href={`/${lang}`} className="text-foam/70 text-sm hover:text-white transition-colors">&larr; {labels.home}</Link>
           {user && (
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#00897B] to-[#26A69A] flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-[#00897B]/30 flex-shrink-0">
                 {(user.name || user.phone).charAt(0).toUpperCase()}
               </div>
@@ -169,7 +169,7 @@ export default function AccountPage() {
                   <div className="font-mono font-bold text-xl text-ocean mt-1">{b.total_amount.toLocaleString()} {b.currency}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className={`px-4 py-1.5 rounded-lg text-sm font-bold ${statusColors[b.status] || 'bg-gray-100'}`}>
+                  <span className={`px-4 py-2 rounded-lg text-sm font-bold ${statusColors[b.status] || 'bg-gray-100'}`}>
                     {statusLabel(b.status)}
                   </span>
                   {/* Actions dropdown */}
@@ -177,7 +177,7 @@ export default function AccountPage() {
                     <div className="relative">
                       <button
                         onClick={() => setOpenActions(openActions === b.id ? null : b.id)}
-                        className="p-2 rounded-lg border border-gray-200 text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors"
+                        className="p-3 rounded-lg border border-gray-200 text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors"
                         aria-label="Actions"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">

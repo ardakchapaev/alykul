@@ -93,7 +93,7 @@ function AuthInner() {
           <p className="text-white/70 mt-2">{labels.subtitle}</p>
         </div>
 
-        <div className="bg-white rounded-2xl p-8 shadow-2xl border border-white/10 backdrop-blur-sm">
+        <div className="bg-white rounded-2xl p-5 sm:p-8 shadow-2xl border border-white/10 backdrop-blur-sm">
           {step === 'phone' ? (
             <>
               <label className="block text-sm font-medium text-muted mb-2">{labels.phone}</label>
@@ -117,7 +117,7 @@ function AuthInner() {
               )}
 
               <label className="block text-sm font-medium text-muted mb-2">{labels.code}</label>
-              <div className="flex gap-3 justify-center mb-4">
+              <div className="flex gap-2 sm:gap-3 justify-center mb-4">
                 {[0,1,2,3].map(i => (
                   <input key={i} type="text" maxLength={1}
                     value={code[i] || ''}
@@ -137,7 +137,7 @@ function AuthInner() {
                         prev?.focus();
                       }
                     }}
-                    className="w-16 h-[4.5rem] border-2 border-gray-200 rounded-xl text-2xl text-center font-bold focus:border-[#00897B] focus:outline-none focus:ring-2 focus:ring-[#00897B]/30 transition-all"
+                    className="w-14 h-16 sm:w-16 sm:h-[4.5rem] border-2 border-gray-200 rounded-xl text-2xl text-center font-bold focus:border-[#00897B] focus:outline-none focus:ring-2 focus:ring-[#00897B]/30 transition-all"
                     autoFocus={i === 0}
                   />
                 ))}

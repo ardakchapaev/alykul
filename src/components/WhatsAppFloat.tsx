@@ -13,7 +13,7 @@ export default function WhatsAppFloat() {
   ];
 
   return (
-    <div className="fixed bottom-6 left-6 z-[10003] flex flex-col items-start gap-2">
+    <div className="fixed bottom-20 md:bottom-6 left-6 z-[10003] flex flex-col items-start gap-2">
       {/* Expanded: quick message options */}
       {expanded && (
         <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 w-[280px] mb-2 animate-in">

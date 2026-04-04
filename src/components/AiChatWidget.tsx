@@ -367,7 +367,7 @@ export default function AiChatWidget() {
       {/* Floating Button */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className={`fixed bottom-6 right-6 z-[10003] w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-2xl bg-gradient-to-br from-[#0a1628] via-[#1a3a5c] to-[#246dc9] text-white ${pulse ? 'animate-pulse' : ''}`}
+        className={`fixed bottom-20 md:bottom-6 right-6 z-[10003] w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-2xl bg-gradient-to-br from-[#0a1628] via-[#1a3a5c] to-[#246dc9] text-white ${pulse ? 'animate-pulse' : ''}`}
         aria-label="Open chat"
       >
         {open ? (
@@ -384,7 +384,7 @@ export default function AiChatWidget() {
 
       {/* Chat Card */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-[10003] w-[min(400px,calc(100vw-2rem))] h-[min(550px,calc(100vh-8rem))] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 animate-in">
+        <div className="fixed bottom-36 md:bottom-24 right-4 md:right-6 z-[10003] w-[min(400px,calc(100vw-2rem))] h-[min(550px,calc(100vh-10rem))] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200 animate-in">
           {/* Header */}
           <div className="bg-gradient-to-r from-[#0a1628] via-[#1a3a5c] to-[#246dc9] px-5 py-4 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">

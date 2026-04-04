@@ -125,7 +125,8 @@ function SteamshipLayout({ capacity, occupiedSeats, selectedSeats, onSelectSeat 
       </div>
 
       {/* Vessel outline */}
-      <div className="relative bg-gradient-to-b from-sky-50 to-blue-50 rounded-2xl p-4 border border-sky-100">
+      <div className="overflow-x-auto -mx-2 px-2">
+      <div className="relative bg-gradient-to-b from-sky-50 to-blue-50 rounded-2xl p-4 border border-sky-100 min-w-[340px]">
         {/* Bow indicator */}
         <div className="text-center text-xs text-gray-400 mb-3 uppercase tracking-wider">Нос</div>
 
@@ -191,6 +192,7 @@ function SteamshipLayout({ capacity, occupiedSeats, selectedSeats, onSelectSeat 
 
         {/* Stern indicator */}
         <div className="text-center text-xs text-gray-400 mt-3 uppercase tracking-wider">Корма</div>
+      </div>
       </div>
     </div>
   );

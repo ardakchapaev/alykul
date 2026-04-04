@@ -98,7 +98,7 @@ export default function TripsPage() {
           </select>
         </div>
         <button onClick={search}
-          className="px-8 py-3 bg-gradient-to-r from-[#00897B] to-[#26A69A] text-white rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#00897B]/25 transition-all duration-300">
+          className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-[#00897B] to-[#26A69A] text-white rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#00897B]/25 transition-all duration-300">
           {labels.search}
         </button>
       </div>

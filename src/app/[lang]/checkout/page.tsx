@@ -116,17 +116,17 @@ function CheckoutInner() {
         {/* Step indicator */}
         <div className="flex items-center justify-center gap-2 mt-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-green-500/30">&#10003;</div>
+            <div className="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-green-500/30">&#10003;</div>
             <span className="text-white/70 text-sm hidden sm:inline">{labels.trip}</span>
           </div>
           <div className="w-8 h-px bg-white/30" />
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-white text-[#0A1628] flex items-center justify-center text-sm font-bold shadow-lg shadow-white/20">2</div>
+            <div className="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-white text-[#0A1628] flex items-center justify-center text-sm font-bold shadow-lg shadow-white/20">2</div>
             <span className="text-white text-sm font-semibold hidden sm:inline">{labels.payment}</span>
           </div>
           <div className="w-8 h-px bg-white/30" />
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-white/20 text-white/50 flex items-center justify-center text-sm">3</div>
+            <div className="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-white/20 text-white/50 flex items-center justify-center text-sm">3</div>
             <span className="text-white/40 text-sm hidden sm:inline">{lang === 'ru' ? 'Билет' : lang === 'ky' ? 'Билет' : 'Ticket'}</span>
           </div>
         </div>
@@ -165,7 +165,7 @@ function CheckoutInner() {
         {/* Payment method */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
           <h3 className="font-bold text-lg mb-4 text-gray-500 uppercase text-sm tracking-wide">{labels.payment}</h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {paymentMethods.map(m => (
               <button key={m.id} onClick={() => setPayMethod(m.id)}
                 className={`p-5 rounded-xl border-2 text-left transition-all duration-200 ${

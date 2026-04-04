@@ -112,25 +112,25 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <a href={`/${lang}/trips`}
-            className={`inline-block bg-[#00897B] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#00796B] transition-colors tracking-wide ${showPulse ? 'animate-pulse' : ''}`}>
+            className={`hidden lg:inline-block bg-[#00897B] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#00796B] transition-colors tracking-wide ${showPulse ? 'animate-pulse' : ''}`}>
             {t.nav.booking}
           </a>
 
           {/* Auth */}
           {user ? (
-            <a href={`/${lang}/account`} className="flex items-center gap-1.5 text-white/70 text-xs font-medium hover:text-white transition-colors">
+            <a href={`/${lang}/account`} className="hidden md:flex items-center gap-1.5 text-white/70 text-xs font-medium hover:text-white transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
               <span className="hidden sm:inline">{user.name || user.phone.slice(-4)}</span>
             </a>
           ) : (
-            <a href={`/${lang}/auth`} className="bg-[#00897B] text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-[#00796B] transition-colors">
+            <a href={`/${lang}/auth`} className="hidden md:inline-block bg-[#00897B] text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-[#00796B] transition-colors">
               {lang === 'ru' ? 'Войти' : lang === 'ky' ? 'Кирүү' : 'Sign In'}
             </a>
           )}
 
-          <CurrencySelector />
+          <div className="hidden md:block"><CurrencySelector /></div>
           {/* Lang */}
           <div className="relative">
             <button onClick={() => { setLangOpen(!langOpen); setThemeOpen(false); }}
@@ -170,7 +170,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
           </div>
 
           {/* Burger */}
-          <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2" onClick={() => setOpen(!open)} aria-label="Menu">
+          <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2 p-2" onClick={() => setOpen(!open)} aria-label="Menu">
             <span className={`h-[2px] w-full bg-white transition-all ${open ? 'rotate-45 translate-y-[7px]' : ''}`} />
             <span className={`h-[2px] w-full bg-white transition-opacity ${open ? 'opacity-0' : ''}`} />
             <span className={`h-[2px] w-full bg-white transition-all ${open ? '-rotate-45 -translate-y-[7px]' : ''}`} />
@@ -257,7 +257,7 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
 
       {/* Teal CTA text overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-4">
-        <h1 className="font-m3-display text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-[1.05] drop-shadow-2xl">
+        <h1 className="font-m3-display text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-white uppercase leading-[1.05] drop-shadow-2xl">
           {t.hero.line1}
         </h1>
         <p className="text-lg md:text-2xl text-white/80 mt-4 font-m3-body tracking-widest uppercase">
@@ -297,11 +297,11 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
               <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 py-1.5" role="group" aria-label={t.booking.guests}>
                 <button type="button" onClick={() => setGuests(Math.max(1, guests - 1))}
                   aria-label={lang === 'en' ? 'Decrease guests' : lang === 'ky' ? 'Коноктордy азайтуу' : 'Уменьшить гостей'}
-                  className="w-7 h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">&minus;</button>
+                  className="w-10 h-10 md:w-7 md:h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">&minus;</button>
                 <span className="text-[#0A1628] font-bold text-lg w-8 text-center font-m3-body" aria-live="polite">{guests}</span>
                 <button type="button" onClick={() => setGuests(Math.min(20, guests + 1))}
                   aria-label={lang === 'en' ? 'Increase guests' : lang === 'ky' ? 'Коноктордy көбөйтүү' : 'Увеличить гостей'}
-                  className="w-7 h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">+</button>
+                  className="w-10 h-10 md:w-7 md:h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">+</button>
               </div>
             </div>
             {/* CTA with live price preview */}
@@ -400,7 +400,7 @@ function M4Services({ t }: { t: Tr }) {
 /* ═══════════════ PARALLAX DIVIDER — Fullscreen ocean photo with text (OceanPlaza pattern) ═══════════════ */
 function M4ParallaxDivider({ image, title, subtitle, altText }: { image: string; title?: string; subtitle?: string; altText?: string }) {
   return (
-    <section className="relative h-[200px] md:h-[300px] lg:h-[400px] overflow-hidden">
+    <section className="relative h-[160px] md:h-[300px] lg:h-[400px] overflow-hidden">
       {/* Background image (replaces bg-fixed which breaks in overflow:auto containers) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={image} alt={altText || ''} className="absolute inset-0 w-full h-full object-cover" />
@@ -486,7 +486,7 @@ function M4Fleet({ t }: { t: Tr }) {
         <div className="flex flex-wrap justify-center gap-2 mt-10 mb-10">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActive(tab.id)}
-              className={`px-5 py-2 text-sm font-m3-body font-semibold uppercase tracking-[1px] rounded transition-all ${
+              className={`px-5 py-3 sm:py-2 text-sm font-m3-body font-semibold uppercase tracking-[1px] rounded transition-all ${
                 active === tab.id
                   ? 'bg-[#00897B] text-white'
                   : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-[#0A1628]'
@@ -826,6 +826,7 @@ function M4Reviews({ t, lang }: { t: Tr; lang: string }) {
             </div>
           ))}
         </div>
+        <p className="text-center text-gray-400 text-xs mt-2 md:hidden">&larr; Листайте &rarr;</p>
       </div>
     </section>
   );
@@ -917,7 +918,7 @@ function M4Schedule({ t, lang }: { t: Tr; lang: string }) {
 
                 {/* Book button — appears on hover (desktop), always visible (mobile) */}
                 <a href={`/${lang}/trips`}
-                  className="shrink-0 px-5 py-2 bg-[#00897B] hover:bg-[#00796B] text-white rounded-xl text-sm font-semibold font-m3-body opacity-70 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 text-center">
+                  className="shrink-0 w-full sm:w-auto px-5 py-2.5 bg-[#00897B] hover:bg-[#00796B] text-white rounded-xl text-sm font-semibold font-m3-body opacity-70 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 text-center">
                   {t.schedule.book}
                 </a>
               </div>

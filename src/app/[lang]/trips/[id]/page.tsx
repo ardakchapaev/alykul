@@ -65,7 +65,7 @@ export default function TripPage() {
   return (
     <div className="min-h-screen bg-sand">
       {/* Hero */}
-      <div className="relative h-[350px] md:h-[450px]">
+      <div className="relative h-[250px] md:h-[450px]">
         <Image src={trip.route.image || trip.vessel.images?.[0] || '/images/hero.jpg'} alt={trip.route[routeNameKey] as string || ''} fill className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/70 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-6 md:px-14 pb-10">
@@ -89,7 +89,7 @@ export default function TripPage() {
         {/* Info */}
         <div className="md:col-span-2 space-y-6">
           <div className="bg-white rounded-2xl p-6 border border-gray-100">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-ocean/10 flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5 text-ocean" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>

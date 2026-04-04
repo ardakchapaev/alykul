@@ -30,7 +30,7 @@ export default function SaileyWrapper({ lang }: Props) {
       <M3FAQ t={t} />
       <M3MapSection t={t} />
       <M3Footer t={t} lang={lang} />
-      <M3AiChat />
+      {/* M3AiChat removed — global AiChatWidget via layout is used instead */}
     </div>
   );
 }
@@ -147,7 +147,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
         </div>
 
         {/* Burger */}
-        <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2" onClick={() => setOpen(!open)} aria-label="Menu">
+        <button className="lg:hidden flex flex-col gap-1.5 w-6 ml-2 p-2" onClick={() => setOpen(!open)} aria-label="Menu">
           <span className={`h-[1.5px] w-full bg-white transition-all ${open ? 'rotate-45 translate-y-[7px]' : ''}`} />
           <span className={`h-[1.5px] w-full bg-white transition-opacity ${open ? 'opacity-0' : ''}`} />
           <span className={`h-[1.5px] w-full bg-white transition-all ${open ? '-rotate-45 -translate-y-[7px]' : ''}`} />
@@ -157,7 +157,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
       {/* Mobile menu */}
       {open && (
         <div className="fixed inset-0 bg-[#0A1628]/[0.98] z-[10001] flex flex-col items-center justify-center gap-6 lg:hidden">
-          <button className="absolute top-4 right-5 text-white text-3xl" onClick={() => setOpen(false)}>&times;</button>
+          <button className="absolute top-4 right-5 text-white text-3xl p-3" onClick={() => setOpen(false)}>&times;</button>
           {[...leftLinks, ...rightLinks].map(l => (
             <a key={l.href} href={l.href} className="text-white font-m3-display text-2xl italic hover:text-[#00A896] transition-colors" onClick={() => setOpen(false)}>{l.label}</a>
           ))}
@@ -180,7 +180,7 @@ function M3Nav({ lang, t }: { lang: string; t: Tr }) {
           <div className="flex gap-3 mt-6 border-t border-white/10 pt-6">
             {themes.map(th => (
               <button key={th} onClick={() => { setTheme(th); setOpen(false); }}
-                className={`px-4 py-2 text-sm font-semibold ${th === theme ? 'bg-[#00A896] text-white' : 'border border-white/20 text-white/60 hover:text-white'}`}>{th}</button>
+                className={`px-4 py-3 text-sm font-semibold ${th === theme ? 'bg-[#00A896] text-white' : 'border border-white/20 text-white/60 hover:text-white'}`}>{th}</button>
             ))}
           </div>
         </div>
@@ -402,7 +402,7 @@ function M3Catalog({ t, lang }: { t: Tr; lang: string }) {
         <div className="flex justify-start md:justify-center gap-2 mb-12 overflow-x-auto pb-2 scrollbar-hide md:flex-wrap">
           {tabs.map((tab: string, i: number) => (
             <button key={i} onClick={() => setActiveTab(i)}
-              className={`px-6 py-2.5 text-[11px] tracking-[2px] uppercase font-m3-body font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
+              className={`px-6 py-3 text-[11px] tracking-[2px] uppercase font-m3-body font-semibold transition-all whitespace-nowrap flex-shrink-0 ${
                 activeTab === i
                   ? 'bg-[#0A1628] text-white'
                   : 'bg-white text-[#0A1628]/60 border border-[#0A1628]/10 hover:border-[#0A1628]/30'
@@ -492,7 +492,7 @@ function M3Schedule({ t, lang }: { t: Tr; lang: string }) {
                 <span className="md:hidden text-white/50 text-xs font-normal mr-2">{t.schedule.col_price}:</span>{row.price}
               </div>
               <div className="md:text-right">
-                <a href={`/${lang}/trips`} className="inline-block bg-[#00A896] hover:bg-[#008F80] text-white text-[10px] tracking-[1px] uppercase font-semibold px-4 py-1.5 transition-colors font-m3-body">
+                <a href={`/${lang}/trips`} className="inline-block bg-[#00A896] hover:bg-[#008F80] text-white text-[10px] tracking-[1px] uppercase font-semibold px-4 py-2.5 w-full sm:w-auto transition-colors font-m3-body text-center">
                   {t.catalog.book}
                 </a>
               </div>
@@ -786,7 +786,7 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
               { href: 'https://wa.me/996555123456', label: 'WA', icon: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z' },
             ].map(s => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-[#00A896] hover:border-[#00A896]/30 transition-colors">
+                className="w-10 h-10 sm:w-9 sm:h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-[#00A896] hover:border-[#00A896]/30 transition-colors">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d={s.icon} /></svg>
               </a>
             ))}
@@ -803,7 +803,8 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
   );
 }
 
-/* ═══════════════ AI CHAT WIDGET ═══════════════ */
+/* ═══════════════ AI CHAT WIDGET (disabled — global AiChatWidget used instead) ═══════════════ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function M3AiChat() {
   const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState('');
@@ -836,7 +837,7 @@ function M3AiChat() {
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 z-[10002] w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-black/[0.06] flex flex-col overflow-hidden" style={{ height: '500px' }}>
+        <div className="fixed bottom-6 right-6 z-[10002] w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-black/[0.06] flex flex-col overflow-hidden" style={{ height: '500px', maxHeight: 'calc(100vh - 10rem)' }}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-black/[0.06] bg-[#0A1628] text-white">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-[#00A896]/20 flex items-center justify-center">

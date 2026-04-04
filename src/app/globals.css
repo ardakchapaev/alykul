@@ -855,6 +855,6 @@ section {
 /* Add bottom padding to body on mobile to prevent content from hiding behind bottom nav */
 @media (max-width: 767px) {
   body {
-    padding-bottom: 64px; /* h-16 = 4rem = 64px */
+    padding-bottom: 80px; /* h-16 = 64px + 16px buffer */
   }
 }
