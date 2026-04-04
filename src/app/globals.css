@@ -710,6 +710,82 @@ nav.scrolled, nav[class*="fixed"] {
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* ═══ PREMIUM MICRO-ANIMATIONS ═══ */
+
+/* Intersection Observer reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ripple effect on buttons */
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* Shimmer skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Prices in monospace for alignment */
+.price-display {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Teal glow on card hover */
+.card-glow:hover {
+  box-shadow: 0 20px 60px rgba(0, 137, 123, 0.15);
+}
+
+/* Gold glow for premium cards */
+.card-gold-glow:hover {
+  box-shadow: 0 20px 60px rgba(255, 179, 0, 0.2);
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* Button press effect */
+button:active, a:active {
+  transform: scale(0.98);
+}
+
+/* Focus visible ring */
+:focus-visible {
+  outline: 2px solid var(--color-ocean, #0077B6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth section transitions */
+section {
+  transition: background-color 0.3s ease;
+}
+
+/* Card hover lift utility */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
 /* ═══ PRINT STYLES ═══ */
 @media print {
   nav, footer, .fixed, [class*="z-[10"], button, .no-print {

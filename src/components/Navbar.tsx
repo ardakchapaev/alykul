@@ -42,7 +42,7 @@ export default function Navbar({ dict, lang }: { dict: NavDict; lang: string }) 
     <nav
       className={`w-full z-50 flex items-center justify-between px-6 md:px-14 py-4 transition-all duration-300 ${
         scrolled
-          ? 'fixed top-0 bg-navy/[0.98] backdrop-blur-xl shadow-lg'
+          ? 'fixed top-8 bg-navy/[0.98] backdrop-blur-xl shadow-lg'
           : 'absolute bottom-0 bg-navy/[0.85] backdrop-blur-md'
       }`}
     >

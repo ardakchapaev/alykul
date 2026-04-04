@@ -19,7 +19,7 @@ export default function BookingBanner() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: MARQUEE_CSS }} />
-      <div className="fixed top-0 left-0 right-0 z-[10002] h-8 bg-gradient-to-r from-[#0a1628] via-[#1a3a5c] to-[#246dc9] text-white flex items-center overflow-hidden">
+      <div className="sticky top-0 left-0 right-0 z-[10002] h-8 bg-gradient-to-r from-[#0a1628] via-[#1a3a5c] to-[#246dc9] text-white flex items-center overflow-hidden">
         <div className="flex-1 overflow-hidden">
           <div className="flex whitespace-nowrap" style={{ animation: 'alykul-marquee 25s linear infinite' }}>
             <span className="mx-8 text-xs font-medium tracking-wide">{text}</span>

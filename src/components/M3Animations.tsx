@@ -6,9 +6,11 @@ import { useRef, useEffect, ReactNode } from 'react';
 export function ScrollReveal({
   children,
   className = '',
+  delay = 0,
 }: {
   children: ReactNode;
   className?: string;
+  delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,7 @@ export function ScrollReveal({
       style={{
         opacity: 0,
         transform: 'translateY(30px)',
-        transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
+        transition: `opacity 0.7s ease-out ${delay}ms, transform 0.7s ease-out ${delay}ms`,
       }}
     >
       {children}

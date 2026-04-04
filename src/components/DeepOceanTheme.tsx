@@ -492,53 +492,62 @@ function M4Pricing({ t, lang }: { t: Tr; lang: string }) {
   ];
 
   return (
-    <section id="m4-pricing" className="relative bg-white py-20 md:py-28">
+    <section id="m4-pricing" className="relative bg-[#0A1628] py-20 md:py-28">
       <div className="max-w-[1200px] mx-auto px-4 md:px-8 text-center">
         <ScrollReveal>
-          <p className="text-[#00897B] uppercase tracking-[4px] text-sm font-m3-body font-semibold mb-3">
+          <p className="text-[#00B4D8] uppercase tracking-[4px] text-sm font-m3-body font-semibold mb-3">
             {t.pricing.badge}
           </p>
-          <h2 className="font-m3-display text-3xl md:text-5xl font-bold text-[#0A1628] uppercase tracking-wide">
+          <h2 className="font-m3-display text-3xl md:text-5xl font-bold text-white uppercase tracking-wide">
             {t.pricing.title}
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto font-m3-body">
+          <p className="text-white/50 mt-4 max-w-xl mx-auto font-m3-body">
             {t.pricing.subtitle}
           </p>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
           {plans.map((plan, i) => (
-            <ScrollReveal key={i}>
-              <div className={`relative rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 bg-white ${plan.popular ? 'ring-2 ring-[#00897B]' : ''}`}>
+            <ScrollReveal key={i} delay={i * 120}>
+              <div className={`relative rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 ${
+                plan.popular
+                  ? 'bg-gradient-to-br from-[#0D2137] to-[#0A3D55] border-2 border-[#FFB300] ring-4 ring-[#FFB300]/20'
+                  : 'bg-gradient-to-br from-[#0D2137] to-[#0A3D55] border border-white/10'
+              }`}>
+                {/* Popular badge */}
                 {plan.popular && (
-                  <div className="absolute top-3 right-3 bg-[#FF6B35] text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded z-10">
+                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 bg-[#FFB300] text-[#0A1628] text-xs font-bold px-4 py-1 rounded-b-lg z-10">
                     {t.pricing.popular}
                   </div>
                 )}
-                {/* Colored header */}
-                <div className={`${plan.color} py-6 px-4 text-center`}>
-                  <h3 className="font-m3-display text-white text-sm font-bold uppercase tracking-[2px]">
+                {/* Header */}
+                <div className="p-6 pt-8 text-center">
+                  <h3 className="text-white font-semibold text-lg mb-2 font-m3-display uppercase tracking-[2px]">
                     {plan.name}
                   </h3>
-                  <div className="mt-3 flex items-baseline justify-center gap-1">
-                    <span className="font-m3-display text-white text-4xl font-black">{plan.price}</span>
-                    {plan.unit && <span className="text-white/70 text-sm font-m3-body">{plan.unit}</span>}
+                  <div className="text-white font-mono">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    {plan.unit && <span className="text-white/50 text-sm ml-1">{plan.unit}</span>}
                   </div>
                 </div>
                 {/* Features */}
-                <div className="bg-white py-6 px-5">
-                  <ul className="space-y-3">
-                    {plan.features.map((f, fi) => (
-                      <li key={fi} className="flex items-center gap-2 text-sm text-gray-600 font-m3-body">
-                        <svg className="w-4 h-4 text-[#00897B] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="m5 13 4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href={`/${lang}/trips`}
-                    className="block mt-6 bg-[#00897B] hover:bg-[#00796B] text-white text-sm font-semibold py-2.5 rounded text-center transition-colors font-m3-body uppercase tracking-wide">
+                <div className="px-6 pb-6 space-y-3">
+                  {plan.features.map((f, fi) => (
+                    <div key={fi} className="flex items-center gap-2 text-white/70 text-sm font-m3-body">
+                      <svg className="w-4 h-4 text-[#00B4D8] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      {f}
+                    </div>
+                  ))}
+                </div>
+                {/* CTA */}
+                <div className="px-6 pb-6">
+                  <a href={`/${lang}/trips`} className={`block w-full py-3 text-center rounded-xl font-semibold text-sm transition-all font-m3-body ${
+                    plan.popular
+                      ? 'bg-gradient-to-r from-[#00B4D8] to-[#00897B] text-white hover:shadow-lg hover:shadow-[#00B4D8]/30'
+                      : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+                  }`}>
                     {t.pricing.book}
                   </a>
                 </div>
@@ -576,19 +585,28 @@ function M4PopularRoutes({ t, lang }: { t: Tr; lang: string }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
           {routes.map((r, i) => (
-            <ScrollReveal key={i}>
-              <div className="group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 bg-white">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image src={r.img} alt={r.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <span className="absolute top-3 left-3 bg-[#00897B] text-white text-[10px] font-bold uppercase px-2 py-1 rounded">
+            <ScrollReveal key={i} delay={i * 100}>
+              <div className="group relative rounded-2xl overflow-hidden bg-white border border-gray-100 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,137,123,0.15)] hover:-translate-y-2">
+                {/* Image with parallax hover */}
+                <div className="aspect-[4/3] overflow-hidden relative">
+                  <Image src={r.img} alt={r.title} fill className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  {/* Price badge on image */}
+                  <div className="absolute bottom-4 left-4 font-mono text-white font-bold text-xl drop-shadow-lg">
+                    {r.price}
+                  </div>
+                  {/* Category badge - frosted glass */}
+                  <span className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full">
                     {r.tag}
                   </span>
                 </div>
-                <div className="p-5 text-left">
-                  <h3 className="font-m3-display text-[#0A1628] font-bold text-base">{r.title}</h3>
-                  <p className="text-[#00897B] font-bold text-lg mt-2 font-m3-body">{r.price}</p>
+                {/* Content */}
+                <div className="p-5">
+                  <h3 className="font-semibold text-lg mb-2 text-[#0A1628]">{r.title}</h3>
+                  {/* Book button - appears on hover, always visible on mobile */}
                   <a href={`/${lang}/trips`}
-                    className="mt-4 block w-full text-center bg-[#00897B] hover:bg-[#00796B] text-white text-sm font-semibold py-2 rounded transition-colors font-m3-body">
+                    className="block w-full py-2.5 bg-[#00897B] text-white text-center rounded-xl font-semibold text-sm opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 sm:opacity-100 sm:translate-y-0">
                     {t.popular.add}
                   </a>
                 </div>
