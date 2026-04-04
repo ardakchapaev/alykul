@@ -17,7 +17,7 @@ export default function SaileyWrapper({ lang }: Props) {
   const t = getTrans(lang);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-[#0A1628] overflow-auto">
+    <div className="fixed inset-0 z-[9999] bg-[#0A1628] overflow-y-auto">
       <M3Nav lang={lang} t={t} />
       <M3Hero t={t} lang={lang} />
       <M3DiagonalStrips t={t} />

@@ -19,7 +19,7 @@ export default function ClassicWrapper({ lang }: { lang: string }) {
   const t = getTrans(lang);
 
   return (
-    <div className="fixed inset-0 z-[9999] overflow-auto bg-[#fafaf8]">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto bg-[#fafaf8]">
       <M6Hero t={t} lang={lang} />
       <M6Stats t={t} />
       <M6USP t={t} />

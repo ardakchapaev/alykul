@@ -21,7 +21,7 @@ export default function DeepOceanWrapper({ lang }: { lang: string }) {
   const t = getTrans(lang);
 
   return (
-    <div className="fixed inset-0 z-[9999] overflow-auto bg-white">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto bg-white">
       <M4Nav lang={lang} t={t} />
       <M4Hero t={t} lang={lang} />
       <M4Services t={t} />
@@ -345,11 +345,9 @@ function M4Services({ t }: { t: Tr }) {
 function M4ParallaxDivider({ image, title, subtitle }: { image: string; title?: string; subtitle?: string }) {
   return (
     <section className="relative h-[200px] md:h-[300px] lg:h-[400px] overflow-hidden">
-      {/* Parallax background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: `url(${image})` }}
-      />
+      {/* Background image (replaces bg-fixed which breaks in overflow:auto containers) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-[#0A1628]/60" />
 
       {/* Text overlay */}

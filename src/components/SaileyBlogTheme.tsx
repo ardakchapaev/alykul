@@ -43,7 +43,7 @@ export default function SaileyBlogWrapper({ lang }: { lang: string }) {
   const t = getTrans(lang);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-white overflow-auto font-m3-body">
+    <div className="fixed inset-0 z-[9999] bg-white overflow-y-auto font-m3-body">
       <M2Nav lang={lang} t={t} />
       <M2Hero t={t} />
       <TornEdgeTop from="#008B8B" to="#ffffff" />

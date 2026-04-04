@@ -15,7 +15,7 @@ export default function CoastalLuxuryWrapper({ lang }: { lang: string }) {
   const t = getTrans(lang);
 
   return (
-    <div className="fixed inset-0 z-[9999] overflow-auto bg-white">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto bg-white">
       <AzNav lang={lang} t={t} />
       <AzHero t={t} />
       <AzTagline t={t} />
@@ -42,7 +42,7 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    const el = document.querySelector('.fixed.inset-0.overflow-auto');
+    const el = document.querySelector('.fixed.inset-0.overflow-y-auto');
     if (!el) return;
     const onScroll = () => setScrolled(el.scrollTop > 60);
     el.addEventListener('scroll', onScroll, { passive: true });
