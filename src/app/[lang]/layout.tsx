@@ -60,6 +60,7 @@ export async function generateMetadata({
       description: dict.meta.description,
       images: [{ url: '/images/hero.jpg', width: 1200, height: 630, alt: 'Алыкул — Озеро Иссык-Куль' }],
       locale: params.lang === 'ru' ? 'ru_RU' : params.lang === 'ky' ? 'ky_KG' : 'en_US',
+      url: `https://alykul.baimuras.pro/${params.lang}`,
       type: 'website',
       siteName: 'Алыкул',
     },

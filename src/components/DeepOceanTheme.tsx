@@ -25,15 +25,15 @@ export default function DeepOceanWrapper({ lang }: { lang: string }) {
       <M4Nav lang={lang} t={t} />
       <M4Hero t={t} lang={lang} />
       <M4Services t={t} />
-      <M4ParallaxDivider image="/images/scene7.jpg" title={t.dividers.routes} subtitle={t.dividers.routesSub} />
+      <M4ParallaxDivider image="/images/scene7.jpg" title={t.dividers.routes} subtitle={t.dividers.routesSub} altText={t.alt.scene7} />
       <M4Fleet t={t} />
-      <M4ParallaxDivider image="/images/alykul1.jpg" title={t.dividers.booking} subtitle={t.dividers.bookingSub} />
+      <M4ParallaxDivider image="/images/alykul1.jpg" title={t.dividers.booking} subtitle={t.dividers.bookingSub} altText={t.alt.alykul1} />
       <M4Pricing t={t} lang={lang} />
-      <M4ParallaxDivider image="/images/scene4.jpg" title={t.dividers.popular} subtitle={t.dividers.popularSub} />
+      <M4ParallaxDivider image="/images/scene4.jpg" title={t.dividers.bestOffer} subtitle={t.dividers.bestOfferSub} altText={t.alt.scene4} />
       <M4PopularRoutes t={t} lang={lang} />
       <M4Reviews t={t} lang={lang} />
       <M4Schedule t={t} lang={lang} />
-      <M4ParallaxDivider image="/images/hero.jpg" title={t.dividers.adventure} subtitle={t.dividers.adventureSub} />
+      <M4ParallaxDivider image="/images/hero.jpg" title={t.dividers.adventure} subtitle={t.dividers.adventureSub} altText={t.alt.hero} />
       <M4Widgets t={t} />
       <M4FAQ t={t} />
       <M4Map t={t} />
@@ -235,7 +235,7 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/hero.jpg"
-          alt=""
+          alt={t.alt.hero}
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
         />
@@ -272,7 +272,7 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
           <div className="flex flex-col md:flex-row items-stretch md:items-end gap-3">
             <div className="flex-1">
               <label className="text-gray-400 text-xs font-m3-body mb-1 block">{t.booking.pier}</label>
-              <select className="w-full bg-gray-50 border border-gray-200 rounded px-3 py-2.5 text-sm text-[#0A1628] font-m3-body outline-none focus:border-[#00897B] appearance-none cursor-pointer">
+              <select aria-label={t.booking.pier} className="w-full bg-gray-50 border border-gray-200 rounded px-3 py-2.5 text-sm text-[#0A1628] font-m3-body outline-none focus:border-[#00897B] appearance-none cursor-pointer">
                 <option value="cholpon">{t.piers.cholpon}</option>
                 <option value="bosteri">{t.piers.bosteri}</option>
                 <option value="karakol">{t.piers.karakol}</option>
@@ -282,6 +282,8 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
             <div className="flex-1">
               <label className="text-gray-400 text-xs font-m3-body mb-1 block">{t.booking.date}</label>
               <input type="date" value={bookingDate} onChange={e => setBookingDate(e.target.value)}
+                aria-label={t.booking.date}
+                placeholder={lang === 'en' ? 'Select date' : lang === 'ky' ? 'Күнүн тандаңыз' : 'Выберите дату'}
                 className={`w-full bg-gray-50 border rounded px-3 py-2.5 text-sm text-[#0A1628] font-m3-body outline-none transition-colors ${
                   isDatePast ? 'border-red-400 ring-1 ring-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#00897B]'
                 }`} />
@@ -292,18 +294,20 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
             {/* Guest counter with +/- buttons */}
             <div className="flex-1">
               <label className="text-gray-400 text-xs font-m3-body mb-1 block">{t.booking.guests}</label>
-              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 py-1.5">
+              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 py-1.5" role="group" aria-label={t.booking.guests}>
                 <button type="button" onClick={() => setGuests(Math.max(1, guests - 1))}
+                  aria-label={lang === 'en' ? 'Decrease guests' : lang === 'ky' ? 'Коноктордy азайтуу' : 'Уменьшить гостей'}
                   className="w-7 h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">&minus;</button>
-                <span className="text-[#0A1628] font-bold text-lg w-8 text-center font-m3-body">{guests}</span>
+                <span className="text-[#0A1628] font-bold text-lg w-8 text-center font-m3-body" aria-live="polite">{guests}</span>
                 <button type="button" onClick={() => setGuests(Math.min(20, guests + 1))}
+                  aria-label={lang === 'en' ? 'Increase guests' : lang === 'ky' ? 'Коноктордy көбөйтүү' : 'Увеличить гостей'}
                   className="w-7 h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">+</button>
               </div>
             </div>
             {/* CTA with live price preview */}
             <a href={`/${lang}/trips`}
               className="bg-[#00897B] hover:bg-[#00796B] text-white font-semibold px-6 py-2.5 rounded transition-colors font-m3-body text-sm tracking-wide text-center whitespace-nowrap">
-              {t.booking.search} &rarr; {lang === 'en' ? `from $${14 * guests}` : `от ${1400 * guests} KGS`}
+              {t.booking.search} &rarr; {lang === 'en' ? `from $${14 * guests}` : lang === 'ky' ? `${1400 * guests} KGS баштап` : `от ${1400 * guests} KGS`}
             </a>
           </div>
         </div>
@@ -394,21 +398,21 @@ function M4Services({ t }: { t: Tr }) {
 }
 
 /* ═══════════════ PARALLAX DIVIDER — Fullscreen ocean photo with text (OceanPlaza pattern) ═══════════════ */
-function M4ParallaxDivider({ image, title, subtitle }: { image: string; title?: string; subtitle?: string }) {
+function M4ParallaxDivider({ image, title, subtitle, altText }: { image: string; title?: string; subtitle?: string; altText?: string }) {
   return (
     <section className="relative h-[200px] md:h-[300px] lg:h-[400px] overflow-hidden">
       {/* Background image (replaces bg-fixed which breaks in overflow:auto containers) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={image} alt={altText || ''} className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-[#0A1628]/60" />
 
       {/* Text overlay */}
       {title && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-4">
           <ScrollReveal>
-            <h2 className="font-m3-display text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-[6px] drop-shadow-lg">
+            <p className="font-m3-display text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-[6px] drop-shadow-lg">
               {title}
-            </h2>
+            </p>
             {subtitle && (
               <p className="text-white/70 mt-4 text-base md:text-lg font-m3-body tracking-widest max-w-xl mx-auto">
                 {subtitle}
@@ -942,7 +946,7 @@ function M4Widgets({ t }: { t: Tr }) {
           <div className="grid grid-cols-3 gap-2">
             {gallery.map((img, i) => (
               <div key={i} className="relative aspect-square rounded overflow-hidden group cursor-pointer">
-                <Image src={img} alt="" fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
+                <Image src={img} alt={t.alt.instagram} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-[#00897B]/0 group-hover:bg-[#00897B]/40 transition-colors flex items-center justify-center">
                   <svg className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
@@ -992,7 +996,7 @@ function M4Widgets({ t }: { t: Tr }) {
             {['/images/scene2.jpg', '/images/scene3.jpg', '/images/scene4.jpg',
               '/images/scene6.jpg', '/images/scene7.jpg', '/images/scene9.jpg'].map((img, i) => (
               <div key={i} className="relative aspect-square rounded overflow-hidden cursor-pointer group">
-                <Image src={img} alt="" fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
+                <Image src={img} alt={t.alt.gallery} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
               </div>
             ))}
           </div>
@@ -1088,12 +1092,15 @@ function M4Map({ t }: { t: Tr }) {
               ) : (
                 <form className="space-y-4 mb-8" onSubmit={(e) => { e.preventDefault(); handleContact(); }}>
                   <input type="text" placeholder={t.contact.name} value={contactForm.name} autoComplete="name"
+                    aria-label={t.contact.name}
                     onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 focus:border-[#00897B] focus:ring-1 focus:ring-[#00897B] rounded-xl outline-none transition-colors font-m3-body bg-white" />
                   <input type="tel" placeholder={t.contact.phone} value={contactForm.phone} autoComplete="tel"
+                    aria-label={t.contact.phone}
                     onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 focus:border-[#00897B] focus:ring-1 focus:ring-[#00897B] rounded-xl outline-none transition-colors font-m3-body bg-white" />
                   <textarea placeholder={t.contact.message} rows={3} value={contactForm.message}
+                    aria-label={t.contact.message}
                     onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 focus:border-[#00897B] focus:ring-1 focus:ring-[#00897B] rounded-xl outline-none transition-colors resize-none font-m3-body bg-white" />
                   <button type="submit" className="w-full py-3 bg-[#00897B] hover:bg-[#00796B] text-white rounded-xl font-semibold transition-colors font-m3-body">
@@ -1247,7 +1254,7 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
                 <li><a href={`/${lang}/blog`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Блог' : 'Blog'}</a></li>
                 <li><a href={`/${lang}/terms`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a></li>
                 <li><a href={`/${lang}/partners`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Партнёрам' : lang === 'ky' ? 'Өнөктөштөргө' : 'Partners'}</a></li>
-                <li><a href={`/${lang}/careers`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Карьера' : lang === 'ky' ? 'Карьера' : 'Careers'}</a></li>
+                <li><a href={`/${lang}/careers`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Карьера' : lang === 'ky' ? 'Иш орундар' : 'Careers'}</a></li>
               </ul>
             </div>
 
@@ -1274,10 +1281,10 @@ function M4Footer({ t, lang }: { t: Tr; lang: string }) {
 
           {/* Newsletter */}
           <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/10">
-            <h3 className="text-white font-semibold mb-2 font-m3-display">{lang === 'ru' ? 'Получайте расписание сезона' : lang === 'ky' ? 'Сезондун расписаниесин алыңыз' : 'Get season schedule'}</h3>
+            <h3 className="text-white font-semibold mb-2 font-m3-display">{lang === 'ru' ? 'Получайте расписание сезона' : lang === 'ky' ? 'Сезондун каттамын алыңыз' : 'Get season schedule'}</h3>
             <p className="text-white/40 text-sm mb-3 font-m3-body">{lang === 'ru' ? 'Будьте первым кто узнает о новых рейсах и акциях' : lang === 'ky' ? 'Жаңы рейстер жана акциялар жөнүндө биринчи болуп билиңиз' : 'Be the first to know about new trips and offers'}</p>
             <div className="flex gap-2">
-              <input type="email" placeholder="Email" className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-white/30 focus:border-[#00897B] outline-none font-m3-body" />
+              <input type="email" placeholder="Email" aria-label="Email" className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-white/30 focus:border-[#00897B] outline-none font-m3-body" />
               <button className="px-4 py-2 bg-[#00897B] text-white rounded-xl text-sm font-semibold hover:bg-[#00796B] transition-colors shrink-0">
                 →
               </button>
@@ -1372,7 +1379,7 @@ function getTrans(lang: string) {
       cta: ru ? 'Алыкул поможет!' : ky ? 'Алыкул жардам берет!' : 'Alykul will help!',
     },
     booking: {
-      pier: ru ? 'Причал' : ky ? 'Причал' : 'Pier',
+      pier: ru ? 'Причал' : ky ? 'Кайык турагы' : 'Pier',
       date: ru ? 'Дата' : ky ? 'Күнү' : 'Date',
       guests: ru ? 'Гости' : ky ? 'Коноктор' : 'Guests',
       search: ru ? 'Найти рейс' : ky ? 'Рейс табуу' : 'Find Trip',
@@ -1405,8 +1412,8 @@ function getTrans(lang: string) {
       routesSub: ru ? 'Откройте для себя лучшие водные приключения' : ky ? 'Эң жакшы суу укмуштарын ачыңыз' : 'Discover the best water adventures',
       booking: ru ? 'ЗАБРОНИРУЙТЕ РЕЙС' : ky ? 'РЕЙС БРОНДОҢУЗ' : 'BOOK YOUR TRIP',
       bookingSub: ru ? 'Незабываемый отдых на Иссык-Куле' : ky ? 'Ысык-Көлдө унутулгус эс алуу' : 'Unforgettable vacation on Issyk-Kul',
-      popular: ru ? 'ПОПУЛЯРНЫЕ МАРШРУТЫ' : ky ? 'ПОПУЛЯРДУУ МАРШРУТТАР' : 'POPULAR ROUTES',
-      popularSub: ru ? 'Лучшее, что мы предлагаем' : ky ? 'Биз сунуштаган эң жакшылар' : 'The best we offer',
+      bestOffer: ru ? 'ЛУЧШЕЕ, ЧТО МЫ ПРЕДЛАГАЕМ' : ky ? 'ЭҢ ЖАКШЫ СУНУШТАР' : 'BEST WE OFFER',
+      bestOfferSub: ru ? 'Самые востребованные маршруты' : ky ? 'Эң талап кылынган маршруттар' : 'Our most popular routes',
       adventure: ru ? 'НАВСТРЕЧУ ПРИКЛЮЧЕНИЯМ' : ky ? 'УКМУШТАРГА КАРАТА' : 'TOWARD ADVENTURE',
       adventureSub: ru ? 'Создайте незабываемые воспоминания' : ky ? 'Унутулгус эстеликтерди жаратыңыз' : 'Create unforgettable memories',
     },
@@ -1434,7 +1441,7 @@ function getTrans(lang: string) {
       badge: ru ? 'Тарифы' : ky ? 'Тарифтер' : 'Pricing',
       title: ru ? 'НАШИ ЦЕНЫ' : ky ? 'БИЗДИН БААЛАР' : 'OUR PRICES',
       subtitle: ru ? 'Гарантия лучшего отдыха' : ky ? 'Эң жакшы эс алуу кепилдиги' : 'Satisfaction Guaranteed',
-      popular: ru ? 'Хит' : ky ? 'Хит' : 'Popular',
+      popular: ru ? 'Хит' : ky ? 'Популярдуу' : 'Popular',
       book: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
       p1name: ru ? 'Закатный круиз' : ky ? 'Батыш круизи' : 'Sunset Cruise',
       p1f1: ru ? '2 часа на воде' : ky ? '2 саат сууда' : '2 hours on water',
@@ -1488,7 +1495,7 @@ function getTrans(lang: string) {
       r3t: ru ? 'Скоростной тур — это чистый адреналин! Катер мощный, безопасность на высоте. Рекомендую всем любителям экстрима на Иссык-Куле.' : ky ? 'Ылдам тур — таза адреналин! Катер күчтүү, коопсуздук жогорку деңгээлде. Ысык-Көлдөгү экстремал сүйгөндөргө сунуштайм.' : 'Speed tour is pure adrenaline! Powerful speedboat, safety is top-notch. Recommend to all thrill-seekers on Issyk-Kul.',
     },
     schedule: {
-      badge: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
+      badge: ru ? 'Расписание' : ky ? 'Каттам' : 'Schedule',
       title: ru ? 'РАСПИСАНИЕ РЕЙСОВ' : ky ? 'РЕЙСТЕРДИН РАСПИСАНИЕСИ' : 'TRIP SCHEDULE',
       subtitle: ru ? 'Ежедневные рейсы с июня по сентябрь' : ky ? 'Июндан сентябрга чейин күндөлүк рейстер' : 'Daily trips from June to September',
       route: ru ? 'Маршрут' : ky ? 'Маршрут' : 'Route',
@@ -1537,7 +1544,7 @@ function getTrans(lang: string) {
       ],
       tgDesc: ru ? 'Подпишитесь на наш Telegram-канал для акций, новостей и расписания рейсов.' : ky ? 'Акциялар, жаңылыктар жана рейс расписаниеси үчүн Telegram-каналыбызга жазылыңыз.' : 'Subscribe to our Telegram channel for deals, news and trip schedules.',
       tgBtn: ru ? 'Подписаться' : ky ? 'Жазылуу' : 'Subscribe',
-      galleryTitle: ru ? 'Галерея' : ky ? 'Галерея' : 'Gallery',
+      galleryTitle: ru ? 'Галерея' : ky ? 'Сүрөттөр' : 'Gallery',
     },
     map: {
       title: ru ? 'КАК НАС НАЙТИ' : ky ? 'БИЗДИ КАНТИП ТАБАСЫЗ' : 'FIND US',
@@ -1550,6 +1557,30 @@ function getTrans(lang: string) {
       message: ru ? 'Сообщение' : ky ? 'Билдирүү' : 'Message',
       send: ru ? 'Отправить' : ky ? 'Жөнөтүү' : 'Send',
       sent: ru ? 'Спасибо! Мы свяжемся с вами.' : ky ? 'Рахмат! Сиз менен байланышабыз.' : 'Thank you! We will contact you.',
+    },
+    alt: {
+      hero: ru ? 'Озеро Иссык-Куль с высоты птичьего полёта' : ky ? 'Ысык-Көл куш учушунан' : 'Aerial view of Lake Issyk-Kul',
+      scene7: ru ? 'Горы Тянь-Шаня и Иссык-Куль' : ky ? 'Тянь-Шань тоолору жана Ысык-Көл' : 'Tian Shan mountains and Issyk-Kul',
+      alykul1: ru ? 'Теплоход Алыкул на Иссык-Куле' : ky ? 'Ысык-Көлдөгү Алыкул теплоходу' : 'Alykul steamship on Lake Issyk-Kul',
+      scene4: ru ? 'Закат над Иссык-Кулем' : ky ? 'Ысык-Көл үстүндөгү батыш' : 'Sunset over Issyk-Kul',
+      q02: ru ? 'Закатный круиз на Иссык-Куле' : ky ? 'Ысык-Көлдөгү батыш круизи' : 'Sunset cruise on Issyk-Kul',
+      ep03: ru ? 'Яхта Nomad на Иссык-Куле' : ky ? 'Ысык-Көлдөгү Nomad яхтасы' : 'Yacht Nomad on Issyk-Kul',
+      scene6: ru ? 'Скоростной катер на Иссык-Куле' : ky ? 'Ысык-Көлдөгү ылдам катер' : 'Speedboat on Issyk-Kul',
+      kids: ru ? 'Детский праздник на борту' : ky ? 'Бортто балдар майрамы' : 'Kids party on board',
+      cruise: ru ? 'Утренний круиз по Иссык-Кулю' : ky ? 'Ысык-Көл боюнча эртеңки круиз' : 'Morning cruise on Issyk-Kul',
+      scene1: ru ? 'Круиз на закате по Иссык-Кулю' : ky ? 'Ысык-Көлдө батыш круизи' : 'Sunset cruise on Issyk-Kul',
+      scene2: ru ? 'Панорамный круиз на теплоходе Алыкул' : ky ? 'Алыкул теплоходунда панорамалык круиз' : 'Panoramic cruise on steamship Alykul',
+      scene3: ru ? 'VIP-чартер на яхте Nomad' : ky ? 'Nomad яхтасында VIP-чартер' : 'VIP charter on yacht Nomad',
+      scene5: ru ? 'Круиз по Иссык-Кулю' : ky ? 'Ысык-Көл круизи' : 'Issyk-Kul cruise',
+      scene8: ru ? 'Закатный круиз — популярный маршрут' : ky ? 'Батыш круизи — популярдуу маршрут' : 'Sunset cruise — popular route',
+      scene9: ru ? 'Утренний круиз — горы в тумане' : ky ? 'Эртеңки круиз — тумандагы тоолор' : 'Morning cruise — mountains in mist',
+      scene10: ru ? 'Скоростной тур — адреналин на воде' : ky ? 'Ылдам тур — сууда адреналин' : 'Speed tour — adrenaline on water',
+      scene11: ru ? 'Приватный чартер на Иссык-Куле' : ky ? 'Ысык-Көлдө жеке чартер' : 'Private charter on Issyk-Kul',
+      scene12: ru ? 'Счастливый гость круиза' : ky ? 'Бактылуу круиз коногу' : 'Happy cruise guest',
+      scene13: ru ? 'Отзыв гостя о круизе' : ky ? 'Коноктун круиз жөнүндө пикири' : 'Guest review of cruise',
+      captain: ru ? 'Капитан теплохода' : ky ? 'Теплоход капитаны' : 'Steamship captain',
+      instagram: ru ? 'Иссык-Куль круиз' : ky ? 'Ысык-Көл круизи' : 'Issyk-Kul cruise',
+      gallery: ru ? 'Водные прогулки по Иссык-Кулю' : ky ? 'Ысык-Көл боюнча суу сейилдери' : 'Water tours on Issyk-Kul',
     },
     foot: {
       desc: ru ? 'Первая платформа онлайн-бронирования водного транспорта на озере Иссык-Куль.' : ky ? 'Ысык-Көлдөгү суу транспортун онлайн брондоонун биринчи платформасы.' : 'First online water transport booking platform on Lake Issyk-Kul.',
