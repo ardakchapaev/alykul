@@ -198,7 +198,7 @@ function M3Hero({ t, lang }: { t: Tr; lang: string }) {
         <Image src="/images/hero.jpg" alt="Issyk-Kul aerial" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628]/50 via-[#0A1628]/20 to-[#0A1628]/70" />
       </div>
-      <div className="absolute top-20 right-4 md:right-8 z-10 hidden lg:block"><WeatherWidget variant="dark" /></div>
+      <div className="absolute top-20 right-4 md:right-8 z-10 hidden xl:block"><WeatherWidget variant="dark" /></div>
 
       {/* Central elegant title */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center">
@@ -652,10 +652,10 @@ function M3MapSection({ t }: { t: Tr }) {
                 </div>
               ) : (
                 <form className="space-y-4 mb-8" onSubmit={(e) => { e.preventDefault(); handleContact(); }}>
-                  <input type="text" placeholder={t.contact.name} value={contactForm.name}
+                  <input type="text" placeholder={t.contact.name} value={contactForm.name} autoComplete="name"
                     onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl outline-none focus:border-[#00A896] transition-colors font-m3-body" />
-                  <input type="tel" placeholder={t.contact.phone} value={contactForm.phone}
+                  <input type="tel" placeholder={t.contact.phone} value={contactForm.phone} autoComplete="tel"
                     onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl outline-none focus:border-[#00A896] transition-colors font-m3-body" />
                   <textarea placeholder={t.contact.message} rows={3} value={contactForm.message}
@@ -786,13 +786,13 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
               { href: 'https://t.me', label: 'TG', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.28-.02-.12.03-2.07 1.32-5.84 3.87-.55.38-1.05.56-1.5.55-.49-.01-1.44-.28-2.15-.51-.87-.28-1.56-.44-1.5-.92.03-.25.38-.51 1.05-.78 4.12-1.79 6.87-2.97 8.26-3.54 3.93-1.62 4.75-1.9 5.28-1.91.12 0 .37.03.54.17.14.12.18.28.2.45-.01.06.01.24 0 .37z' },
               { href: 'https://wa.me/996555123456', label: 'WA', icon: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z' },
             ].map(s => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
                 className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-[#00A896] hover:border-[#00A896]/30 transition-colors">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d={s.icon} /></svg>
               </a>
             ))}
             {/* Telegram Bot */}
-            <a href="https://t.me/alykul_bot" target="_blank" rel="noopener noreferrer"
+            <a href="https://t.me/alykul_bot" target="_blank" rel="noopener noreferrer" aria-label="Telegram Bot @alykul_bot"
               className="flex items-center gap-1.5 text-white/40 hover:text-[#00A896] text-xs font-m3-body transition-colors border border-white/10 hover:border-[#00A896]/30 rounded-full px-3 py-1.5">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.28-.02-.12.03-2.07 1.32-5.84 3.87-.55.38-1.05.56-1.5.55-.49-.01-1.44-.28-2.15-.51-.87-.28-1.56-.44-1.5-.92.03-.25.38-.51 1.05-.78 4.12-1.79 6.87-2.97 8.26-3.54 3.93-1.62 4.75-1.9 5.28-1.91.12 0 .37.03.54.17.14.12.18.28.2.45-.01.06.01.24 0 .37z" /></svg>
               @alykul_bot

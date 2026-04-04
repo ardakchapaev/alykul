@@ -106,10 +106,10 @@ export function M1ContactForm({ dict }: { dict: ContactDict }) {
         </div>
       ) : (
         <form className="space-y-4 mb-8" onSubmit={(e) => { e.preventDefault(); handleContact(); }}>
-          <input type="text" placeholder={dict.name} value={contactForm.name}
+          <input type="text" placeholder={dict.name} value={contactForm.name} autoComplete="name"
             onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
             className="w-full px-4 py-3 border border-gray-200 focus:border-ocean focus:ring-1 focus:ring-ocean rounded-xl outline-none transition-colors" />
-          <input type="tel" placeholder={dict.phone} value={contactForm.phone}
+          <input type="tel" placeholder={dict.phone} value={contactForm.phone} autoComplete="tel"
             onChange={(e) => setContactForm(prev => ({ ...prev, phone: e.target.value }))}
             className="w-full px-4 py-3 border border-gray-200 focus:border-ocean focus:ring-1 focus:ring-ocean rounded-xl outline-none transition-colors" />
           <textarea placeholder={dict.message} rows={3} value={contactForm.message}

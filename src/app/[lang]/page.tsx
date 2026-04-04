@@ -63,12 +63,12 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             {t.hero.brand}
           </div>
           <h1 className="font-heading font-bold italic text-white text-[42px] md:text-[76px] leading-[1.05] uppercase mb-4 drop-shadow-lg">
-            {t.hero.title_1}<br />{t.hero.title_2}
+            {t.hero.title_1}{' '}<br />{t.hero.title_2}
           </h1>
           <p className="text-foam text-lg mb-8 opacity-90">{t.hero.subtitle}</p>
           <HeroBooking dict={t} />
         </div>
-        <div className="absolute top-4 right-4 z-[3] hidden md:block">
+        <div className="absolute top-4 right-4 z-[3] hidden xl:block">
           <WeatherWidget variant="dark" />
         </div>
         <Navbar dict={t.nav} lang={params.lang} />
@@ -304,27 +304,27 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.contacts}</h4>
             <a href="tel:+996555123456" className="text-muted hover:text-white text-sm transition-colors">+996 555 123 456</a>
             <a href="mailto:info@alykul.kg" className="text-muted hover:text-white text-sm transition-colors">info@alykul.kg</a>
-            <a href="#map" className="text-muted hover:text-white text-sm transition-colors">Чолпон-Ата, Иссык-Куль</a>
+            <a href={`/${params.lang}/#map`} className="text-muted hover:text-white text-sm transition-colors">Чолпон-Ата, Иссык-Куль</a>
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.routes}</h4>
-            <a href="#schedule" className="text-muted hover:text-white text-sm transition-colors">{t.catalog.sunset_cruise}</a>
-            <a href="#schedule" className="text-muted hover:text-white text-sm transition-colors">{t.catalog.private_charter}</a>
-            <a href="#schedule" className="text-muted hover:text-white text-sm transition-colors">{t.catalog.speed_tour}</a>
-            <a href="#schedule" className="text-muted hover:text-white text-sm transition-colors">{t.catalog.kids_party}</a>
+            <a href={`/${params.lang}/#schedule`} className="text-muted hover:text-white text-sm transition-colors">{t.catalog.sunset_cruise}</a>
+            <a href={`/${params.lang}/#schedule`} className="text-muted hover:text-white text-sm transition-colors">{t.catalog.private_charter}</a>
+            <a href={`/${params.lang}/#schedule`} className="text-muted hover:text-white text-sm transition-colors">{t.catalog.speed_tour}</a>
+            <a href={`/${params.lang}/#schedule`} className="text-muted hover:text-white text-sm transition-colors">{t.catalog.kids_party}</a>
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.navigation}</h4>
-            <a href="#booking" className="text-muted hover:text-white text-sm transition-colors">{t.nav.booking}</a>
-            <a href="#fleet" className="text-muted hover:text-white text-sm transition-colors">{t.nav.fleet}</a>
-            <a href="#schedule" className="text-muted hover:text-white text-sm transition-colors">{t.nav.schedule}</a>
-            <a href="#map" className="text-muted hover:text-white text-sm transition-colors">{t.footer.map}</a>
+            <a href={`/${params.lang}/#booking`} className="text-muted hover:text-white text-sm transition-colors">{t.nav.booking}</a>
+            <a href={`/${params.lang}/#fleet`} className="text-muted hover:text-white text-sm transition-colors">{t.nav.fleet}</a>
+            <a href={`/${params.lang}/#schedule`} className="text-muted hover:text-white text-sm transition-colors">{t.nav.schedule}</a>
+            <a href={`/${params.lang}/#map`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.map}</a>
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.about}</h4>
             <a href={`/${params.lang}/about`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.aboutLink || t.nav.about}</a>
-            <a href="#fleet" className="text-muted hover:text-white text-sm transition-colors">{t.usp.safety}</a>
-            <a href="#reviews" className="text-muted hover:text-white text-sm transition-colors">{t.nav.reviews}</a>
+            <a href={`/${params.lang}/#fleet`} className="text-muted hover:text-white text-sm transition-colors">{t.usp.safety}</a>
+            <a href={`/${params.lang}/#reviews`} className="text-muted hover:text-white text-sm transition-colors">{t.nav.reviews}</a>
             <a href={`/${params.lang}/gifts`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.gifts || 'Подарки'}</a>
             <a href={`/${params.lang}/group-booking`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.groups || 'Группы'}</a>
             <a href={`/${params.lang}/privacy`} className="text-muted hover:text-white text-sm transition-colors">{t.footer.privacy}</a>
