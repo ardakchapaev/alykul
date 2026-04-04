@@ -69,7 +69,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
           <HeroBooking dict={t} />
         </div>
         <div className="absolute top-4 right-4 z-[3] hidden xl:block">
-          <WeatherWidget variant="dark" />
+          <WeatherWidget variant="dark" lang={params.lang} />
         </div>
         <Navbar dict={t.nav} lang={params.lang} />
         <WaveDivider nextColor="white" withYacht />

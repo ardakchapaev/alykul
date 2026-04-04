@@ -17,7 +17,7 @@ export default function CoastalLuxuryWrapper({ lang }: { lang: string }) {
   return (
     <div className="fixed inset-0 z-[9999] overflow-y-auto bg-white">
       <AzNav lang={lang} t={t} />
-      <AzHero t={t} />
+      <AzHero t={t} lang={lang} />
       <AzTagline t={t} />
       <AzFleetShowcase t={t} />
       <AzBooking t={t} lang={lang} />
@@ -205,7 +205,7 @@ function AzNav({ lang, t }: { lang: string; t: Tr }) {
 }
 
 /* ═══════════════ HERO — Fullscreen yacht image ═══════════════ */
-function AzHero({ t }: { t: Tr }) {
+function AzHero({ t, lang }: { t: Tr; lang: string }) {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <Image
@@ -219,7 +219,7 @@ function AzHero({ t }: { t: Tr }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
 
       <div className="absolute top-20 right-4 md:right-8 z-10 hidden xl:block">
-        <WeatherWidget variant="light" />
+        <WeatherWidget variant="light" lang={lang} />
       </div>
 
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-24 md:pb-32 px-6">

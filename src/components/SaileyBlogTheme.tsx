@@ -45,7 +45,7 @@ export default function SaileyBlogWrapper({ lang }: { lang: string }) {
   return (
     <div className="fixed inset-0 z-[9999] bg-white overflow-y-auto font-m3-body">
       <M2Nav lang={lang} t={t} />
-      <M2Hero t={t} />
+      <M2Hero t={t} lang={lang} />
       <TornEdgeTop from="#008B8B" to="#ffffff" />
       <M2BlogCards t={t} lang={lang} />
       <M2Catalog t={t} lang={lang} />
@@ -206,13 +206,13 @@ function M2Nav({ lang, t }: { lang: string; t: Tr }) {
 }
 
 /* ═══════════════ HERO ═══════════════ */
-function M2Hero({ t }: { t: Tr }) {
+function M2Hero({ t, lang }: { t: Tr; lang: string }) {
   return (
     <section className="relative bg-[#008B8B] pt-28 pb-16 md:pt-36 md:pb-24 text-center overflow-hidden">
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(/images/ocean-texture.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
       <div className="absolute inset-0 bg-gradient-to-b from-[#008B8B]/80 to-[#008B8B]" />
-      <div className="absolute top-20 right-4 z-10 hidden xl:block"><WeatherWidget variant="dark" /></div>
+      <div className="absolute top-20 right-4 z-10 hidden xl:block"><WeatherWidget variant="dark" lang={lang} /></div>
 
       <div className="relative z-10 px-6 max-w-3xl mx-auto">
         <ScrollReveal>

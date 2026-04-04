@@ -230,7 +230,16 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
   return (
     <section className="relative h-screen min-h-[700px] overflow-hidden">
       {/* YouTube video background with hero.jpg fallback */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ backgroundImage: 'url(/images/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Fallback poster while YouTube loads */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+        />
+        {/* YouTube iframe on top */}
         <iframe
           src="https://www.youtube.com/embed/ALq1avfUkmQ?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ALq1avfUkmQ&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[56.25vw] min-h-full min-w-[177.78vh]"
@@ -239,14 +248,14 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
         />
       </div>
 
-      {/* Double gradient overlay (top + bottom) */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0A1628]/60 via-transparent to-[#0A1628]/70" />
+      {/* Double gradient overlay (top + bottom) — reduced opacity so hero.jpg is visible */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0A1628]/40 via-transparent to-[#0A1628]/50" />
 
       <div className="absolute top-20 right-4 md:right-8 z-10 hidden xl:block">
-        <WeatherWidget variant="dark" />
+        <WeatherWidget variant="dark" lang={lang} />
       </div>
 
-      {/* Orange CTA text overlay */}
+      {/* Teal CTA text overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-4">
         <h1 className="font-m3-display text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase leading-[1.05] drop-shadow-2xl">
           {t.hero.line1}
@@ -254,7 +263,7 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
         <p className="text-lg md:text-2xl text-white/80 mt-4 font-m3-body tracking-widest uppercase">
           {t.hero.line2}
         </p>
-        <p className="mt-6 bg-[#FF6B35] text-white font-m3-display text-xl md:text-2xl font-bold px-8 py-3 rounded-sm shadow-2xl shadow-orange-600/30 tracking-wide">
+        <p className="mt-6 bg-gradient-to-r from-[#00897B] to-[#26A69A] text-white font-m3-display text-xl md:text-2xl font-bold px-8 py-3 rounded-sm shadow-2xl shadow-teal-600/30 tracking-wide">
           {t.hero.cta}
         </p>
 
@@ -1352,7 +1361,7 @@ function getTrans(lang: string) {
       services: ru ? 'Услуги' : ky ? 'Кызматтар' : 'Services',
       fleet: ru ? 'Флот' : ky ? 'Флот' : 'Fleet',
       pricing: ru ? 'Цены' : ky ? 'Баалар' : 'Pricing',
-      schedule: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
+      schedule: ru ? 'Расписание' : ky ? 'Каттам' : 'Schedule',
       reviews: ru ? 'Отзывы' : ky ? 'Пикирлер' : 'Reviews',
       contacts: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contacts',
       booking: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
@@ -1554,7 +1563,7 @@ function getTrans(lang: string) {
       privacy: ru ? 'Конфиденциальность' : ky ? 'Купуялуулук' : 'Privacy',
       contact: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contacts',
       rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
-      address: ru ? 'Чолпон-Ата, причал' : ky ? 'Чолпон-Ата, причал' : 'Cholpon-Ata, pier',
+      address: ru ? 'Чолпон-Ата, Иссык-Куль' : ky ? 'Чолпон-Ата, Ысык-Көл' : 'Cholpon-Ata, Issyk-Kul',
       about: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About',
       gifts: ru ? 'Подарки' : ky ? 'Белектер' : 'Gifts',
       groups: ru ? 'Группы' : ky ? 'Топтор' : 'Groups',

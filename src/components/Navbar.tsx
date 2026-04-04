@@ -5,6 +5,7 @@ import Link from 'next/link';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
 import { useAuth } from '@/lib/auth-context';
+import { useTheme } from '@/lib/theme-context';
 import CurrencySelector from './CurrencySelector';
 
 type NavDict = {
@@ -18,6 +19,7 @@ type NavDict = {
 };
 
 export default function Navbar({ dict, lang }: { dict: NavDict; lang: string }) {
+  const { theme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useAuth();
@@ -27,6 +29,9 @@ export default function Navbar({ dict, lang }: { dict: NavDict; lang: string }) 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Don't render M1 nav when overlay themes are active
+  if (theme !== 'M1') return null;
 
   const links = [
     { href: '#routes', label: dict.routes },

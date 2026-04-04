@@ -198,7 +198,7 @@ function M3Hero({ t, lang }: { t: Tr; lang: string }) {
         <Image src="/images/hero.jpg" alt="Issyk-Kul aerial" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628]/50 via-[#0A1628]/20 to-[#0A1628]/70" />
       </div>
-      <div className="absolute top-20 right-4 md:right-8 z-10 hidden xl:block"><WeatherWidget variant="dark" /></div>
+      <div className="absolute top-20 right-4 md:right-8 z-10 hidden xl:block"><WeatherWidget variant="dark" lang={lang} /></div>
 
       {/* Central elegant title */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center">

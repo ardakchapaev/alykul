@@ -166,7 +166,7 @@ export default function TripPage() {
           {/* Weather widget */}
           <div className="bg-white rounded-2xl p-6 border border-gray-100">
             <h3 className="font-bold text-lg mb-3">{lang === 'ru' ? 'Погода на Иссык-Куле' : 'Weather at Issyk-Kul'}</h3>
-            <WeatherWidget variant="light" />
+            <WeatherWidget variant="light" lang={lang} />
           </div>
 
           {/* Travel Info — for international tourists */}

@@ -33,9 +33,16 @@ function weatherIcon(code: number): string {
   return '🌤️';
 }
 
-function dayName(dateStr: string): string {
+const DAY_NAMES: Record<string, string[]> = {
+  ru: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+  en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  ky: ['Жк', 'Дш', 'Шш', 'Шр', 'Бш', 'Жм', 'Иш'],
+};
+
+function dayName(dateStr: string, lang: string): string {
   const d = new Date(dateStr);
-  return d.toLocaleDateString('ru-RU', { weekday: 'short' }).replace('.', '');
+  const names = DAY_NAMES[lang] || DAY_NAMES.ru;
+  return names[d.getDay()];
 }
 
 function waterTemp(airTemp: number, dateStr?: string): number | null {
@@ -47,9 +54,10 @@ function waterTemp(airTemp: number, dateStr?: string): number | null {
 
 interface Props {
   variant?: 'dark' | 'light';
+  lang?: string;
 }
 
-export default function WeatherWidget({ variant = 'light' }: Props) {
+export default function WeatherWidget({ variant = 'light', lang = 'ru' }: Props) {
   const [data, setData] = useState<WeatherData | null>(null);
   const [error, setError] = useState(false);
 
@@ -83,7 +91,7 @@ export default function WeatherWidget({ variant = 'light' }: Props) {
       : 'bg-white rounded-xl shadow-sm border p-4 text-gray-800';
 
   if (error) {
-    return <div className={card + ' text-center text-sm opacity-70'}>Погода недоступна</div>;
+    return <div className={card + ' text-center text-sm opacity-70'}>{lang === 'en' ? 'Weather unavailable' : lang === 'ky' ? 'Аба ырайы жеткиликсиз' : 'Погода недоступна'}</div>;
   }
 
   if (!data) {
@@ -113,11 +121,11 @@ export default function WeatherWidget({ variant = 'light' }: Props) {
             <span className="text-2xl font-bold">{Math.round(current.temperature_2m)}°C</span>
           </div>
           <p className="text-xs opacity-70 mt-0.5">
-            Ветер {Math.round(current.windspeed_10m)} км/ч
-            {wt !== null && <> &middot; Вода ~{wt}°C</>}
+            {lang === 'en' ? 'Wind' : lang === 'ky' ? 'Шамал' : 'Ветер'} {Math.round(current.windspeed_10m)} {lang === 'en' ? 'km/h' : lang === 'ky' ? 'км/с' : 'км/ч'}
+            {wt !== null && <> &middot; {lang === 'en' ? 'Water' : lang === 'ky' ? 'Суу' : 'Вода'} ~{wt}°C</>}
           </p>
         </div>
-        <span className="text-xs font-medium opacity-50">Иссык-Куль</span>
+        <span className="text-xs font-medium opacity-50">{lang === 'en' ? 'Issyk-Kul' : lang === 'ky' ? 'Ысык-Көл' : 'Иссык-Куль'}</span>
       </div>
 
       <div className="flex gap-2 overflow-x-auto">
@@ -128,7 +136,7 @@ export default function WeatherWidget({ variant = 'light' }: Props) {
               variant === 'dark' ? 'bg-white/5' : 'bg-gray-50'
             }`}
           >
-            <span className="capitalize opacity-60">{dayName(d)}</span>
+            <span className="capitalize opacity-60">{dayName(d, lang)}</span>
             <span className="text-base my-0.5">{weatherIcon(daily.weathercode[i])}</span>
             <span className="font-medium">{Math.round(daily.temperature_2m_max[i])}°</span>
             <span className="opacity-50">{Math.round(daily.temperature_2m_min[i])}°</span>
