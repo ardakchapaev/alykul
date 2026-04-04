@@ -812,3 +812,15 @@ section {
     page-break-after: avoid;
   }
 }
+
+/* ═══ Safe area for mobile bottom nav ═══ */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Add bottom padding to body on mobile to prevent content from hiding behind bottom nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 64px; /* h-16 = 4rem = 64px */
+  }
+}

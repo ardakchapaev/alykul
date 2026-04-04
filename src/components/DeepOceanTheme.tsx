@@ -31,7 +31,7 @@ export default function DeepOceanWrapper({ lang }: { lang: string }) {
       <M4Pricing t={t} lang={lang} />
       <M4ParallaxDivider image="/images/scene4.jpg" title={t.dividers.popular} subtitle={t.dividers.popularSub} />
       <M4PopularRoutes t={t} lang={lang} />
-      <M4Reviews t={t} />
+      <M4Reviews t={t} lang={lang} />
       <M4Schedule t={t} lang={lang} />
       <M4ParallaxDivider image="/images/hero.jpg" title={t.dividers.adventure} subtitle={t.dividers.adventureSub} />
       <M4Widgets t={t} />
@@ -48,6 +48,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [showPulse, setShowPulse] = useState(true);
   const { theme, setTheme } = useTheme();
   const { user } = useAuth();
 
@@ -60,6 +61,12 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
     };
     target.addEventListener('scroll', onScroll, { passive: true });
     return () => target.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // CTA pulse animation for first 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setShowPulse(false), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   const links = [
@@ -76,13 +83,13 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-500 font-m3-body ${
       scrolled
-        ? 'bg-[#0A1628]/95 backdrop-blur-xl shadow-lg shadow-black/20 py-2'
-        : 'bg-gradient-to-b from-black/40 to-transparent py-4'
+        ? 'bg-[#0A1628]/95 backdrop-blur-xl shadow-2xl shadow-black/20 py-2'
+        : 'bg-transparent py-4'
     }`}>
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo — shrinks on scroll */}
         <a href="#" className="flex items-center gap-2 group">
-          <svg viewBox="0 0 36 36" className="w-8 h-8" fill="none">
+          <svg viewBox="0 0 36 36" className={`transition-all duration-300 ${scrolled ? 'w-7 h-7' : 'w-8 h-8'}`} fill="none">
             <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#00897B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
             <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
           </svg>
@@ -97,7 +104,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
             <a key={l.href} href={l.href}
               className="text-[13px] font-medium tracking-[1px] uppercase transition-colors relative group text-white/80 hover:text-white">
               {l.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00897B] transition-all group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00897B] transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </div>
@@ -105,7 +112,7 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <a href={`/${lang}/trips`}
-            className="inline-block bg-[#00897B] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#00796B] transition-colors tracking-wide">
+            className={`inline-block bg-[#00897B] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#00796B] transition-colors tracking-wide ${showPulse ? 'animate-pulse' : ''}`}>
             {t.nav.booking}
           </a>
 
@@ -620,11 +627,13 @@ function M4PopularRoutes({ t, lang }: { t: Tr; lang: string }) {
 }
 
 /* ═══════════════ REVIEWS (OceanPlaza "FEEDBACK IS IMPORTANT") ═══════════════ */
-function M4Reviews({ t }: { t: Tr }) {
+function M4Reviews({ t, lang }: { t: Tr; lang: string }) {
   const reviews = [
-    { name: t.reviews.r1n, text: t.reviews.r1t, stars: 5, avatar: '/images/scene12.jpg' },
-    { name: t.reviews.r2n, text: t.reviews.r2t, stars: 5, avatar: '/images/scene13.jpg' },
-    { name: t.reviews.r3n, text: t.reviews.r3t, stars: 4, avatar: '/images/captain.jpg' },
+    { name: t.reviews.r1n, text: t.reviews.r1t, stars: 5, img: '/images/scene12.jpg', city: lang === 'ru' ? 'Бишкек' : lang === 'ky' ? 'Бишкек' : 'Bishkek' },
+    { name: t.reviews.r2n, text: t.reviews.r2t, stars: 5, img: '/images/scene13.jpg', city: lang === 'ru' ? 'Алматы' : lang === 'ky' ? 'Алматы' : 'Almaty' },
+    { name: t.reviews.r3n, text: t.reviews.r3t, stars: 4, img: '/images/captain.jpg', city: lang === 'ru' ? 'Москва' : lang === 'ky' ? 'Москва' : 'Moscow' },
+    { name: lang === 'ru' ? 'Елена В.' : lang === 'ky' ? 'Елена В.' : 'Elena V.', text: lang === 'ru' ? 'Утренний круиз — это магия! Горы в утреннем тумане, кофе на палубе, тишина... Лучший способ начать день на Иссык-Куле.' : lang === 'ky' ? 'Эртенки круиз — бул сыйкыр! Тоолор эртенки тумандагы, палубада кофе, тынчтык... Ысык-Колдо кундун эн жакшы башталышы.' : 'Morning cruise is magic! Mountains in morning fog, coffee on deck, silence... Best way to start a day on Issyk-Kul.', stars: 5, img: '/images/scene7.jpg', city: lang === 'ru' ? 'Каракол' : lang === 'ky' ? 'Каракол' : 'Karakol' },
+    { name: lang === 'ru' ? 'Нурбек Т.' : lang === 'ky' ? 'Нурбек Т.' : 'Nurbek T.', text: lang === 'ru' ? 'Брали чартер на корпоратив — 12 человек, все организовано идеально. Капитан — профессионал, еда отличная.' : lang === 'ky' ? 'Корпоративге чартер алдык — 12 адам, баары идеалдуу уюштурулган. Капитан — профессионал.' : 'Chartered for corporate event — 12 people, everything organized perfectly. Captain is a pro, food was great.', stars: 5, img: '/images/alykul1.jpg', city: lang === 'ru' ? 'Чолпон-Ата' : lang === 'ky' ? 'Чолпон-Ата' : 'Cholpon-Ata' },
   ];
 
   return (
@@ -641,22 +650,70 @@ function M4Reviews({ t }: { t: Tr }) {
           <p className="text-gray-500 mt-4 font-m3-body">{t.reviews.sub}</p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14">
-          {reviews.map((r, i) => (
-            <ScrollReveal key={i}>
-              <div className="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow text-left">
-                <div className="text-[#FFB300] text-lg mb-4">{'★'.repeat(r.stars)}{'☆'.repeat(5 - r.stars)}</div>
-                <p className="text-gray-600 font-m3-body text-sm leading-relaxed italic">
-                  &ldquo;{r.text}&rdquo;
-                </p>
-                <div className="flex items-center gap-3 mt-6 pt-4 border-t border-gray-100">
-                  <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                    <Image src={r.avatar} alt={r.name} fill className="object-cover" />
+        {/* Rating summary */}
+        <ScrollReveal>
+          <div className="flex flex-col md:flex-row items-center gap-8 mb-12 mt-10 p-8 bg-[#F4F8FB] rounded-2xl">
+            {/* Big number */}
+            <div className="text-center">
+              <div className="text-5xl font-bold text-[#0A1628] font-mono">4.9</div>
+              <div className="text-yellow-400 text-lg mt-1">★★★★★</div>
+              <div className="text-gray-400 text-sm mt-1">12,000+ {lang === 'ru' ? 'отзывов' : lang === 'ky' ? 'пикирлер' : 'reviews'}</div>
+            </div>
+            {/* Rating bars */}
+            <div className="flex-1 space-y-2 w-full max-w-sm">
+              {[
+                { stars: 5, pct: 89 },
+                { stars: 4, pct: 8 },
+                { stars: 3, pct: 2 },
+                { stars: 2, pct: 1 },
+                { stars: 1, pct: 0 },
+              ].map(bar => (
+                <div key={bar.stars} className="flex items-center gap-3">
+                  <span className="text-sm text-gray-400 w-6">{bar.stars}★</span>
+                  <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-full bg-yellow-400 rounded-full transition-all duration-700" style={{ width: `${bar.pct}%` }} />
                   </div>
-                  <span className="font-m3-display font-semibold text-[#0A1628] text-sm">{r.name}</span>
+                  <span className="text-xs text-gray-400 w-8">{bar.pct}%</span>
                 </div>
+              ))}
+            </div>
+            {/* Trust badges */}
+            <div className="flex flex-col gap-2 text-sm">
+              <div className="flex items-center gap-2 text-gray-500">
+                <span className="text-green-500">✓</span> {lang === 'ru' ? 'Проверенные гости' : lang === 'ky' ? 'Текшерилген коноктор' : 'Verified guests'}
               </div>
-            </ScrollReveal>
+              <div className="flex items-center gap-2 text-gray-500">
+                <span className="text-green-500">✓</span> {lang === 'ru' ? 'Реальные отзывы' : lang === 'ky' ? 'Чыныгы пикирлер' : 'Real reviews'}
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Auto-scroll review carousel */}
+        <div className="overflow-x-auto snap-x snap-mandatory flex gap-6 pb-4 -mx-4 px-4"
+          style={{ scrollbarWidth: 'none' }}>
+          {reviews.map((review, i) => (
+            <div key={i} className="snap-center shrink-0 w-[320px] md:w-[380px] bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow text-left">
+              {/* Stars */}
+              <div className="text-yellow-400 text-lg mb-3">{'★'.repeat(review.stars)}{'☆'.repeat(5 - review.stars)}</div>
+              {/* Quote */}
+              <p className="text-[#0A1628]/80 text-sm leading-relaxed mb-4 font-m3-body">
+                &ldquo;{review.text}&rdquo;
+              </p>
+              {/* Author */}
+              <div className="flex items-center gap-3">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
+                  <Image src={review.img} alt={review.name} fill className="object-cover" />
+                </div>
+                <div>
+                  <div className="font-semibold text-sm text-[#0A1628] font-m3-display">{review.name}</div>
+                  <div className="text-gray-400 text-xs">{review.city}</div>
+                </div>
+                <span className="ml-auto text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  {lang === 'ru' ? 'Проверен' : lang === 'ky' ? 'Текшерилген' : 'Verified'} ✓
+                </span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -664,22 +721,33 @@ function M4Reviews({ t }: { t: Tr }) {
   );
 }
 
-/* ═══════════════ SCHEDULE TABLE — Trip timetable (OceanPlaza style) ═══════════════ */
+/* ═══════════════ SCHEDULE — Card-rows with filter tabs ═══════════════ */
 function M4Schedule({ t, lang }: { t: Tr; lang: string }) {
   const en = lang === 'en';
+  const [filter, setFilter] = useState<'all' | 'daily' | 'request' | 'weekend'>('all');
+
   const rows = [
-    { route: t.schedule.r_sunset, vessel: t.schedule.v_alykul, depart: '18:00', dur: t.schedule.dur_2h, price: en ? '$16 (1,400 KGS)' : '1,400 KGS (~$16)', freq: t.schedule.daily },
-    { route: t.schedule.r_morning, vessel: t.schedule.v_alykul, depart: '10:00', dur: t.schedule.dur_1_5h, price: en ? '$14 (1,200 KGS)' : '1,200 KGS (~$14)', freq: t.schedule.daily },
-    { route: t.schedule.r_speed, vessel: t.schedule.v_boat, depart: '12:00', dur: t.schedule.dur_40m, price: en ? '$23 (2,000 KGS)' : '2,000 KGS (~$23)', freq: t.schedule.daily },
-    { route: t.schedule.r_charter, vessel: t.schedule.v_yacht, depart: t.schedule.on_request, dur: t.schedule.dur_2_6h, price: t.schedule.from_7000, freq: t.schedule.on_request },
-    { route: t.schedule.r_kids, vessel: t.schedule.v_alykul, depart: t.schedule.on_request, dur: t.schedule.dur_2_3h, price: t.schedule.from_1000, freq: t.schedule.weekend },
+    { route: t.schedule.r_sunset, vessel: t.schedule.v_alykul, depart: '18:00', dur: t.schedule.dur_2h, price: en ? '$16 (1,400 KGS)' : '1,400 KGS (~$16)', freq: 'daily' as const, freqLabel: t.schedule.daily },
+    { route: t.schedule.r_morning, vessel: t.schedule.v_alykul, depart: '10:00', dur: t.schedule.dur_1_5h, price: en ? '$14 (1,200 KGS)' : '1,200 KGS (~$14)', freq: 'daily' as const, freqLabel: t.schedule.daily },
+    { route: t.schedule.r_speed, vessel: t.schedule.v_boat, depart: '12:00', dur: t.schedule.dur_40m, price: en ? '$23 (2,000 KGS)' : '2,000 KGS (~$23)', freq: 'daily' as const, freqLabel: t.schedule.daily },
+    { route: t.schedule.r_charter, vessel: t.schedule.v_yacht, depart: t.schedule.on_request, dur: t.schedule.dur_2_6h, price: t.schedule.from_7000, freq: 'request' as const, freqLabel: t.schedule.on_request },
+    { route: t.schedule.r_kids, vessel: t.schedule.v_alykul, depart: t.schedule.on_request, dur: t.schedule.dur_2_3h, price: t.schedule.from_1000, freq: 'weekend' as const, freqLabel: t.schedule.weekend },
+  ];
+
+  const filtered = filter === 'all' ? rows : rows.filter(r => r.freq === filter);
+
+  const filterTabs = [
+    { key: 'all' as const, label: lang === 'ru' ? 'Все рейсы' : lang === 'ky' ? 'Бардык рейстер' : 'All trips' },
+    { key: 'daily' as const, label: t.schedule.daily },
+    { key: 'request' as const, label: t.schedule.on_request },
+    { key: 'weekend' as const, label: t.schedule.weekend },
   ];
 
   return (
     <section id="m4-schedule" className="relative bg-white py-20 md:py-28">
       <div className="max-w-[1200px] mx-auto px-4 md:px-8">
         <ScrollReveal>
-          <div className="text-center">
+          <div className="text-center mb-12">
             <p className="text-[#00897B] uppercase tracking-[4px] text-sm font-m3-body font-semibold mb-3">
               {t.schedule.badge}
             </p>
@@ -690,41 +758,62 @@ function M4Schedule({ t, lang }: { t: Tr; lang: string }) {
           </div>
         </ScrollReveal>
 
-        <ScrollReveal>
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[700px]">
-              <thead>
-                <tr className="bg-[#00897B] text-white">
-                  <th className="py-4 px-5 text-left text-xs font-m3-body font-semibold uppercase tracking-[1px]">{t.schedule.route}</th>
-                  <th className="py-4 px-5 text-left text-xs font-m3-body font-semibold uppercase tracking-[1px]">{t.schedule.vessel}</th>
-                  <th className="py-4 px-5 text-center text-xs font-m3-body font-semibold uppercase tracking-[1px]">{t.schedule.departure}</th>
-                  <th className="py-4 px-5 text-center text-xs font-m3-body font-semibold uppercase tracking-[1px]">{t.schedule.duration}</th>
-                  <th className="py-4 px-5 text-center text-xs font-m3-body font-semibold uppercase tracking-[1px]">{t.schedule.price}</th>
-                  <th className="py-4 px-5 text-center text-xs font-m3-body font-semibold uppercase tracking-[1px]">{t.schedule.frequency}</th>
-                  <th className="py-4 px-5 text-center text-xs font-m3-body font-semibold uppercase tracking-[1px]"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r, i) => (
-                  <tr key={i} className={`border-b border-gray-100 hover:bg-[#00897B]/5 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
-                    <td className="py-4 px-5 text-sm font-m3-body font-medium text-[#0A1628]">{r.route}</td>
-                    <td className="py-4 px-5 text-sm font-m3-body text-gray-600">{r.vessel}</td>
-                    <td className="py-4 px-5 text-sm font-m3-body text-center text-[#0A1628] font-semibold">{r.depart}</td>
-                    <td className="py-4 px-5 text-sm font-m3-body text-center text-gray-600">{r.dur}</td>
-                    <td className="py-4 px-5 text-sm font-m3-body text-center font-bold text-[#00897B]">{r.price}</td>
-                    <td className="py-4 px-5 text-sm font-m3-body text-center text-gray-500">{r.freq}</td>
-                    <td className="py-4 px-5 text-center">
-                      <a href={`/${lang}/trips`}
-                        className="inline-block bg-[#00897B] hover:bg-[#00796B] text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors font-m3-body">
-                        {t.schedule.book}
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </ScrollReveal>
+        {/* Filter tabs */}
+        <div className="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-1">
+          {filterTabs.map(tab => (
+            <button key={tab.key} onClick={() => setFilter(tab.key)}
+              className={`px-4 py-2 rounded-full text-sm font-medium font-m3-body transition-all whitespace-nowrap ${
+                filter === tab.key
+                  ? 'bg-[#00897B] text-white shadow-md'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Card rows */}
+        <div className="space-y-3">
+          {filtered.map((row, i) => (
+            <ScrollReveal key={`${row.freq}-${i}`} delay={i * 80}>
+              <div className="group bg-white border border-gray-100 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-4 hover:shadow-lg hover:border-[#00897B]/20 transition-all duration-300">
+                {/* Time — accent */}
+                <div className="md:w-20 shrink-0">
+                  <div className="text-[#00897B] font-mono font-bold text-xl">{row.depart}</div>
+                  <div className="text-gray-400 text-xs">{row.dur}</div>
+                </div>
+
+                {/* Route info */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-[#0A1628] text-base font-m3-body truncate">{row.route}</h3>
+                  <p className="text-gray-500 text-sm font-m3-body">{row.vessel}</p>
+                </div>
+
+                {/* Price pill */}
+                <div className="shrink-0">
+                  <span className="inline-block bg-[#F4F8FB] text-[#0A1628] font-mono font-bold px-4 py-2 rounded-xl text-sm">
+                    {row.price}
+                  </span>
+                </div>
+
+                {/* Frequency badge */}
+                <div className="shrink-0">
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold font-m3-body ${
+                    row.freq === 'daily' ? 'bg-green-100 text-green-700' :
+                    row.freq === 'request' ? 'bg-blue-100 text-blue-700' :
+                    'bg-orange-100 text-orange-700'
+                  }`}>{row.freqLabel}</span>
+                </div>
+
+                {/* Book button — appears on hover (desktop), always visible (mobile) */}
+                <a href={`/${lang}/trips`}
+                  className="shrink-0 px-5 py-2 bg-[#00897B] hover:bg-[#00796B] text-white rounded-xl text-sm font-semibold font-m3-body opacity-70 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 text-center">
+                  {t.schedule.book}
+                </a>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -941,103 +1030,184 @@ function M4Map({ t }: { t: Tr }) {
   );
 }
 
+/* ═══════════════ SEASON COUNTDOWN ═══════════════ */
+function SeasonCountdown({ lang }: { lang: string }) {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0 });
+  const [isBefore, setIsBefore] = useState(true);
+
+  useEffect(() => {
+    const seasonStart = new Date('2026-06-01T00:00:00+06:00');
+    const seasonEnd = new Date('2026-09-15T23:59:59+06:00');
+
+    const update = () => {
+      const now = new Date();
+      const before = now < seasonStart;
+      setIsBefore(before);
+      const target = before ? seasonStart : seasonEnd;
+      const diff = target.getTime() - now.getTime();
+
+      if (diff <= 0) { setTimeLeft({ days: 0, hours: 0, mins: 0 }); return; }
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        mins: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+      });
+    };
+
+    update();
+    const interval = setInterval(update, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const label = isBefore
+    ? (lang === 'ru' ? 'До открытия сезона' : lang === 'ky' ? 'Сезондун ачылышына чейин' : 'Until season opens')
+    : (timeLeft.days > 0
+      ? (lang === 'ru' ? 'До конца сезона' : lang === 'ky' ? 'Сезондун аягына чейин' : 'Until season ends')
+      : (lang === 'ru' ? 'Сезон завершён' : lang === 'ky' ? 'Сезон аяктады' : 'Season ended'));
+
+  return (
+    <div>
+      <p className="text-white/50 text-xs mb-2">{label}</p>
+      <div className="flex items-center justify-center gap-4">
+        {[
+          { val: timeLeft.days, label: lang === 'ru' ? 'дней' : lang === 'ky' ? 'кун' : 'days' },
+          { val: timeLeft.hours, label: lang === 'ru' ? 'часов' : lang === 'ky' ? 'саат' : 'hours' },
+          { val: timeLeft.mins, label: lang === 'ru' ? 'мин' : lang === 'ky' ? 'мун' : 'min' },
+        ].map(u => (
+          <div key={u.label} className="text-center">
+            <div className="text-white font-mono text-2xl font-bold">{String(u.val).padStart(2, '0')}</div>
+            <div className="text-white/40 text-xs">{u.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ═══════════════ FOOTER — Dark navy (OceanPlaza style) ═══════════════ */
 function M4Footer({ t, lang }: { t: Tr; lang: string }) {
   return (
-    <footer className="bg-[#0A1628] text-white py-14">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <svg viewBox="0 0 36 36" className="w-8 h-8" fill="none">
-                <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#00897B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-              </svg>
-              <span className="font-m3-display text-lg font-bold tracking-wide">АЛЫКУЛ</span>
+    <>
+      {/* Gradient top border */}
+      <div className="h-px bg-gradient-to-r from-transparent via-[#00897B] to-transparent" />
+
+      <footer className="bg-[#0A1628] text-white py-14">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+
+          {/* Season countdown */}
+          <div className="text-center mb-10 p-6 bg-white/5 rounded-2xl border border-white/10">
+            <h3 className="text-white/60 text-sm uppercase tracking-wider mb-3 font-m3-display">
+              {lang === 'ru' ? 'Сезон 2026' : lang === 'ky' ? '2026 Сезон' : 'Season 2026'}
+            </h3>
+            <SeasonCountdown lang={lang} />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-10">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <svg viewBox="0 0 36 36" className="w-8 h-8" fill="none">
+                  <path d="M12 26Q16 20 20 8Q24 20 28 26" stroke="#00897B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                  <path d="M10 28Q15 24 20 26Q25 28 30 24" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                </svg>
+                <span className="font-m3-display text-lg font-bold tracking-wide">АЛЫКУЛ</span>
+              </div>
+              <p className="text-white/40 text-sm font-m3-body leading-relaxed">{t.foot.desc}</p>
             </div>
-            <p className="text-white/40 text-sm font-m3-body leading-relaxed">{t.foot.desc}</p>
+
+            {/* Routes */}
+            <div>
+              <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.routes}</h4>
+              <ul className="space-y-2">
+                <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.all_routes}</a></li>
+                <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.cruises}</a></li>
+                <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.charters}</a></li>
+                <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.speed}</a></li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.company}</h4>
+              <ul className="space-y-2">
+                <li><a href={`/${lang}/account`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.account}</a></li>
+                <li><a href={`/${lang}/about`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.about || 'О компании'}</a></li>
+                <li><a href={`/${lang}/gifts`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.gifts || 'Подарки'}</a></li>
+                <li><a href={`/${lang}/group-booking`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.groups || 'Группы'}</a></li>
+                <li><a href={`/${lang}/privacy`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
+                <li><a href="#m4-contacts" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.contact}</a></li>
+                <li><a href={`/${lang}/faq`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">FAQ</a></li>
+                <li><a href={`/${lang}/blog`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Блог' : 'Blog'}</a></li>
+                <li><a href={`/${lang}/terms`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a></li>
+                <li><a href={`/${lang}/partners`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Партнёрам' : lang === 'ky' ? 'Өнөктөштөргө' : 'Partners'}</a></li>
+                <li><a href={`/${lang}/careers`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Карьера' : lang === 'ky' ? 'Карьера' : 'Careers'}</a></li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.contact}</h4>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-2 text-white/40 text-sm font-m3-body">
+                  <svg className="w-4 h-4 text-[#00897B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  +996 555 123 456
+                </li>
+                <li className="flex items-center gap-2 text-white/40 text-sm font-m3-body">
+                  <svg className="w-4 h-4 text-[#00897B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {t.foot.address}
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Routes */}
-          <div>
-            <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.routes}</h4>
-            <ul className="space-y-2">
-              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.all_routes}</a></li>
-              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.cruises}</a></li>
-              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.charters}</a></li>
-              <li><a href={`/${lang}/trips`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.speed}</a></li>
-            </ul>
+          {/* Newsletter */}
+          <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/10">
+            <h3 className="text-white font-semibold mb-2 font-m3-display">{lang === 'ru' ? 'Получайте расписание сезона' : lang === 'ky' ? 'Сезондун расписаниесин алыңыз' : 'Get season schedule'}</h3>
+            <p className="text-white/40 text-sm mb-3 font-m3-body">{lang === 'ru' ? 'Будьте первым кто узнает о новых рейсах и акциях' : lang === 'ky' ? 'Жаңы рейстер жана акциялар жөнүндө биринчи болуп билиңиз' : 'Be the first to know about new trips and offers'}</p>
+            <div className="flex gap-2">
+              <input type="email" placeholder="Email" className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-white/30 focus:border-[#00897B] outline-none font-m3-body" />
+              <button className="px-4 py-2 bg-[#00897B] text-white rounded-xl text-sm font-semibold hover:bg-[#00796B] transition-colors shrink-0">
+                →
+              </button>
+            </div>
           </div>
 
-          {/* Company */}
-          <div>
-            <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.company}</h4>
-            <ul className="space-y-2">
-              <li><a href={`/${lang}/account`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.account}</a></li>
-              <li><a href={`/${lang}/about`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.about || 'О компании'}</a></li>
-              <li><a href={`/${lang}/gifts`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.gifts || 'Подарки'}</a></li>
-              <li><a href={`/${lang}/group-booking`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.groups || 'Группы'}</a></li>
-              <li><a href={`/${lang}/privacy`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.privacy}</a></li>
-              <li><a href="#m4-contacts" className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{t.foot.contact}</a></li>
-              <li><a href={`/${lang}/faq`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">FAQ</a></li>
-              <li><a href={`/${lang}/blog`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Блог' : 'Blog'}</a></li>
-              <li><a href={`/${lang}/terms`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Условия' : lang === 'ky' ? 'Шарттар' : 'Terms'}</a></li>
-              <li><a href={`/${lang}/partners`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Партнёрам' : lang === 'ky' ? 'Өнөктөштөргө' : 'Partners'}</a></li>
-              <li><a href={`/${lang}/careers`} className="text-white/70 text-sm hover:text-[#00897B] transition-colors font-m3-body">{lang === 'ru' ? 'Карьера' : lang === 'ky' ? 'Карьера' : 'Careers'}</a></li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-m3-display text-sm font-bold uppercase tracking-[2px] mb-4">{t.foot.contact}</h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-white/40 text-sm font-m3-body">
-                <svg className="w-4 h-4 text-[#00897B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                +996 555 123 456
-              </li>
-              <li className="flex items-center gap-2 text-white/40 text-sm font-m3-body">
-                <svg className="w-4 h-4 text-[#00897B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                {t.foot.address}
-              </li>
-            </ul>
+          <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-center md:text-left text-white/30 text-sm font-m3-body">
+              © {new Date().getFullYear()} {lang === 'ru' ? 'Алыкул' : 'Alykul'} · {lang === 'ru' ? 'Создано в Кыргызстане' : lang === 'ky' ? 'Кыргызстанда жасалган' : 'Made in Kyrgyzstan'} ❤️
+            </div>
+            <div className="flex gap-3">
+              {/* WhatsApp */}
+              <a href="https://wa.me/996555123456" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/50 hover:bg-[#25D366] hover:text-white transition-all">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </a>
+              {/* Telegram */}
+              <a href="https://t.me/alykul_kg" target="_blank" rel="noopener noreferrer" aria-label="Telegram"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/50 hover:bg-[#0088CC] hover:text-white transition-all">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              </a>
+              {/* Instagram */}
+              <a href="#" aria-label="Instagram"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/50 hover:bg-[#E1306C] hover:text-white transition-all">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </a>
+              {/* Telegram Bot */}
+              <a href="https://t.me/alykul_bot" target="_blank" rel="noopener noreferrer" aria-label="Telegram Bot @alykul_bot"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/50 hover:bg-[#0088CC] hover:text-white transition-all">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              </a>
+            </div>
           </div>
         </div>
-
-        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/30 text-xs font-m3-body">
-            &copy; 2026 АЛЫКУЛ. {t.foot.rights}
-          </p>
-          <div className="flex gap-4">
-            {/* WhatsApp */}
-            <a href="https://wa.me/996555123456" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
-              className="text-white/30 hover:text-[#25D366] transition-colors">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </a>
-            {/* Telegram */}
-            <a href="https://t.me/alykul_kg" target="_blank" rel="noopener noreferrer" aria-label="Telegram"
-              className="text-white/30 hover:text-[#0088CC] transition-colors">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            </a>
-            {/* Instagram */}
-            <a href="#" aria-label="Instagram" className="text-white/30 hover:text-[#E1306C] transition-colors">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            </a>
-            {/* Telegram Bot */}
-            <a href="https://t.me/alykul_bot" target="_blank" rel="noopener noreferrer" aria-label="Telegram Bot @alykul_bot"
-              className="text-white/30 hover:text-[#0088CC] transition-colors flex items-center gap-1.5 text-xs">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-              @alykul_bot
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }
 

@@ -14,6 +14,7 @@ import ScrollProgress from '@/components/ScrollProgress';
 import { OrganizationJsonLd } from '@/components/JsonLd';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import BookingBanner from '@/components/BookingBanner';
+import MobileBottomNav from '@/components/MobileBottomNav';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
@@ -111,6 +112,7 @@ export default function LangLayout({
         <OrganizationJsonLd />
         <WhatsAppFloat />
         <BookingBanner />
+        <MobileBottomNav />
       </body>
     </html>
   );
