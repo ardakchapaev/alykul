@@ -58,8 +58,8 @@ function M6Nav({ lang, t, scrolled }: { lang: string; t: Tr; scrolled: boolean }
   return (
     <nav className={`fixed left-0 right-0 z-[10000] transition-all duration-300 ${
       scrolled
-        ? 'top-0 bg-[#182F48]/[0.98] backdrop-blur-xl'
-        : 'bottom-0 bg-[#182F48]/85 backdrop-blur-xl'
+        ? 'top-8 bg-[#182F48]/95 backdrop-blur-xl shadow-lg'
+        : 'bottom-0 bg-transparent'
     }`}>
       <div className="flex items-center justify-between px-6 md:px-14 py-4">
         {/* Logo */}
@@ -204,7 +204,7 @@ function M6Hero({ t, lang }: { t: Tr; lang: string }) {
       </div>
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-br from-[rgba(10,22,40,0.75)] via-[rgba(24,47,72,0.5)] to-[rgba(36,109,201,0.2)]" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-br from-[rgba(10,22,40,0.55)] via-[rgba(24,47,72,0.5)] to-[rgba(36,109,201,0.2)]" />
 
       {/* Hero content */}
       <div className="relative z-[2] px-6 md:px-14 max-w-[650px]">
@@ -360,8 +360,18 @@ function M6Routes({ t, lang }: { t: Tr; lang: string }) {
   );
 }
 
-/* ═══════════════ SCHEDULE — 5-row table ═══════════════ */
+/* ═══════════════ SCHEDULE — 5-row table with filter tabs ═══════════════ */
 function M6Schedule({ t }: { t: Tr }) {
+  const [scheduleFilter, setScheduleFilter] = useState('all');
+  const ru = t.brand === 'Алыкул';
+
+  const filteredRows = t.schedule.rows.filter(row => {
+    if (scheduleFilter === 'all') return true;
+    if (scheduleFilter === 'daily') return row.freqClass.includes('green');
+    if (scheduleFilter === 'request') return row.freqClass.includes('blue') || row.freqClass.includes('orange');
+    return true;
+  });
+
   return (
     <section className="bg-[#F4F8FB] px-6 md:px-14 py-16 md:py-20" id="m6-schedule">
       <ScrollReveal>
@@ -373,6 +383,23 @@ function M6Schedule({ t }: { t: Tr }) {
         </div>
         <p className="text-[#8EA0A2] text-base mb-8 font-body">{t.schedule.subtitle}</p>
       </ScrollReveal>
+
+      {/* Filter tabs */}
+      <div className="flex gap-2 mb-6 overflow-x-auto">
+        {(['all', 'daily', 'request'] as const).map(key => (
+          <button key={key} onClick={() => setScheduleFilter(key)}
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all font-body ${
+              scheduleFilter === key
+                ? 'bg-[#246DC9] text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}>
+            {key === 'all' ? (ru ? 'Все рейсы' : 'All') :
+             key === 'daily' ? (ru ? 'Ежедневно' : 'Daily') :
+             (ru ? 'По запросу' : 'On request')}
+          </button>
+        ))}
+      </div>
+
       <ScrollReveal>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
@@ -387,7 +414,7 @@ function M6Schedule({ t }: { t: Tr }) {
               </tr>
             </thead>
             <tbody>
-              {t.schedule.rows.map((row, i) => (
+              {filteredRows.map((row, i) => (
                 <tr key={i} className="border-b border-gray-200 hover:bg-[#246DC9]/5 transition-colors">
                   <td className="py-3 px-4 text-sm font-body">{row.route}</td>
                   <td className="py-3 px-4 text-sm font-body">{row.vessel}</td>
@@ -407,8 +434,11 @@ function M6Schedule({ t }: { t: Tr }) {
   );
 }
 
-/* ═══════════════ FLEET — 3 vessel cards ═══════════════ */
-function M6Fleet({ t }: { t: Tr }) {
+/* ═══════════════ FLEET — 3 vessel cards + modal ═══════════════ */
+function M6Fleet({ t }: { t: Tr; lang?: string }) {
+  const [selectedVessel, setSelectedVessel] = useState<number | null>(null);
+  const vessels = t.fleet.items;
+
   return (
     <section className="px-6 md:px-14 py-16 md:py-20 bg-[#fafaf8]" id="m6-fleet">
       <ScrollReveal>
@@ -421,9 +451,12 @@ function M6Fleet({ t }: { t: Tr }) {
         <p className="text-[#8EA0A2] text-base mb-8 font-body">{t.fleet.subtitle}</p>
       </ScrollReveal>
       <div className="grid md:grid-cols-3 gap-6">
-        {t.fleet.items.map((vessel, i) => (
+        {vessels.map((vessel, i) => (
           <ScrollReveal key={i}>
-            <div className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <div
+              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              onClick={() => setSelectedVessel(i)}
+            >
               <Image src={vessel.img} alt={vessel.name} width={400} height={220}
                 className="w-full h-[220px] object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="p-5">
@@ -439,6 +472,38 @@ function M6Fleet({ t }: { t: Tr }) {
           </ScrollReveal>
         ))}
       </div>
+
+      {/* Fleet vessel modal */}
+      {selectedVessel !== null && (
+        <div className="fixed inset-0 z-[10010] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setSelectedVessel(null)}>
+          <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}>
+            <div className="relative h-[300px]">
+              <img src={vessels[selectedVessel].img} alt="" className="w-full h-full object-cover rounded-t-3xl" />
+              <button onClick={() => setSelectedVessel(null)}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center text-xl hover:bg-black/70 transition-colors">
+                &#215;
+              </button>
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                <h2 className="text-white font-bold text-2xl font-body">{vessels[selectedVessel].name}</h2>
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="flex flex-wrap gap-2 mb-4">
+                {vessels[selectedVessel].specs.map(s => (
+                  <span key={s} className="bg-[#EAF4F6] text-[#246DC9] text-xs px-3 py-1 rounded-md font-medium font-body">{s}</span>
+                ))}
+              </div>
+              <p className="text-gray-600 mb-6 font-body">{vessels[selectedVessel].desc}</p>
+              <a href="#m6-routes" onClick={() => setSelectedVessel(null)}
+                className="block w-full py-3 bg-[#246DC9] text-white text-center rounded-xl font-semibold hover:bg-[#1a5ab0] transition-colors font-body">
+                {t.nav.booking}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
