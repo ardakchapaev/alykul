@@ -221,13 +221,26 @@ function M4Nav({ lang, t }: { lang: string; t: Tr }) {
   );
 }
 
-/* ═══════════════ HERO — Fullscreen ocean photo + orange CTA (OceanPlaza) ═══════════════ */
+/* ═══════════════ HERO — Cinematic YouTube video bg + booking widget (PREM-01 + PREM-07) ═══════════════ */
 function M4Hero({ t, lang }: { t: Tr; lang: string }) {
+  const [guests, setGuests] = useState(2);
+  const [bookingDate, setBookingDate] = useState('');
+  const isDatePast = bookingDate ? new Date(bookingDate) < new Date(new Date().toDateString()) : false;
+
   return (
     <section className="relative h-screen min-h-[700px] overflow-hidden">
-      {/* Fullscreen ocean photo — edge to edge, NO padding */}
-      <Image src="/images/hero.jpg" alt="Issyk-Kul" fill className="object-cover" priority />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+      {/* YouTube video background with hero.jpg fallback */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ backgroundImage: 'url(/images/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <iframe
+          src="https://www.youtube.com/embed/ALq1avfUkmQ?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ALq1avfUkmQ&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[56.25vw] min-h-full min-w-[177.78vh]"
+          allow="autoplay; encrypted-media"
+          style={{ border: 0 }}
+        />
+      </div>
+
+      {/* Double gradient overlay (top + bottom) */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0A1628]/60 via-transparent to-[#0A1628]/70" />
 
       <div className="absolute top-20 right-4 md:right-8 z-10 hidden xl:block">
         <WeatherWidget variant="dark" />
@@ -245,7 +258,7 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
           {t.hero.cta}
         </p>
 
-        {/* Booking Widget */}
+        {/* Smart Booking Widget (PREM-07) */}
         <div className="mt-8 bg-white/95 backdrop-blur-xl rounded-lg shadow-2xl p-4 md:p-6 max-w-4xl w-full mx-4">
           <div className="flex flex-col md:flex-row items-stretch md:items-end gap-3">
             <div className="flex-1">
@@ -259,23 +272,46 @@ function M4Hero({ t, lang }: { t: Tr; lang: string }) {
             </div>
             <div className="flex-1">
               <label className="text-gray-400 text-xs font-m3-body mb-1 block">{t.booking.date}</label>
-              <input type="date" className="w-full bg-gray-50 border border-gray-200 rounded px-3 py-2.5 text-sm text-[#0A1628] font-m3-body outline-none focus:border-[#00897B]" />
+              <input type="date" value={bookingDate} onChange={e => setBookingDate(e.target.value)}
+                className={`w-full bg-gray-50 border rounded px-3 py-2.5 text-sm text-[#0A1628] font-m3-body outline-none transition-colors ${
+                  isDatePast ? 'border-red-400 ring-1 ring-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#00897B]'
+                }`} />
+              {isDatePast && (
+                <p className="text-red-500 text-[10px] mt-0.5">{lang === 'ru' ? 'Дата в прошлом' : lang === 'ky' ? 'Мурунку куну' : 'Date is in the past'}</p>
+              )}
             </div>
+            {/* Guest counter with +/- buttons */}
             <div className="flex-1">
               <label className="text-gray-400 text-xs font-m3-body mb-1 block">{t.booking.guests}</label>
-              <select className="w-full bg-gray-50 border border-gray-200 rounded px-3 py-2.5 text-sm text-[#0A1628] font-m3-body outline-none focus:border-[#00897B] appearance-none cursor-pointer">
-                <option>{t.booking.guests_2}</option>
-                <option>{t.booking.guests_4}</option>
-                <option>{t.booking.guests_6}</option>
-                <option>{t.booking.guests_8}</option>
-              </select>
+              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded px-3 py-1.5">
+                <button type="button" onClick={() => setGuests(Math.max(1, guests - 1))}
+                  className="w-7 h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">&minus;</button>
+                <span className="text-[#0A1628] font-bold text-lg w-8 text-center font-m3-body">{guests}</span>
+                <button type="button" onClick={() => setGuests(Math.min(20, guests + 1))}
+                  className="w-7 h-7 rounded-full bg-gray-200 text-[#0A1628] flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors select-none">+</button>
+              </div>
             </div>
+            {/* CTA with live price preview */}
             <a href={`/${lang}/trips`}
-              className="bg-[#00897B] hover:bg-[#00796B] text-white font-semibold px-8 py-2.5 rounded transition-colors font-m3-body text-sm tracking-wide text-center whitespace-nowrap">
-              {t.booking.search}
+              className="bg-[#00897B] hover:bg-[#00796B] text-white font-semibold px-6 py-2.5 rounded transition-colors font-m3-body text-sm tracking-wide text-center whitespace-nowrap">
+              {t.booking.search} &rarr; {lang === 'en' ? `from $${14 * guests}` : `от ${1400 * guests} KGS`}
             </a>
           </div>
         </div>
+      </div>
+
+      {/* Social proof floating badge (PREM-01) */}
+      <div className="absolute bottom-20 right-8 z-10 hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-4 py-2">
+        <span className="text-yellow-400 text-sm">&#9733; 4.9</span>
+        <span className="text-white/70 text-xs">&middot; 12,000+ {lang === 'ru' ? 'гостей' : lang === 'ky' ? 'коноктор' : 'guests'}</span>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce opacity-50">
+        <span className="text-white/50 text-xs uppercase tracking-widest">{lang === 'ru' ? 'Листай' : lang === 'ky' ? 'Ылдый' : 'Scroll'}</span>
+        <svg className="w-5 h-5 text-white/50" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7" />
+        </svg>
       </div>
 
       {/* Angular bottom edge — V-shape pointing down */}
@@ -390,8 +426,10 @@ function M4ParallaxDivider({ image, title, subtitle }: { image: string; title?: 
   );
 }
 
-/* ═══════════════ FLEET / PORTFOLIO with TABS (OceanPlaza "WHAT WE DO") ═══════════════ */
+/* ═══════════════ FLEET / PORTFOLIO with TABS + FULLSCREEN MODAL (PREM-11) ═══════════════ */
 function M4Fleet({ t }: { t: Tr }) {
+  const lang = (t.nav.services === 'Услуги') ? 'ru' : (t.nav.services === 'Кызматтар') ? 'ky' : 'en';
+
   const tabs = [
     { id: 'all', label: t.fleet.tabAll },
     { id: 'steamship', label: t.fleet.tabSteam },
@@ -401,19 +439,20 @@ function M4Fleet({ t }: { t: Tr }) {
     { id: 'kids', label: t.fleet.tabKids },
   ];
 
-  const items = [
-    { id: 'steamship', img: '/images/q02.jpg',    title: t.fleet.f1, aspect: 'aspect-[4/3]' },
-    { id: 'yacht',     img: '/images/ep03.jpg',   title: t.fleet.f2, aspect: 'aspect-[3/4]' },
-    { id: 'speedboat', img: '/images/scene6.jpg',  title: t.fleet.f3, aspect: 'aspect-[4/3]' },
-    { id: 'cruise',    img: '/images/scene1.jpg',  title: t.fleet.f4, aspect: 'aspect-[3/4]' },
-    { id: 'kids',      img: '/images/kids.jpg',    title: t.fleet.f5, aspect: 'aspect-[4/3]' },
-    { id: 'cruise',    img: '/images/cruise.jpg',  title: t.fleet.f6, aspect: 'aspect-[4/3]' },
-    { id: 'steamship', img: '/images/scene2.jpg',  title: t.fleet.f7, aspect: 'aspect-[3/4]' },
-    { id: 'yacht',     img: '/images/scene3.jpg',  title: t.fleet.f8, aspect: 'aspect-[4/3]' },
+  const vessels = [
+    { id: 'steamship', img: '/images/q02.jpg',    name: t.fleet.f1, aspect: 'aspect-[4/3]', specs: [lang === 'ru' ? '80 мест' : '80 seats', lang === 'ru' ? '2 палубы' : '2 decks', lang === 'ru' ? '15 км/ч' : '15 km/h'], desc: lang === 'ru' ? 'Флагман нашего флота. Двухпалубный теплоход с панорамным остеклением, баром и зоной отдыха на верхней палубе. Идеален для закатных и утренних круизов.' : lang === 'ky' ? 'Флотубуздун флагманы. Эки палубалуу теплоход, панорамалык айнек, бар жана үстүнкү палубада эс алуу зонасы.' : 'Our fleet flagship. Double-deck steamship with panoramic windows, bar and lounge on the upper deck. Perfect for sunset and morning cruises.' },
+    { id: 'yacht',     img: '/images/ep03.jpg',   name: t.fleet.f2, aspect: 'aspect-[3/4]', specs: [lang === 'ru' ? '12 мест' : '12 seats', 'VIP', lang === 'ru' ? '20 км/ч' : '20 km/h'], desc: lang === 'ru' ? 'Элегантная яхта для приватных мероприятий. Полная комплектация: каюта, кухня, джакузи на палубе. Идеальна для дней рождения, корпоративов и романтических прогулок.' : lang === 'ky' ? 'Жеке иш-чараларга элеганттуу яхта. Толук жабдуу: каюта, ашкана, палубада джакузи.' : 'Elegant yacht for private events. Fully equipped: cabin, kitchen, jacuzzi on deck. Perfect for birthdays, corporate events and romantic walks.' },
+    { id: 'speedboat', img: '/images/scene6.jpg',  name: t.fleet.f3, aspect: 'aspect-[4/3]', specs: [lang === 'ru' ? '6 мест' : '6 seats', lang === 'ru' ? '60 км/ч' : '60 km/h', 'GoPro'], desc: lang === 'ru' ? 'Мощные катера для любителей скорости. Вейкборд, тюбинг, водные лыжи — всё включено. GoPro-съёмка в подарок каждому гостю.' : lang === 'ky' ? 'Ылдамдык сүйүүчүлөр үчүн күчтүү катерлер. Вейкборд, тюбинг, суу лыжасы — баары кирген.' : 'Powerful speedboats for thrill-seekers. Wakeboard, tubing, water skiing — all included. Free GoPro footage for every guest.' },
+    { id: 'cruise',    img: '/images/scene1.jpg',  name: t.fleet.f4, aspect: 'aspect-[3/4]', specs: [lang === 'ru' ? '2 часа' : '2 hours', lang === 'ru' ? 'Музыка' : 'Music', lang === 'ru' ? 'Закат' : 'Sunset'], desc: lang === 'ru' ? 'Самый популярный маршрут. Закатный круиз вдоль северного берега Иссык-Куля с живой музыкой, фотосессией и напитками на палубе.' : lang === 'ky' ? 'Эң популярдуу маршрут. Ысык-Колдун түндүк жээгинде батыш круизи, тирүү музыка жана палубада суусундуктар.' : 'Our most popular route. Sunset cruise along Issyk-Kul\'s north shore with live music, photoshoots and drinks on deck.' },
+    { id: 'kids',      img: '/images/kids.jpg',    name: t.fleet.f5, aspect: 'aspect-[4/3]', specs: [lang === 'ru' ? 'Аниматор' : 'Animator', lang === 'ru' ? 'Безопасно' : 'Safe', lang === 'ru' ? '2-3ч' : '2-3h'], desc: lang === 'ru' ? 'Детские праздники на воде! Профессиональный аниматор, безопасная зона, мини-квесты и подарки каждому ребёнку.' : lang === 'ky' ? 'Сууда балдар майрамдары! Профессионалдуу аниматор, коопсуз зона, мини-квесттер жана ар бир балага белектер.' : 'Kids parties on water! Professional animator, safe zone, mini-quests and gifts for every child.' },
+    { id: 'cruise',    img: '/images/cruise.jpg',  name: t.fleet.f6, aspect: 'aspect-[4/3]', specs: [lang === 'ru' ? '1.5 часа' : '1.5 hours', lang === 'ru' ? 'Кофе' : 'Coffee', lang === 'ru' ? 'Утро' : 'Morning'], desc: lang === 'ru' ? 'Утренний круиз — тишина и горы в тумане. Кофе, круассаны и панорамы заснеженных вершин с палубы теплохода.' : lang === 'ky' ? 'Эртеңки круиз — тынчтык жана тумандагы тоолор. Кофе, круассандар жана теплоход палубасынан кар баскан чокулардын панорамалары.' : 'Morning cruise — silence and mountains in mist. Coffee, croissants and panoramas of snow-capped peaks from deck.' },
+    { id: 'steamship', img: '/images/scene2.jpg',  name: t.fleet.f7, aspect: 'aspect-[3/4]', specs: [lang === 'ru' ? '80 мест' : '80 seats', lang === 'ru' ? 'Панорама' : 'Panorama', lang === 'ru' ? 'Бар' : 'Bar'], desc: lang === 'ru' ? 'Круиз по Иссык-Кулю на теплоходе «Алыкул» — полный обзор южного и северного берегов. Обед на борту, фотозоны, развлекательная программа.' : lang === 'ky' ? '«Алыкул» теплоходунда Ысык-Көл круизи — түштүк жана түндүк жээктердин толук көрүнүшү.' : 'Issyk-Kul cruise on steamship "Alykul" — full view of southern and northern shores. Lunch on board, photo zones, entertainment.' },
+    { id: 'yacht',     img: '/images/scene3.jpg',  name: t.fleet.f8, aspect: 'aspect-[4/3]', specs: ['VIP', lang === 'ru' ? '12 мест' : '12 seats', lang === 'ru' ? 'Шеф-повар' : 'Chef'], desc: lang === 'ru' ? 'VIP-чартер на яхте «Nomad» — эксклюзивное обслуживание, персональный шеф-повар, маршрут по вашему выбору. Максимум 12 гостей.' : lang === 'ky' ? '«Nomad» яхтасында VIP-чартер — эксклюзивдүү тейлөө, жеке шеф-повар, тандоо боюнча маршрут.' : 'VIP charter on yacht "Nomad" — exclusive service, personal chef, route of your choice. Maximum 12 guests.' },
   ];
 
   const [active, setActive] = useState('all');
-  const filtered = active === 'all' ? items : items.filter(i => i.id === active);
+  const [selectedVessel, setSelectedVessel] = useState<number | null>(null);
+  const filtered = active === 'all' ? vessels : vessels.filter(v => v.id === active);
 
   return (
     <section id="m4-fleet" className="relative bg-white py-20 md:py-28">
@@ -446,18 +485,22 @@ function M4Fleet({ t }: { t: Tr }) {
 
         {/* Masonry-style grid */}
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-          {filtered.map((item, i) => (
-            <ScrollReveal key={`${item.img}-${i}`}>
-              <div className="break-inside-avoid group relative overflow-hidden rounded-lg cursor-pointer">
-                <div className={item.aspect}>
-                  <Image src={item.img} alt={item.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+          {filtered.map((item, i) => {
+            const globalIndex = vessels.findIndex(v => v.img === item.img && v.name === item.name);
+            return (
+              <ScrollReveal key={`${item.img}-${i}`}>
+                <div className="break-inside-avoid group relative overflow-hidden rounded-lg cursor-pointer"
+                  onClick={() => setSelectedVessel(globalIndex)}>
+                  <div className={item.aspect}>
+                    <Image src={item.img} alt={item.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+                    <p className="text-white font-m3-display font-bold text-lg">{item.name}</p>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-                  <p className="text-white font-m3-display font-bold text-lg">{item.title}</p>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
+              </ScrollReveal>
+            );
+          })}
         </div>
 
         <ScrollReveal>
@@ -467,6 +510,60 @@ function M4Fleet({ t }: { t: Tr }) {
           </a>
         </ScrollReveal>
       </div>
+
+      {/* Fleet detail modal (PREM-11) */}
+      {selectedVessel !== null && (
+        <div className="fixed inset-0 z-[10010] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setSelectedVessel(null)}>
+          <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            {/* Hero image */}
+            <div className="relative h-[300px] md:h-[400px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={vessels[selectedVessel].img} alt={vessels[selectedVessel].name} className="w-full h-full object-cover rounded-t-3xl" />
+              <button onClick={() => setSelectedVessel(null)} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center text-xl hover:bg-black/70 transition-colors">&times;</button>
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                <h2 className="text-white font-bold text-2xl font-m3-display">{vessels[selectedVessel].name}</h2>
+              </div>
+            </div>
+
+            {/* Details */}
+            <div className="p-6 md:p-8">
+              {/* Specs grid */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {vessels[selectedVessel].specs.map((spec: string) => (
+                  <div key={spec} className="text-center p-3 bg-[#F4F8FB] rounded-xl">
+                    <div className="text-[#00897B] font-bold text-sm">{spec}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Description */}
+              <p className="text-gray-600 leading-relaxed mb-6 font-m3-body">{vessels[selectedVessel].desc}</p>
+
+              {/* Available routes */}
+              <h3 className="font-bold text-lg mb-3 font-m3-display">{lang === 'ru' ? 'Ближайшие рейсы' : lang === 'ky' ? 'Жакынкы рейстер' : 'Upcoming trips'}</h3>
+              <div className="space-y-2 mb-6">
+                {[
+                  { name: lang === 'ru' ? 'Закатный круиз' : lang === 'ky' ? 'Батыш круизи' : 'Sunset Cruise', time: '18:00', price: lang === 'en' ? 'from $16' : lang === 'ky' ? '1,400 KGS баштап' : 'от 1,400 KGS' },
+                  { name: lang === 'ru' ? 'Утренний круиз' : lang === 'ky' ? 'Эртеңки круиз' : 'Morning Cruise', time: '10:00', price: lang === 'en' ? 'from $14' : lang === 'ky' ? '1,200 KGS баштап' : 'от 1,200 KGS' },
+                ].map(trip => (
+                  <div key={trip.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div>
+                      <div className="font-semibold text-sm font-m3-body">{trip.name}</div>
+                      <div className="text-gray-400 text-xs">{trip.time}</div>
+                    </div>
+                    <div className="font-mono font-bold text-[#00897B] text-sm">{trip.price}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <a href={`/${lang}/trips`} className="block w-full py-3 bg-[#00897B] text-white text-center rounded-xl font-semibold hover:bg-[#00796B] transition-colors font-m3-body">
+                {lang === 'ru' ? 'Забронировать это судно' : lang === 'ky' ? 'Бул кемени брондоо' : 'Book this vessel'}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
