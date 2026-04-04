@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 const MARQUEE_CSS = `
 @keyframes alykul-marquee {
@@ -11,10 +12,18 @@ const MARQUEE_CSS = `
 
 export default function BookingBanner() {
   const [visible, setVisible] = useState(true);
+  const pathname = usePathname();
+  const lang = pathname?.split('/')[1] || 'ru';
 
   if (!visible) return null;
 
-  const text = 'Bронирование за 2 минуты  |  12,000+ довольных гостей  |  4.9 рейтинг  |  Сезон 2026: 1 июня - 15 сентября  |  Озеро Иссык-Куль';
+  const text = lang === 'en'
+    ? 'Book in 2 minutes  |  12,000+ happy guests  |  4.9 rating  |  Season 2026: June 1 - September 15  |  Lake Issyk-Kul'
+    : lang === 'ky'
+    ? 'Брондоо 2 мүнөттө  |  12,000+ ыраазы конок  |  4.9 рейтинг  |  Сезон 2026: 1 июнь - 15 сентябрь  |  Ысык-Көл'
+    : 'Бронирование за 2 минуты  |  12,000+ довольных гостей  |  4.9 рейтинг  |  Сезон 2026: 1 июня - 15 сентября  |  Озеро Иссык-Куль';
+
+  const btnText = lang === 'en' ? 'Book Now' : lang === 'ky' ? 'Брондоо' : 'Забронировать';
 
   return (
     <>
@@ -26,8 +35,8 @@ export default function BookingBanner() {
             <span className="mx-8 text-xs font-medium tracking-wide">{text}</span>
           </div>
         </div>
-        <a href="#booking" className="shrink-0 mx-2 px-3 py-1 text-[11px] font-semibold bg-white text-[#0a1628] rounded-full hover:bg-white/90 transition-colors">
-          Забронировать
+        <a href={`/${lang}/trips`} className="shrink-0 mx-2 px-3 py-1 text-[11px] font-semibold bg-white text-[#0a1628] rounded-full hover:bg-white/90 transition-colors">
+          {btnText}
         </a>
         <button onClick={() => setVisible(false)} className="shrink-0 mr-2 text-white/60 hover:text-white text-sm" aria-label="Close">
           x

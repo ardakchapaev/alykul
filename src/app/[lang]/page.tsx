@@ -45,6 +45,8 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       {/* V2: Deep Ocean (OceanPlaza) */}
       <DeepOceanWrapper lang={params.lang} />
 
+      {/* M1 base layer — hidden when overlay themes active (V1/V2 are self-contained) */}
+      {false && (<>
       {/* HERO (M1/M2) */}
       <section className="relative h-screen flex items-center overflow-hidden" id="hero">
         <HeroVideo />
@@ -295,7 +297,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.contacts}</h4>
             <a href="tel:+996555123456" className="text-muted hover:text-white text-sm transition-colors">+996 555 123 456</a>
             <a href="mailto:info@alykul.kg" className="text-muted hover:text-white text-sm transition-colors">info@alykul.kg</a>
-            <a href={`/${params.lang}/#map`} className="text-muted hover:text-white text-sm transition-colors">Чолпон-Ата, Иссык-Куль</a>
+            <a href={`/${params.lang}/#map`} className="text-muted hover:text-white text-sm transition-colors">{params.lang === 'en' ? 'Cholpon-Ata, Issyk-Kul' : params.lang === 'ky' ? 'Чолпон-Ата, Ысык-Көл' : 'Чолпон-Ата, Иссык-Куль'}</a>
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="text-white font-bold text-lg mb-2">{t.footer.routes}</h4>
@@ -331,6 +333,7 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
       </footer>
 
       <AiChatWidget />
+      </>)}
     </>
   );
 }

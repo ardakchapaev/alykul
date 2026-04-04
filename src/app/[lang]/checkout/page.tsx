@@ -74,23 +74,30 @@ function CheckoutInner() {
   if (loading) return <div className="min-h-screen flex items-center justify-center text-muted">{labels.loading}</div>;
   if (!trip) return <div className="min-h-screen flex items-center justify-center text-muted">Trip not found</div>;
 
-  const handleApplyPromo = () => {
-    // Client-side validation of known promo codes
-    // TODO: Replace with API call to /promo-codes/validate
-    const codes: Record<string, number> = {
-      'WELCOME10': 10,
-      'SUMMER20': 20,
-      'ALYKUL15': 15,
-      'VIP30': 30,
-      'FIRST50': 50,
-    };
-    const discount = codes[promo.toUpperCase()];
-    if (discount) {
-      setPromoDiscount(discount);
-      setPromoStatus('valid');
-    } else {
-      setPromoDiscount(0);
-      setPromoStatus('invalid');
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alykul.baimuras.pro/api/v1';
+
+  const handleApplyPromo = async () => {
+    if (!promo.trim()) return;
+    try {
+      const res = await fetch(`${API_URL}/promo-codes/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: promo, amount: total }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setPromoDiscount(data.discount_percent || 0);
+        setPromoStatus('valid');
+      } else {
+        setPromoDiscount(0);
+        setPromoStatus('invalid');
+      }
+    } catch {
+      // Fallback to client validation if API unavailable (safe codes only, max 20%)
+      const codes: Record<string, number> = { 'WELCOME10': 10, 'SUMMER20': 20, 'ALYKUL15': 15 };
+      const discount = codes[promo.toUpperCase()];
+      if (discount) { setPromoDiscount(discount); setPromoStatus('valid'); }
+      else { setPromoDiscount(0); setPromoStatus('invalid'); }
     }
   };
 

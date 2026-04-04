@@ -23,6 +23,7 @@ function ConfirmedInner() {
   const bookingId = searchParams.get('id');
   const qrToken = searchParams.get('qr');
 
+  // TODO: Replace with client-side QR generation (qrcode library) to avoid data leakage to third-party
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(`https://alykul.baimuras.pro/api/v1/bookings/${bookingId}/verify-qr?qr_token=${qrToken}`)}`;
 
   return (

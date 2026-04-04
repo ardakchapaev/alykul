@@ -416,8 +416,13 @@ function M3Catalog({ t, lang }: { t: Tr; lang: string }) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {allItems[activeTab].map((item: { img: string; title: string; price: string }, i: number) => (
             <ScrollReveal key={`${activeTab}-${i}`}>
-              <div className="group bg-white rounded-xl overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className={`group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 ${activeTab === 0 && i === 0 ? 'border border-[#00A896]/20' : 'border border-black/[0.06]'}`}>
                 <div className="relative h-[240px] overflow-hidden">
+                  {activeTab === 0 && i === 0 && (
+                    <span className="absolute top-3 right-3 bg-[#00A896] text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider z-10">
+                      {lang === 'en' ? 'Popular' : lang === 'ky' ? 'Популярдуу' : 'Популярное'}
+                    </span>
+                  )}
                   <Image src={item.img} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-5">
@@ -766,7 +771,7 @@ function M3Footer({ t, lang }: { t: Tr; lang: string }) {
             <h4 className="uppercase text-[10px] font-semibold text-white/40 tracking-[2px] font-m3-body mb-1">{t.foot.contact}</h4>
             <a href="tel:+996555123456" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">+996 555 123 456</a>
             <a href="mailto:info@alykul.kg" className="text-white/60 text-sm hover:text-[#00A896] transition-colors font-m3-body">info@alykul.kg</a>
-            <span className="text-white/60 text-sm font-m3-body">{t.hero.location}</span>
+            <span className="text-white/60 text-sm font-m3-body">{t.foot.address}</span>
           </div>
         </div>
 
@@ -895,7 +900,7 @@ function getTrans(lang: string) {
       about: ru ? 'О нас' : ky ? 'Биз жонундо' : 'About',
       fleet: ru ? 'Флот' : ky ? 'Флот' : 'Fleet',
       routes: ru ? 'Маршруты' : ky ? 'Маршруттар' : 'Routes',
-      schedule: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
+      schedule: ru ? 'Расписание' : ky ? 'Каттам' : 'Schedule',
       reviews: ru ? 'Отзывы' : ky ? 'Пикирлер' : 'Reviews',
       booking: ru ? 'Забронировать' : ky ? 'Брондоо' : 'Book Now',
       contacts: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contacts',
@@ -964,7 +969,7 @@ function getTrans(lang: string) {
       ],
     },
     schedule: {
-      badge: ru ? 'Расписание' : ky ? 'Расписание' : 'Schedule',
+      badge: ru ? 'Расписание' : ky ? 'Каттам' : 'Schedule',
       title: ru ? 'Расписание рейсов' : ky ? 'Рейстердин расписаниеси' : 'Trip Schedule',
       sub: ru ? 'Сезон: 1 июня — 15 сентября, ежедневно' : ky ? 'Сезон: 1 июнь — 15 сентябрь' : 'Season: June 1 — September 15, daily',
       col_route: ru ? 'Маршрут' : ky ? 'Маршрут' : 'Route',
@@ -1030,6 +1035,7 @@ function getTrans(lang: string) {
       contact: ru ? 'Контакты' : ky ? 'Байланыштар' : 'Contact',
       rights: ru ? 'Все права защищены.' : ky ? 'Бардык укуктар корголгон.' : 'All rights reserved.',
       followUs: ru ? 'Мы в соцсетях' : ky ? 'Соц тармактарда' : 'Follow us',
+      address: ru ? 'Чолпон-Ата, Иссык-Куль' : ky ? 'Чолпон-Ата, Ысык-Көл' : 'Cholpon-Ata, Issyk-Kul',
       about: ru ? 'О компании' : ky ? 'Биз жөнүндө' : 'About',
       gifts: ru ? 'Подарки' : ky ? 'Белектер' : 'Gifts',
       groups: ru ? 'Группы' : ky ? 'Топтор' : 'Groups',

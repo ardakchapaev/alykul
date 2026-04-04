@@ -703,6 +703,12 @@ nav.scrolled, nav[class*="fixed"] {
   box-shadow: 0 12px 32px rgba(36,109,201,0.4);
 }
 
+/* Weather widget fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* M1: Staggered fade-in for grid children */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }

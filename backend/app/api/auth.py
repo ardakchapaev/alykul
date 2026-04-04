@@ -1,4 +1,8 @@
-import random
+import hashlib
+import hmac
+import os
+import secrets
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -10,6 +14,12 @@ from app.schemas.auth import OTPRequest, OTPVerify, TokenResponse, UserResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+# Environment detection
+_IS_DEV = os.environ.get('ENVIRONMENT', 'development') != 'production'
+
+# Telegram bot token for hash verification
+BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+
 # In-memory OTP store (use Redis in production)
 _otp_store: dict[str, str] = {}
 
@@ -17,8 +27,8 @@ _otp_store: dict[str, str] = {}
 @router.post("/otp/request", summary="Request OTP code")
 async def request_otp(data: OTPRequest, db: AsyncSession = Depends(get_db)):
     """Send OTP code to phone number. Creates user if not exists."""
-    code = f"{random.randint(1000, 9999)}"
-    _otp_store[data.phone] = code
+    otp = str(secrets.randbelow(9000) + 1000)  # Cryptographically secure 4-digit OTP
+    _otp_store[data.phone] = otp
 
     # Create user if not exists
     result = await db.execute(select(User).where(User.phone == data.phone))
@@ -29,8 +39,8 @@ async def request_otp(data: OTPRequest, db: AsyncSession = Depends(get_db)):
         await db.commit()
 
     # TODO: Send SMS via Beeline/MegaCom API
-    # For now, return code in development
-    return {"message": "OTP sent", "dev_code": code}
+    # Return dev_code only in non-production environments
+    return {"message": "OTP sent", **({"dev_code": otp} if _IS_DEV else {})}
 
 
 @router.post("/otp/verify", response_model=TokenResponse, summary="Verify OTP and get token")
@@ -53,12 +63,29 @@ async def verify_otp(data: OTPVerify, db: AsyncSession = Depends(get_db)):
     return TokenResponse(access_token=token)
 
 
+def verify_telegram_auth(data: dict, bot_token: str) -> bool:
+    """Verify Telegram Login Widget data using HMAC-SHA256."""
+    check_hash = data.pop('hash', '')
+    if not check_hash or not bot_token:
+        return False
+    data_check_arr = sorted([f"{k}={v}" for k, v in data.items()])
+    data_check_string = "\n".join(data_check_arr)
+    secret_key = hashlib.sha256(bot_token.encode()).digest()
+    hmac_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
+    return hmac.compare_digest(hmac_hash, check_hash)
+
+
 @router.post("/telegram", summary="Login via Telegram Widget")
 async def telegram_login(data: dict, db: AsyncSession = Depends(get_db)):
     """Login via Telegram Widget"""
+    # Verify Telegram auth hash (skip in dev if no bot token configured)
+    if BOT_TOKEN and not verify_telegram_auth(data.copy(), BOT_TOKEN):
+        raise HTTPException(status_code=401, detail="Invalid Telegram auth")
+    elif not BOT_TOKEN and not _IS_DEV:
+        raise HTTPException(status_code=500, detail="Telegram bot token not configured")
+
     telegram_id = data.get('id')
     first_name = data.get('first_name', '')
-    # TODO: Verify hash with bot token for security
 
     # Find or create user
     stmt = select(User).where(User.phone == f"tg_{telegram_id}")

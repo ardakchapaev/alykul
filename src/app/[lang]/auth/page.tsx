@@ -110,7 +110,7 @@ function AuthInner() {
             <>
               <p className="text-sm text-muted mb-4">{labels.sent} <strong>{phone}</strong></p>
 
-              {devCode && (
+              {devCode && process.env.NODE_ENV === 'development' && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-sm">
                   {labels.dev}: <strong className="text-lg">{devCode}</strong>
                 </div>

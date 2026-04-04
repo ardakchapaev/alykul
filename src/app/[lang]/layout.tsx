@@ -4,6 +4,7 @@ import '../globals.css';
 import { getDictionary, type Locale, locales } from '@/lib/i18n';
 import { AuthProvider } from '@/lib/auth-context';
 import { ThemeProvider } from '@/lib/theme-context';
+import { CurrencyProvider } from '@/components/CurrencySelector';
 import PwaInstall from '@/components/PwaInstall';
 import Analytics from '@/components/Analytics';
 import PageTracker from '@/components/PageTracker';
@@ -101,7 +102,7 @@ export default function LangLayout({
   return (
     <html lang={params.lang}>
       <body className={`${cormorant.variable} ${outfit.variable} ${playfair.variable} ${inter.variable} font-body text-navy bg-sand antialiased`}>
-        <ThemeProvider><AuthProvider>{children}</AuthProvider></ThemeProvider>
+        <ThemeProvider><AuthProvider><CurrencyProvider>{children}</CurrencyProvider></AuthProvider></ThemeProvider>
         <PwaInstall />
         <Analytics />
         <PageTracker />

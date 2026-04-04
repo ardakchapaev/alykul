@@ -113,7 +113,7 @@ export default function WeatherWidget({ variant = 'light', lang = 'ru' }: Props)
   const wt = waterTemp(current.temperature_2m, todayStr);
 
   return (
-    <div className={card}>
+    <div className={card + ' animate-[fadeIn_700ms_ease-out]'} style={{ animation: 'fadeIn 700ms ease-out' }}>
       <div className="flex items-center justify-between mb-3">
         <div>
           <div className="flex items-center gap-2">
