@@ -12,7 +12,7 @@ interface Message {
 }
 
 // --- Decision Tree ---
-const INITIAL_QUICK_REPLIES = ['Хочу забронировать \u{1F6A2}', 'Цены в USD \u{1F4B0}', 'Группа 10+ чел \u{1F465}', 'Подарочный сертификат \u{1F381}'];
+const INITIAL_QUICK_REPLIES = ['Закатный круиз \u{1F305}', 'Цены в USD \u{1F4B0}', 'Группа/Мероприятие \u{1F389}', 'Помощь с бронью \u{1F4CB}'];
 
 const PRICES_TEXT =
   'Наши цены на сезон 2026:\n\n' +
@@ -78,48 +78,138 @@ function matchKeyword(input: string): { text: string; quickReplies: string[] } |
   return null;
 }
 
-// TODO: Replace with real AI API (Claude/GPT) call
+// Decision tree fallback — used when AI API is unavailable
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getAiResponse(userText: string, _history: Message[]): { text: string; quickReplies: string[] } {
   const lower = userText.toLowerCase().trim();
 
-  // Decision tree: booking flow (supports emoji variants from quick replies)
-  if (/хочу забронировать|забронировать/.test(lower)) {
-    return { text: 'Отлично! Какой тип отдыха вас интересует?', quickReplies: BOOKING_OPTIONS };
+  // Greeting
+  if (/привет|здравствуй|hello|hi|салам/.test(lower)) {
+    return {
+      text: 'Здравствуйте! \ud83d\udc4b Я Айдана, менеджер Алыкул. Планируете водную прогулку на Иссык-Куле? Расскажите когда приедете и сколько вас будет \u2014 подберу идеальный вариант! \u{1F6A2}',
+      quickReplies: INITIAL_QUICK_REPLIES,
+    };
   }
+
+  // Booking flow
+  if (/бронь|забронировать|book|брондоо|помощь с бронью/.test(lower)) {
+    return {
+      text: 'Отлично! Расскажите: какой маршрут, на какую дату и сколько гостей? Или перейдите на alykul.baimuras.pro/ru/trips для самостоятельного бронирования \u{1F6A2}',
+      quickReplies: BOOKING_OPTIONS,
+    };
+  }
+
+  // Ticket / QR
+  if (/билет|ticket|qr/.test(lower)) {
+    return {
+      text: 'Ваши билеты доступны в личном кабинете: alykul.baimuras.pro/ru/account. Покажите QR-код при посадке на судно \ud83d\udcf1',
+      quickReplies: ['Забронировать', 'Связаться с менеджером'],
+    };
+  }
+
+  // Cancellation / Refund
+  if (/отмена|отменить|cancel|возврат|refund/.test(lower)) {
+    return {
+      text: 'Для отмены или переноса: alykul.baimuras.pro/ru/account/refund. За 24+ часов \u2014 полный возврат, за 12-24ч \u2014 50%. Отмена из-за погоды \u2014 100% + бонус 200 сом \u21a9\ufe0f',
+      quickReplies: ['Забронировать', 'Связаться с менеджером'],
+    };
+  }
+
+  // Weather
+  if (/погода|weather|температура/.test(lower)) {
+    return {
+      text: 'Июль-август на Иссык-Куле: вода 20-23\u00b0C, воздух 25-30\u00b0C. На борту есть крытая палуба и буфет. Идеально для прогулки! \u2600\ufe0f',
+      quickReplies: ['Закатный круиз', 'Забронировать', 'Другой вопрос'],
+    };
+  }
+
+  // Transfer
+  if (/трансфер|как добраться|доехать|transfer/.test(lower)) {
+    return {
+      text: 'Из Бишкека до Чолпон-Аты ~4 часа на авто. Мы можем организовать трансфер \u2014 напишите нам: +996 555 123 456 \ud83d\ude97',
+      quickReplies: ['Забронировать', 'Связаться с менеджером'],
+    };
+  }
+
+  // Promo codes
+  if (/промокод|скидка|discount|акция/.test(lower)) {
+    return {
+      text: 'Актуальные промокоды: WELCOME10 (10% новичкам), SUMMER20 (20% в будни), FAMILY (4 по цене 3). Применить при бронировании на сайте! \ud83c\udf81',
+      quickReplies: ['Забронировать', 'Узнать цены', 'Другой вопрос'],
+    };
+  }
+
+  // Payment
+  if (/оплата|оплатить|pay|payment/.test(lower)) {
+    return {
+      text: 'Принимаем: Mbank, Optima Pay, O!\u0414\u0435\u043d\u044c\u0433\u0438, наличные на причале. Для иностранцев \u2014 банковские карты через сайт \ud83d\udcb3',
+      quickReplies: ['Забронировать', 'Связаться с менеджером'],
+    };
+  }
+
+  // Manager / Human
+  if (/менеджер|человек|оператор|manager/.test(lower)) {
+    return {
+      text: 'Связаться с менеджером:\n\ud83d\udcf1 +996 555 123 456 (WhatsApp/звонок)\n\ud83d\udce7 info@alykul.kg\n\ud83d\udcac @alykul_bot (Telegram)',
+      quickReplies: ['Забронировать', 'Другой вопрос'],
+    };
+  }
+
+  // Booking details for specific trips
   if (BOOKING_DETAILS[userText]) {
     return { text: BOOKING_DETAILS[userText], quickReplies: ['Забронировать', 'Назад к рейсам', 'Связаться с менеджером'] };
   }
+
+  // Sunset cruise quick reply
+  if (/закатный круиз/.test(lower)) {
+    return { text: BOOKING_DETAILS['Закатный круиз'], quickReplies: ['Забронировать', 'Назад к рейсам', 'Связаться с менеджером'] };
+  }
+
+  // Prices in USD
   if (/цен.*usd|usd|узнать цены/.test(lower)) {
     return {
-      text: PRICES_TEXT + '\n\nВ USD (курс ~87 KGS):\n\u2022 Закатный круиз — от $16\n\u2022 Утренний круиз — от $14\n\u2022 Скоростной тур — от $23\n\u2022 Приватный чартер — от $80\n\u2022 Детский праздник — от $12/чел',
+      text: PRICES_TEXT + '\n\nВ USD (курс ~87 KGS):\n\u2022 Закатный круиз \u2014 от $16\n\u2022 Утренний круиз \u2014 от $14\n\u2022 Скоростной тур \u2014 от $23\n\u2022 Приватный чартер \u2014 от $80\n\u2022 Детский праздник \u2014 от $12/чел',
       quickReplies: ['Забронировать', 'Подробнее о рейсах', 'Связаться с менеджером'],
     };
   }
-  if (/групп.*10|группа/.test(lower)) {
+
+  // Group booking
+  if (/групп|мероприят/.test(lower)) {
     return {
       text: 'Групповое бронирование (10+ человек):\n\n\u2022 Скидка 15% от стандартной цены\n\u2022 Персональный менеджер\n\u2022 Индивидуальный маршрут\n\u2022 Кейтеринг на борту\n\nОформите заявку: alykul.baimuras.pro/ru/group-booking\nИли напишите в WhatsApp: +996 555 123 456',
       quickReplies: ['Забронировать', 'Узнать цены', 'Связаться с менеджером'],
     };
   }
+
+  // Gift certificates
   if (/подароч|сертификат|gift/.test(lower)) {
     return {
-      text: 'Подарочные сертификаты Алыкул:\n\n\u2022 Закатный круиз — 1,400 KGS ($16)\n\u2022 VIP-чартер на яхте — 7,000 KGS ($80)\n\u2022 Произвольная сумма\n\nКрасивое оформление + доставка.\nОформить: alykul.baimuras.pro/ru/gifts',
+      text: 'Подарочные сертификаты Алыкул:\n\n\u2022 Закатный круиз \u2014 1,400 KGS ($16)\n\u2022 VIP-чартер на яхте \u2014 7,000 KGS ($80)\n\u2022 Произвольная сумма\n\nКрасивое оформление + доставка.\nОформить: alykul.baimuras.pro/ru/gifts',
       quickReplies: ['Забронировать', 'Другой вопрос'],
     };
   }
+
+  // Schedule
   if (lower === 'расписание') {
     return { text: SCHEDULE_TEXT, quickReplies: ['Забронировать', 'Другой вопрос'] };
   }
+
+  // About
   if (lower === 'о компании') {
     return { text: ABOUT_TEXT, quickReplies: ['Забронировать', 'Контакты'] };
   }
+
+  // Contact shortcuts
   if (['связаться с менеджером', 'контакты'].includes(lower)) {
     return { text: CONTACT_TEXT, quickReplies: ['Забронировать', 'Другой вопрос'] };
   }
+
+  // Browse trips
   if (['подробнее о рейсах', 'назад к рейсам'].includes(lower)) {
     return { text: 'Выберите рейс для подробной информации:', quickReplies: BOOKING_OPTIONS };
   }
+
+  // Other question
   if (lower === 'другой вопрос') {
     return { text: 'Конечно! Чем могу помочь?', quickReplies: INITIAL_QUICK_REPLIES };
   }
@@ -130,7 +220,7 @@ function getAiResponse(userText: string, _history: Message[]): { text: string; q
 
   // No match
   return {
-    text: 'Не совсем понял ваш вопрос. Вот чем я могу помочь:',
+    text: 'Я Айдана, менеджер Алыкул. Не совсем поняла ваш вопрос \u2014 вот чем могу помочь:',
     quickReplies: INITIAL_QUICK_REPLIES,
   };
 }
@@ -182,7 +272,7 @@ export default function AiChatWidget() {
       const greeting: Message = {
         id: uid(),
         role: 'ai',
-        text: 'Здравствуйте! \ud83d\udc4b Я менеджер Алыкул.\n\nПланируете водную прогулку на Иссык-Куле? Расскажите:\n\u2022 Когда хотите приехать?\n\u2022 Сколько вас будет?\n\nПодберу идеальный вариант! \u{1F6A2}',
+        text: 'Здравствуйте! \ud83d\udc4b Я Айдана, менеджер Алыкул.\n\nПланируете водную прогулку на Иссык-Куле? Расскажите когда приедете и сколько вас будет \u2014 подберу идеальный вариант! \u{1F6A2}',
         quickReplies: INITIAL_QUICK_REPLIES,
         timestamp: Date.now(),
       };
@@ -300,7 +390,7 @@ export default function AiChatWidget() {
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">AI</div>
               <div>
-                <div className="text-white font-semibold text-sm leading-tight">AI-ассистент Алыкул</div>
+                <div className="text-white font-semibold text-sm leading-tight">Айдана | Алыкул</div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-white/60 text-[11px]">Онлайн</span>

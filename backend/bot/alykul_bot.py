@@ -75,8 +75,10 @@ CONTACTS_TEXT = (
 )
 
 WELCOME_TEXT = (
-    "🚢 <b>Добро пожаловать в Алыкул!</b>\n\n"
-    "Первая платформа водного туризма на озере Иссык-Куль.\n\nЧто вы хотите сделать?"
+    "Здравствуйте! 👋 Я Айдана, менеджер Алыкул.\n\n"
+    "🚢 Мы организуем водные прогулки на озере Иссык-Куль — "
+    "закатные круизы, приватные чартеры, скоростные туры.\n\n"
+    "Чем могу помочь?"
 )
 
 # --- Keyboard builders ---
@@ -147,7 +149,9 @@ async def cmd_help(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
         "📋 <b>Доступные команды:</b>\n\n"
         "/start — Главное меню\n/search — Найти рейс\n/prices — Цены\n"
         "/schedule — Расписание\n/fleet — Наш флот\n/faq — Частые вопросы\n"
-        "/contacts — Контакты\n/help — Эта справка"
+        "/contacts — Контакты\n/ticket — Мои билеты\n/promo — Промокоды и скидки\n"
+        "/help — Эта справка\n\n"
+        "Или просто напишите вопрос — я Айдана, помогу! 😊"
     )
     await update.message.reply_text(text, parse_mode="HTML")
 
@@ -168,6 +172,30 @@ async def cmd_contacts(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def cmd_search(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
     await _send_section("search", update)
+
+async def cmd_ticket(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+    """Show user's active tickets"""
+    await update.message.reply_text(
+        "📱 Ваши билеты доступны в личном кабинете:\n"
+        "👉 alykul.baimuras.pro/ru/account\n\n"
+        "Покажите QR-код при посадке на судно!",
+        reply_markup=InlineKeyboardMarkup([[
+            InlineKeyboardButton("🎫 Мои билеты", url="https://alykul.baimuras.pro/ru/account"),
+        ]])
+    )
+
+async def cmd_promo(update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+    """Show available promo codes"""
+    await update.message.reply_text(
+        "🎁 Актуальные промокоды:\n\n"
+        "• WELCOME10 — скидка 10% для новичков\n"
+        "• SUMMER20 — скидка 20% в будние дни\n"
+        "• FAMILY — 4 места по цене 3\n\n"
+        "Применить при бронировании: alykul.baimuras.pro/ru/trips",
+        reply_markup=InlineKeyboardMarkup([[
+            InlineKeyboardButton("🚢 Забронировать", url="https://alykul.baimuras.pro/ru/trips"),
+        ]])
+    )
 
 # --- Callback query router ---
 
@@ -284,7 +312,7 @@ async def free_text_handler(update: Update, _: ContextTypes.DEFAULT_TYPE) -> Non
         if any(kw in msg for kw in keywords):
             await _send_section(action, update)
             return
-    await update.message.reply_text("🤔 Я не совсем понял. Вот что я умею:", reply_markup=main_menu_kb(), parse_mode="HTML")
+    await update.message.reply_text("🤔 Не совсем поняла ваш вопрос. Я Айдана, менеджер Алыкул — вот чем могу помочь:", reply_markup=main_menu_kb(), parse_mode="HTML")
 
 # --- Admin notification helper ---
 
@@ -310,6 +338,9 @@ def main() -> None:
     app.add_handler(CommandHandler("fleet", cmd_fleet))
     app.add_handler(CommandHandler("faq", cmd_faq))
     app.add_handler(CommandHandler("contacts", cmd_contacts))
+    app.add_handler(CommandHandler("ticket", cmd_ticket))
+    app.add_handler(CommandHandler("tickets", cmd_ticket))
+    app.add_handler(CommandHandler("promo", cmd_promo))
     app.add_handler(CallbackQueryHandler(callback_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, free_text_handler))
 
